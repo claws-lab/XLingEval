@@ -52,7 +52,7 @@ python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dat
 **To evaluate verifiability using XLingEval, execute the following command in the root directory. Take :**
 
 ```bash
-python correctness/correctness_answer_evaluation.py --dataset_path <path to the dataset> --username <enter your username> --model gpt-35-turbo
+python verifiability/verifiability.py --dataset liveqa --model gpt35
 ```
 
 - `dataset`: select from `healthqa`, `liveqa`, `medicationqa`;
