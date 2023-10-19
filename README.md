@@ -67,7 +67,7 @@ By default, we run the experiments on all languages, including `English`, `Spani
 
 ## Repository Structure
 
-### Correctness_Experiment_Files
+### Correctness
 - `const.py`: Constants used in the experiments.
 - `correctness_get_gpt_answer.py`: Retrieve GPT-3.5-based answers for evaluation.
 - `correctness_answer_evaluation.py`: Script to evaluate the correctness of llm-generated answers with the ground-truth using GPT-3.5.
