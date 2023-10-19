@@ -22,16 +22,37 @@ Install all dependencies using `pip`:
 pip install -r requirements.txt
 ```
 
-## Data
+## XLingHeath Benchmark
 
-The data can be downloaded from [Google Drive](https://drive.google.com/drive/folders/1iZOhWXVNHGQXqPnGTQJMlaDQVznIRHci?usp=share_link). This include `HealthQA.xlsx`, `LiveQA.xlsx`, and `MedicationQA.xlsx`.
+`XLingHealth` folder inside the root repository contains the cross-lingual benchmarking versions for `HealthQA`, `LiveQA`, and `MedicationQA` datasets as tsv files. Each dataset contains the following columns:
+
+\[question,answer,translated_question_Hindi,translated_answer_Hindi,translated_question_Chinese,translated_answer_Chinese,translated_question_Spanish,translated_answer_Spanish\]
+
+Where `question` and `answer` columns are obtained from the original referred datasets.
+
+## Original Datasets
+
+The original datasets used for constructing the **XLingHealth** benchmark can be downloaded from [Google Drive](https://drive.google.com/drive/folders/1iZOhWXVNHGQXqPnGTQJMlaDQVznIRHci?usp=share_link). This include `HealthQA.xlsx`, `LiveQA.xlsx`, and `MedicationQA.xlsx`.
 
 ## Quick Start
+
+To evaluate correctness using XLingEval:
+
+* To get answers for questions using GPT-3.5 execute:
+
+```bash
+python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --username <enter your username> --model gpt-35-turbo
+```
+* To evaluate the ground-truth answer and LLM answer, execute:
+
+```bash
+python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --username <enter your username> --model gpt-35-turbo
+```
 
 To evaluate verifiability using XLingEval, execute the following command in the root directory. Take :
 
 ```bash
-python verifiability/verifiability.py --dataset liveqa --model gpt35
+python correctness/correctness_answer_evaluation.py --dataset_path <path to the dataset> --username <enter your username> --model gpt-35-turbo
 ```
 
 - `dataset`: select from `healthqa`, `liveqa`, `medicationqa`;
@@ -48,10 +69,10 @@ By default, we run the experiments on all languages, including `English`, `Spani
 
 ### Correctness_Experiment_Files
 - `const.py`: Constants used in the experiments.
-- `correctness_answer_evaluation.py`: Script to evaluate the correctness of answers.
-- `correctness_get_gpt_answer.py`: Retrieve GPT-based answers for evaluation.
+- `correctness_get_gpt_answer.py`: Retrieve GPT-3.5-based answers for evaluation.
+- `correctness_answer_evaluation.py`: Script to evaluate the correctness of llm-generated answers with the ground-truth using GPT-3.5.
 - `setup.py`: Installation script.
-- `utils_chatgpt.py`: Utilities for working with ChatGPT.
+- `utils_chatgpt.py`: Utilities for working with GPT-3.5 turbo using OpenAI api.
 
 ### Consistency
 - `consistency_gpt.py` & `consistency_medalpaca.py`: Evaluate the consistency of answers from GPT and MedAlpaca models.
