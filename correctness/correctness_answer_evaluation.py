@@ -149,13 +149,11 @@ if __name__ == "__main__":
     #add an argument to get the dataset path
     parser = ArgumentParser()
     parser.add_argument("--dataset_path", type=str, required=True)
-    parser.add_argument("--username", type=str, required=True)
     parser.add_argument("--model", type=str, required=True)
     
     args = parser.parse_args()
 
     dataset_path = args.dataset_path
-    username = args.username
     model = args.model
         
     lang_list = ["English", "Hindi", "Chinese", "Spanish"]
@@ -167,10 +165,10 @@ if __name__ == "__main__":
     os.chdir(directory_path)
     print("Current working directory: {}".format(os.getcwd()))
 
-    constants = set_constants(username, model)
+    constants = set_constants(model)
     print(constants)
     project_setup()
-    open_ai_object_list = openai_setup(username)
+    open_ai_object_list = openai_setup()
     total_models_num = len(open_ai_object_list)
     data_df = pd.read_csv(dataset_path, sep="\t")
     

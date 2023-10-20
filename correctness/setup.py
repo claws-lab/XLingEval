@@ -42,7 +42,7 @@ KEYS = [
 
 ]
 
-def openai_setup(username):
+def openai_setup():
 
     import openai
 

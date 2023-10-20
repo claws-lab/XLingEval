@@ -1,6 +1,6 @@
 
 
-def set_constants(user, model):
+def set_constants(model):
     #GPT_MODEL = "gpt-35-turbo"
     GPT_MODEL = model
 
