@@ -155,7 +155,7 @@ if __name__ == "__main__":
     data_df = data_df[['question', 'answer', 'translated_question_Hindi', 'translated_answer_Hindi', 'translated_question_Spanish', 'translated_answer_Spanish', 'translated_question_Chinese', 'translated_answer_Chinese']]
 
     for language in language_list:
-        data_df = accuracy_medalpaca(data_df, model, batch_size, "Chinese")
+        data_df = accuracy_medalpaca(data_df, model, batch_size, language)
         print(f"Done with {language} for data df")
         data_df.to_csv(file_name + '_with_answers.tsv', sep='\t', index=False)
         gc.collect()
