@@ -72,24 +72,26 @@ By default, we run the experiments on all languages, including `English`, `Spani
 - `correctness_get_gpt_answer.py`: Retrieve GPT-3.5-based answers for evaluation.
 - `correctness_answer_evaluation.py`: Script to evaluate the correctness of llm-generated answers with the ground-truth using GPT-3.5.
 - `setup.py`: Installation script.
-- `utils_chatgpt.py`: Utilities for working with GPT-3.5 turbo using OpenAI api.
+- `utils_chatgpt.py`: Utilities for working with GPT-3.5 turbo using OpenAI API.
 
 ### Consistency
 - `consistency_gpt.py` & `consistency_medalpaca.py`: Evaluate the consistency of answers from GPT and MedAlpaca models.
 - `data_consistency.py`: Data handling for consistency evaluation.
 - `prompts.py`: Pre-defined prompts for the experiments.
 - `statistical_test.py`: Perform statistical tests on consistency metrics.
+- `eval_consistency.py` & `eval_language_consistency.py`: Summarization scripts for consistency metrics.
+- `language_consistency.py`: Evaluate language-specific consistency.
+
+### Verifiability
+- `prompts.py`: Pre-defined prompts for verifiability tests.
+- `verifiability.py`: Main script for verifiability evaluation.
+- `summarize_verifiability.py`: Summarize verifiability metrics.
 
 ### Data
 - Houses datasets like `HealthQA`, `LiveQA`, and `MedicationQA` in Excel format.
 
 ### DataLoader
 - `load_data.py`: Load and preprocess datasets for evaluation.
-
-### Eval
-- `eval_consistency.py` & `eval_language_consistency.py`: Summarization scripts for consistency metrics.
-- `language_consistency.py`: Evaluate language-specific consistency.
-- `summarize_verifiability.py`: Summarize verifiability metrics.
 
 ### Translate
 - `translate_chatgpt.py`: Script to translate content using ChatGPT.
@@ -98,10 +100,6 @@ By default, we run the experiments on all languages, including `English`, `Spani
 - `metrics.py`: Evaluation metrics and utility functions.
 - `utils_data.py`: Data handling utilities.
 - `utils_misc.py`: Miscellaneous utility functions.
-
-### Verifiability
-- `prompts.py`: Pre-defined prompts for verifiability tests.
-- `verifiability.py`: Main script for verifiability evaluation.
 
 ### Visual
 - Scripts for visualizing data including line plots, heatmaps, and boxplots.
