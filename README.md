@@ -36,27 +36,37 @@ The original datasets used for constructing the **XLingHealth** benchmark can be
 
 ## Quick Start
 
-**To evaluate correctness using XLingEval:**
+* **To evaluate correctness using XLingEval:**
 
-* To get answers for questions using GPT-3.5 execute:
+  - To retrieve answers for questions using GPT-3.5 execute the following command in the root directory:
 
-```bash
-python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --username <enter your username> --model gpt-35-turbo
-```
-* To evaluate the ground-truth answer and LLM answer, execute:
+    ```bash
+    python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --model gpt-35-turbo
+    ```
+  - To evaluate the quality between ground-truth answer and LLM answer, execute the following command in the root directory:
 
-```bash
-python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --username <enter your username> --model gpt-35-turbo
-```
+    ```bash
+    python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --model gpt-35-turbo
+    ```
+  - **Evaluation using MedAlpaca**
+    - Retrieve answers from MedAlpaca using the following command in the root directory:
+      ```bash
+      python correctness/correctness/MedAlpaca/correctness_medalpaca_get_answers.py --dataset_path <path to the dataset> --model medalpaca-30b --batch_size 5
+      ```
+    - Evaluate the quality between ground-truth answer and MedAlpaca LLM answer using GPT-3.5 execute the following command in the root directory:
 
-**To evaluate verifiability using XLingEval, execute the following command in the root directory. Take :**
+      ```bash
+      python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset with MedAlpaca llm answers> --model gpt-35-turbo
+      ```
 
-```bash
-python verifiability/verifiability.py --dataset liveqa --model gpt35
-```
+* **To evaluate verifiability using XLingEval, execute the following command in the root directory. Take :**
 
-- `dataset`: select from `healthqa`, `liveqa`, `medicationqa`;
-- `model`: select from `gpt35`, `gpt4`, `medalpaca`.
+  ```bash
+  python verifiability/verifiability.py --dataset liveqa --model gpt35
+  ```
+
+  - `dataset`: select from `healthqa`, `liveqa`, `medicationqa`;
+  - `model`: select from `gpt35`, `gpt4`, `medalpaca`.
 
 By default, we run the experiments on all languages, including `English`, `Spanish`, `Chinese`, and `Hindi`. 
 
