@@ -1,19 +1,4 @@
-"""Test consistency of the model.
 
-Currently, we use the following steps:
-* Ask ChatGPT a question and let it return the answers in bullet-by-bullet format.
-* Compare the pairwise similarities between the answers.
-    For each question, if N answers are generated, then there are C(N, 2) pairs of answers.
-
-Previously, we used the following steps:
-* Ask ChatGPT a question and let it return the answers in bullet-by-bullet format.
-* For each answer
-    * Ask ChatGPT if the answer is a valid response to the question.
-    * [Optional] Modify the question to make it factually answer. Ask ChatGPT the question and the modified answer
-
-
-Created: 2023.5.12
-"""
 import os
 import traceback
 

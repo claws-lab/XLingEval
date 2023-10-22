@@ -9,6 +9,8 @@ import torch
 from tqdm import trange
 
 from consistency.Medalpaca.model_medalpaca import init_medalpaca_model
+import pandas as pd
+
 
 sys.path.append(osp.dirname(osp.dirname(osp.abspath(__file__))))
 
@@ -78,6 +80,13 @@ def run_consistency_medalpaca():
 
     results_df = load_results_consistency(args)
 
+    def save():
+        if osp.exists(path):
+            with pd.ExcelWriter(path, mode='a', engine='openpyxl') as writer:
+                results_df.to_excel(writer, sheet_name=args.target_language, index=False)
+        else:
+            results_df.to_excel(path, sheet_name=args.target_language, index=False)
+
     idx_start = 0
 
     for idx_row in trange(idx_start, len(examples)):
@@ -136,21 +145,23 @@ def run_consistency_medalpaca():
             except Exception as e:
                 traceback.print_exc()
 
-        if (idx_row + 1) % 20 == 0:
+        if (idx_row + 1) % 10 == 0:
             print(f"Saving results to {path}...", end=" ")
-            results_df.to_excel(path, index=False)
+            save()
             print("Done!")
 
-    results_df.to_excel(path, index=False)
+    save()
 
 
 if __name__ == "__main__":
 
     project_setup()
+    os.makedirs(osp.join(args.output_dir, "consistency"), exist_ok=True)
+    args.batch_size = 5
 
-    for language in const.LANGUAGES:
+    for language in ["English", "Spanish", "Chinese", "Hindi"]:
 
-        for temperature in const.TEMPERATURES:
+        for temperature in [0.001, 0.25, 0.5, 0.75, 1.0]:
             args.target_language = language
             args.temperature = temperature
             run_consistency_medalpaca()

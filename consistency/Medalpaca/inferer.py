@@ -66,6 +66,8 @@ class Inferer:
             train_on_inputs = False,
 
         )
+        self.data_handler.prompt_template['primer'].replace("LANGUAGE_NAME", args.target_language)
+
 
         self.model = self._load_model(
             model_name=model_name,

@@ -1,6 +1,6 @@
 import platform
 
-from medalpaca.inferer import Inferer
+from consistency.Medalpaca.inferer import Inferer
 
 
 def init_medalpaca_model(args):
@@ -32,16 +32,7 @@ def init_medalpaca_model(args):
         raise ValueError(f"Unknown model: {args.model}")
 
 
-    if args.task == "consistency":
-
-        prompt_template = f"medalpaca/prompt_templates/medalpaca_{args.target_language}.json"
-
-    elif args.task == "verifiability":
-        prompt_template = (f"medalpaca/prompt_templates/medalpaca_verifiability"
-                           f".json")
-
-    else:
-        raise ValueError(f"Unknown task: {args.task}")
+    prompt_template = f"consistency/Medalpaca/prompt_templates/medalpaca_consistency.json"
 
     # ------------------------------------
 

@@ -1,6 +1,6 @@
 {
-    "description": "Chinese Template for medAlpaca..",
-    "primer": "用中文回答以下问题。",
+    "description": "English Template for medAlpaca.",
+    "primer": "Write a response in LANGUAGE_NAME that appropriately answers the question",
     "instruction": "\n\n### Instruction:\n",
     "input": "\n\n### Input:\n",
     "output": "\n\n### Response:\n",
