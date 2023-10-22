@@ -31,19 +31,10 @@ Install all dependencies using `pip`:
 pip install -r requirements.txt
 ```
 
-## XLingHeath Benchmark
+## XLingHeath Dataset
 
-`XLingHealth` folder inside the root repository contains the cross-lingual benchmarking versions for `HealthQA`, `LiveQA`, and `MedicationQA` datasets as tsv files. Each dataset contains the following columns:
+`XLingHealth_Dataset` folder inside the root repository contains the cross-lingual benchmarking versions for `HealthQA`, `LiveQA`, and `MedicationQA` datasets as Excel files under separate tabs for each of the four languages (English, Spanish, Chinese, and Hindi).
 
-```
-[question,answer,translated_question_Hindi,translated_answer_Hindi,translated_question_Chinese,translated_answer_Chinese,translated_question_Spanish,translated_answer_Spanish]
-```
-
-Where `question` and `answer` columns are obtained from the original referred datasets.
-
-## Original Datasets
-
-The original datasets used for constructing the **XLingHealth** benchmark are in this repository under `XLingHealth_Benchmark/`, which include `HealthQA.xlsx`, `LiveQA.xlsx`, and `MedicationQA.xlsx`.
 
 ## Quick Start
 
