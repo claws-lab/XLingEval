@@ -71,7 +71,7 @@ def run_verifiability(temperature: float, dataset_name: str, target_language: st
         results_df[const.PRED] = results_df[const.PRED].apply(
             lambda x: map_prediction_to_binary(x, target_language))
 
-    idx_start = 0 if args.fill_null_values else len(results_df)
+    idx_start = 0
 
     # Each row has a question and a sample answer
     for idx_row in range(idx_start, len(examples)):

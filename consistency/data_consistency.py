@@ -1,4 +1,3 @@
-import os
 import sys
 import os.path as osp
 
@@ -7,7 +6,6 @@ import pandas as pd
 sys.path.append(osp.dirname(osp.dirname(osp.abspath(__file__))))
 sys.path.append("..")
 
-import const
 from dataloader.load_data import load_LiveQA, load_MedicationQA, load_HealthQA
 
 
@@ -19,7 +17,6 @@ def load_data_consistency(args):
         examples = load_MedicationQA(language=args.target_language)
 
     elif args.dataset_name == "healthqa":
-        assert args.interval == 10
         examples = load_HealthQA(split=args.split,
                                  language=args.target_language)
 
@@ -38,11 +35,11 @@ def get_consistency_results_path(args):
 
     if args.dataset_name in ["liveqa", "medicationqa"]:
         path = osp.join(args.output_dir, "consistency",
-                        f"{model_prefix}{args.dataset_name}_consistency_temp{args.temperature}_{args.target_language}.xlsx")
+                        f"{model_prefix}{args.dataset_name}_consistency_temp{args.temperature}.xlsx")
 
     elif args.dataset_name in ["healthqa"]:
         path = osp.join(args.output_dir, "consistency",
-                        f"{model_prefix}{args.dataset_name}_{args.split}_consistency_temp{args.temperature}_{args.target_language}.xlsx")
+                        f"{model_prefix}{args.dataset_name}_{args.split}_consistency_temp{args.temperature}.xlsx")
 
     else:
         raise NotImplementedError

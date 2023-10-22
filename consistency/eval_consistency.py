@@ -21,6 +21,9 @@ from arguments import args
 from setup import project_setup, openai_setup
 from utils.metrics import pairwise_cos_sim, jaccard_sim
 import warnings
+
+from utils.utils_misc import get_model_prefix
+
 warnings.filterwarnings("ignore", message="Some weights of the model checkpoint at bert-base-uncased were not used when initializing BertModel*")
 
 if platform.system() == "Linux" or platform.system() == "Windows":
@@ -182,47 +185,38 @@ def get_topic_mean_std(cos_sim):
     return mean.cpu().numpy(), std.cpu().numpy()
 
 
-def consistency(language: str):
+def evaluate_consistency(language: str):
     language_prefix = "" if args.target_language == "English" else "TRANSLATED_"
-    model_prefix = "" if args.model == "gpt35" else f"{args.model}_"
+    model_prefix = get_model_prefix(args)
 
     print(f"Prefix of this experiment: {language_prefix}{model_prefix}")
 
     if args.dataset_name in ["liveqa", "medicationqa"]:
 
         path = osp.join(args.output_dir, "consistency",
-                        f"{language_prefix}{model_prefix}{args.dataset_name}_consistency_temp{args.temperature}_{language}.xlsx")
+                        f"{language_prefix}{model_prefix}{args.dataset_name}_consistency_temp{args.temperature}.xlsx")
 
-        path_results = osp.join(args.output_dir, "summary",
-                                f"{model_prefix}{args.dataset_name}_consistency_temp{args.temperature}.xlsx")
+        path_results = osp.join(args.output_dir, "consistency",
+                                f"SUMMARY_{model_prefix}{args.dataset_name}_consistency_temp{args.temperature}.xlsx")
 
-        # path_topic_modeling = osp.join(args.output_dir, "summary",
-        #                                f"{args.dataset_name}_topic_modeling_temp{args.temperature}.xlsx")
 
     elif args.dataset_name in ["healthqa"]:
 
         path = osp.join(args.output_dir, "consistency",
                         f"{language_prefix}{model_prefix}{args.dataset_name}_{args.split}_consistency_temp{args.temperature}"
-                        f"_{language}.xlsx")
+                        f".xlsx")
 
-        path_results = osp.join(args.output_dir, "summary",
-                                f"{model_prefix}{args.dataset_name}_consistency_{args.split}_temp{args.temperature}.xlsx")
+        path_results = osp.join(args.output_dir, "consistency",
+                                f"SUMMARY_{model_prefix}{args.dataset_name}_consistency_{args.split}_tem"
+                                f"p{args.temperature}.xlsx")
 
 
     else:
         raise NotImplementedError
 
-    if not osp.exists(path):
-        print(f"Error: Not found ({path})")
 
-        return
-    df = pd.read_excel(path)
+    df = pd.read_excel(path, sheet_name=language)
 
-    if len(df) < 5:
-        print(f"Error: too short ({path})")
-        return
-
-    # TODO
     if osp.exists(path_results):
         excel_file = pd.ExcelFile(path_results)
 
@@ -276,15 +270,8 @@ def consistency(language: str):
         transformer_model.to(DEVICE)
         model.to(DEVICE)
 
-        # all-MiniLM-L6-v2 is a light weight model
-        # model_type = 'all-MiniLM-L6-v2'
-
         if not 'bert_sim' in results_df.columns or results_df.loc[:, "bert_sim"].isna().all() or args.fill_null_values:
             print("Evaluating similarity metrics ...")
-
-            # bert_model = AutoModel.from_pretrained(osp.join(args.model_dir, model_type))
-
-            # tokenizer = AutoTokenizer.from_pretrained(osp.join(args.model_dir, model_type))
             P_d, R_d, F1_d = defaultdict(list), defaultdict(list), defaultdict(
                 list)
 
@@ -398,13 +385,6 @@ def consistency(language: str):
                 results_df.loc[idx_row, "length_mean"] = length_mean
                 results_df.loc[idx_row, "length_std"] = length_std
 
-                # print(f"Average Semantic Similarity: {avg_semantic_similarity}")
-                # print(f"Average Jaccard Similarity: {avg_jaccard_similarity}")
-                # print(f"Average Cosine Similarity: {avg_cosine_similarity}")
-                # print(f"Contradiction Rate: {contradiction_rate}")
-                # print(f"Answer Length Variability: {length_variability}")
-                # print(f"Unique Answer Rate: {unique_answer_rate}")
-
                 if idx_row % 10 == 0:
                     save(results_df, path_results,
                          sheet_name=args.target_language)
@@ -419,12 +399,6 @@ def consistency(language: str):
     if args.do_topic_modeling:
 
         # ----------------- Topic Modeling -----------------
-        # results_df_topic_modeling = pd.DataFrame()
-
-        # results_df_topic_modeling[const.ID] = np.arange(0, len(df) * args.interval, args.interval)
-
-        # results_df_topic_modeling.set_index(const.ID, inplace=True)
-
         from sklearn.feature_extraction.text import CountVectorizer
         from sklearn.decomposition import LatentDirichletAllocation
 
@@ -470,7 +444,7 @@ def consistency(language: str):
         dtm = vectorizer.fit_transform(documents)
         idx_valid_rows = np.array(idx_valid_rows)
 
-        # # ----------------- HDP -----------------
+        # ----------------- HDP -----------------
 
         if "hdp_mean" in results_df.columns and not (results_df.loc[:, "hdp_mean"].isna().all() or results_df.loc[:,
                                                                                        "hdp_std"].isna().all()):
@@ -507,7 +481,6 @@ def consistency(language: str):
                 2)
 
             # Calculate cosine similarity between pairs of documents
-
             cos_sim = F.cosine_similarity(topic_dist,
                                           topic_dist.transpose(1, 2), dim=3)
 
@@ -577,10 +550,6 @@ def consistency(language: str):
             results_df.loc[idx_valid_rows, f"lda{num_topics}_mean"] = mean
             results_df.loc[idx_valid_rows, f"lda{num_topics}_std"] = std
 
-            # for col in results_df_topic_modeling.columns:
-            #     if col.startswith("topics"):
-            #         results_df[col] = results_df_topic_modeling[col]
-
         save(results_df, path_results,
              sheet_name=args.target_language)
 
@@ -589,21 +558,20 @@ def consistency(language: str):
 
 if __name__ == "__main__":
 
-    # TODO
-    args.do_similarity = False
+    args.do_similarity = True
     args.do_topic_modeling = True
-    project_setup(args)
+    project_setup()
     openai_setup(args)
 
     # for language in ["Chinese"]:
 
     TEMPERATURES = [0.0, 0.25, 0.5, 0.75, 1.0]
-    TEMPERATURES = [0.0, 1.0]
 
     for temperature in TEMPERATURES:
-        for language in ["English", "Spanish", "Chinese", "Hindi", ]:
+        for language in ["Spanish", "English", "Chinese", "Hindi", ]:
 
             args.temperature = temperature
             args.target_language = language
+            evaluate_consistency(language=args.target_language)
 
-            consistency(language=args.target_language)
+

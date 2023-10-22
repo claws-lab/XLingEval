@@ -16,6 +16,14 @@ Large language models (LLMs) are transforming the ways the general public access
 
 ## Installation
 
+Create a new environment
+
+
+```bash
+conda create -n xlingeval python=3.9
+conda activate xlingeval
+```
+
 Install all dependencies using `pip`:
 
 ```bash
@@ -36,37 +44,89 @@ The original datasets used for constructing the **XLingHealth** benchmark can be
 
 ## Quick Start
 
-* **To evaluate correctness using XLingEval:**
+### 1. Running Correctness Experiments
 
-  - To retrieve answers for questions using GPT-3.5 execute the following command in the root directory:
+####  1.1 Evaluation using GPT-3.5
 
-    ```bash
-    python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --model gpt-35-turbo
-    ```
-  - To evaluate the quality between ground-truth answer and LLM answer, execute the following command in the root directory:
-
-    ```bash
-    python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --model gpt-35-turbo
-    ```
-  - **Evaluation using MedAlpaca**
-    - Retrieve answers from MedAlpaca using the following command in the root directory:
-      ```bash
-      python correctness/correctness/MedAlpaca/correctness_medalpaca_get_answers.py --dataset_path <path to the dataset> --model medalpaca-30b --batch_size 5
-      ```
-    - Evaluate the quality between ground-truth answer and MedAlpaca LLM answer using GPT-3.5 execute the following command in the root directory:
-
-      ```bash
-      python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset with MedAlpaca llm answers> --model gpt-35-turbo
-      ```
-
-* **To evaluate verifiability using XLingEval, execute the following command in the root directory. Take :**
+- To retrieve answers for questions using GPT-3.5 execute the following command in the root directory:
 
   ```bash
-  python verifiability/verifiability.py --dataset liveqa --model gpt35
+  python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --model gpt-35-turbo
+  ```
+- To evaluate the quality between ground-truth answer and LLM answer, execute the following command in the root directory:
+
+  ```bash
+  python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --model gpt-35-turbo
+  ```
+  
+
+#### 1.2 Evaluation using MedAlpaca
+
+- Retrieve answers from MedAlpaca using the following command in the root directory:
+  ```bash
+  python correctness/correctness/MedAlpaca/correctness_medalpaca_get_answers.py --dataset_path <path to the dataset> --model medalpaca-30b --batch_size 5
+  ```
+- Evaluate the quality between ground-truth answer and MedAlpaca LLM answer using GPT-3.5 execute the following command in the root directory:
+
+  ```bash
+  python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset with MedAlpaca llm answers> --model gpt-35-turbo
+  ```
+    
+### 2. Running Consistency Experiments
+
+Run the following commands from the repository root directory `XLingEval/`. 
+
+* Generate answers using GPT-3.5
+
+  ```bash
+  python consistency/consistency_get_gpt_answer.py --dataset <DATASET> --model <MODEL> --num_answers <NUM_ANSWERS>
+  ```
+  - `dataset`: select from `healthqa`, `liveqa`, `medicationqa`;
+  - `model`: select from `gpt35`, `gpt4`, `medalpaca`.  
+  - `num_answers`: number of answers to generate for each question.
+
+  For example
+
+  ```bash
+  python consistency/consistency_get_gpt_answer.py --dataset liveqa --model gpt35 --num_answers 10
+  ```
+  
+* Translate the answers into English
+  ```bash
+  python consistency/translate.py --dataset <DATASET> --model <MODEL> --num_answers <NUM_ANSWERS>
+  ```
+  
+* Evaluate the consistency metrics
+* ```bash
+  python consistency/eval_consistency.py --dataset <DATASET> --model <MODEL> --num_answers <NUM_ANSWERS>
+  ```
+  
+  For example
+  
+  ```bash
+  python consistency/consistency_gpt.py --dataset liveqa --model gpt35
   ```
 
-  - `dataset`: select from `healthqa`, `liveqa`, `medicationqa`;
-  - `model`: select from `gpt35`, `gpt4`, `medalpaca`.
+
+
+
+### 3. Running Verifiability Experiments
+
+Run the following command from the repository root directory `XLingEval/`. 
+
+```bash
+python verifiability/verifiability.py --dataset <DATASET> --model <MODEL>
+```
+
+- `dataset`: select from `healthqa`, `liveqa`, `medicationqa`;
+- `model`: select from `gpt35`, `gpt4`, `medalpaca`.
+
+For example, if you run experiments on LiveQA using the GPT-3.5 model:
+
+```bash
+python verifiability/verifiability.py --dataset liveqa --model gpt35
+```
+
 
 By default, we run the experiments on all languages, including `English`, `Spanish`, `Chinese`, and `Hindi`. 
 
