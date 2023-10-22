@@ -4,15 +4,19 @@ import traceback
 
 import numpy as np
 import pandas as pd
+from tqdm import trange
 
 import const
 import const_verifiability
 from arguments import args
 from dataloader.load_data import load_HealthQA, load_LiveQA, load_MedicationQA
+from verifiability.Medalpaca.model_medalpaca import init_medalpaca_model
 from verifiability.prompts import prompt_verifiability
 from verifiability.setup import project_setup, openai_setup
 from utils.utils_chatgpt import get_response
 from utils.utils_misc import get_model_prefix, capitalize_and_strip_punctuation
+from verifiability.Medalpaca.params_medalpaca import *
+
 
 project_setup()
 openai_setup(args)
@@ -50,6 +54,8 @@ def run_verifiability(temperature: float, dataset_name: str, target_language: st
         else:
             raise NotImplementedError
 
+
+
     def save():
         if osp.exists(path):
             with pd.ExcelWriter(path, mode='a', engine='openpyxl') as writer:
@@ -67,58 +73,119 @@ def run_verifiability(temperature: float, dataset_name: str, target_language: st
         results_df[const.PRED] = np.NaN
         results_df[const.ERROR] = np.NaN
 
-    if args.fill_null_values:
-        results_df[const.PRED] = results_df[const.PRED].apply(
-            lambda x: map_prediction_to_binary(x, target_language))
-
     idx_start = 0
 
-    # Each row has a question and a sample answer
-    for idx_row in range(idx_start, len(examples)):
+    def format_question(question, answer):
+        return f"Question: {question}\nResponse: {answer}"
 
-        row = examples.loc[idx_row]
 
-        # Copy the contents from the original data
-        results_df.loc[idx_row, const.QUESTION] = row[const.QUESTION]
-        results_df.loc[idx_row, const.ANSWER] = row[const.ANSWER]
-        results_df.loc[idx_row, const.ID] = row.name
-        results_df.loc[idx_row, const.LABEL] = row[const.LABEL]
+    if args.model.startswith("medalpaca"):
 
-        if args.fill_null_values:
-            row_pred = results_df.iloc[idx_row]
-            if row_pred[const.PRED] in ["Yes", "No"]:
+        questions = examples[const.QUESTION if
+        args.target_language == "English" else const.QUESTION_TRANSLATED].tolist()
+
+        answers = examples[const.ANSWER if
+        args.target_language == "English" else const.ANSWER_TRANSLATED].tolist()
+
+        ids = examples[const.ID].values
+
+        input_questions = [format_question(question, answer) for question,
+        answer in
+                           zip(questions, answers)]
+
+        sampling['temperature'] = args.temperature
+
+        results_df[const.ID] = ids
+        results_df[const.QUESTION] = None
+        results_df[const.ANSWER] = None
+
+        for idx_row in trange(idx_start, len(input_questions), args.batch_size):
+
+            results_df.loc[idx_row:idx_row + args.batch_size - 1, const.QUESTION] \
+                = questions[idx_row:idx_row + args.batch_size]
+            results_df.loc[idx_row:idx_row + args.batch_size - 1, const.ANSWER] = \
+                answers[idx_row:idx_row + args.batch_size]
+
+            try:
+                batch = input_questions[idx_row:idx_row + args.batch_size]
+                responses = model.batch_inference(
+                    instruction=f"Answer me 'Yes' or 'No'.",
+                    inputs=batch,
+                    output="The answer to the question is:",
+                    verbose=True,
+                    **sampling
+                )
+
+            except Exception as e:
+                traceback.print_exc()
                 continue
 
-        prompt = prompt_verifiability(
-            row[const.QUESTION if target_language == "English" else const.QUESTION_TRANSLATED],
-            row[const.ANSWER if target_language == "English" else
-            const.ANSWER_TRANSLATED],
-            target_language)
+            results_df.loc[idx_row:idx_row + args.batch_size - 1, const.PRED] = responses
 
-        print(f"{idx_row}\t{prompt}")
+            if (idx_row % 20 == 0 or idx_row == len(liveqa_examples) - 1):
+                print(f"Saving results to {path}...", end=" ")
+                # results_df.reset_index(drop=True).drop("Unnamed: 0", axis=1, errors="ignore").to_excel(path, index=False)
 
-        try:
-            response = get_response(prompt, temperature=temperature,
-                                    deployment_id="gpt35")
+                results_df.to_excel(path, index=False)
+                print("Done")
 
-            response = capitalize_and_strip_punctuation(response)
 
-        except Exception as e:
-            print(f"Unexpected error: {str(e)}")
-            traceback.print_exc()
-            results_df.loc[idx_row, const.ERROR] = str(e)
-            response = np.NaN
+    else:
 
-        print(f"{idx_row}\t{response}")
+        # Each row has a question and a sample answer
+        for idx_row in range(idx_start, len(examples)):
 
-        results_df.loc[idx_row, const.PRED] = response
+            row = examples.loc[idx_row]
 
-        if (idx_row + 1) % 20 == 0:
-            save()
+            # Copy the contents from the original data
+            results_df.loc[idx_row, const.QUESTION] = row[const.QUESTION]
+            results_df.loc[idx_row, const.ANSWER] = row[const.ANSWER]
+            results_df.loc[idx_row, const.ID] = row.name
+            results_df.loc[idx_row, const.LABEL] = row[const.LABEL]
 
-    save()
+            if args.fill_null_values:
+                row_pred = results_df.iloc[idx_row]
+                if row_pred[const.PRED] in ["Yes", "No"]:
+                    continue
+
+            prompt = prompt_verifiability(
+                row[const.QUESTION if target_language == "English" else const.QUESTION_TRANSLATED],
+                row[const.ANSWER if target_language == "English" else
+                const.ANSWER_TRANSLATED],
+                target_language)
+
+            print(f"{idx_row}\t{prompt}")
+
+            try:
+                response = get_response(prompt, temperature=temperature,
+                                        deployment_id="gpt35")
+
+                response = capitalize_and_strip_punctuation(response)
+
+            except Exception as e:
+                print(f"Unexpected error: {str(e)}")
+                traceback.print_exc()
+                results_df.loc[idx_row, const.ERROR] = str(e)
+                response = np.NaN
+
+            print(f"{idx_row}\t{response}")
+
+            results_df.loc[idx_row, const.PRED] = response
+
+            if (idx_row + 1) % 20 == 0:
+                save()
+        save()
 
 if __name__ == "__main__":
+
+    if args.model.startswith("medalpaca"):
+        model = init_medalpaca_model(args)
+
+    elif args.model.startswith("gpt"):
+        from utils.utils_chatgpt import get_response
+
+    else:
+        model = None
 
     for temperature in [0.0, 0.25, 0.5, 0.75, 1.0]:
         for language in ["Spanish", "English", "Chinese", "Hindi"]:
