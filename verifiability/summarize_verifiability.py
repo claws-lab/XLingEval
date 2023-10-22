@@ -265,8 +265,8 @@ if __name__ == '__main__':
 
             print(results)
 
-            path = osp.join(args.output_dir, "summary",
-                            f"{get_model_prefix(args)}{args.dataset_name}_verifiability_temp{temperature}.xlsx")
+            path = osp.join(args.output_dir, "verifiability",
+                            f"SUMMARY_{get_model_prefix(args)}{args.dataset_name}_verifiability_temp{temperature}.xlsx")
             if osp.exists(path):
                 with pd.ExcelWriter(path, mode='a', engine='openpyxl',
                                     if_sheet_exists='replace') as writer:

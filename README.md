@@ -35,13 +35,15 @@ pip install -r requirements.txt
 
 `XLingHealth` folder inside the root repository contains the cross-lingual benchmarking versions for `HealthQA`, `LiveQA`, and `MedicationQA` datasets as tsv files. Each dataset contains the following columns:
 
-\[question,answer,translated_question_Hindi,translated_answer_Hindi,translated_question_Chinese,translated_answer_Chinese,translated_question_Spanish,translated_answer_Spanish\]
+```
+[question,answer,translated_question_Hindi,translated_answer_Hindi,translated_question_Chinese,translated_answer_Chinese,translated_question_Spanish,translated_answer_Spanish]
+```
 
 Where `question` and `answer` columns are obtained from the original referred datasets.
 
 ## Original Datasets
 
-The original datasets used for constructing the **XLingHealth** benchmark can be downloaded from [Google Drive](https://drive.google.com/drive/folders/1iZOhWXVNHGQXqPnGTQJMlaDQVznIRHci?usp=share_link). This include `HealthQA.xlsx`, `LiveQA.xlsx`, and `MedicationQA.xlsx`.
+The original datasets used for constructing the **XLingHealth** benchmark are in this repository under `XLingHealth_Benchmark/`, which include `HealthQA.xlsx`, `LiveQA.xlsx`, and `MedicationQA.xlsx`.
 
 ## Quick Start
 
@@ -83,7 +85,7 @@ Run the following commands from the repository root directory `XLingEval/`.
   python consistency/consistency_get_gpt_answer.py --dataset <DATASET> --model <MODEL> --num_answers <NUM_ANSWERS>
   ```
   - `dataset`: select from `healthqa`, `liveqa`, `medicationqa`;
-  - `model`: select from `gpt35`, `gpt4`, `medalpaca`.  
+  - `model`: select from `gpt35`, `gpt4`, `medalpaca-7b`, `medalpaca-13b`, `medalpaca-30b`.  
   - `num_answers`: number of answers to generate for each question.
 
   For example
@@ -113,23 +115,38 @@ Run the following commands from the repository root directory `XLingEval/`.
 
 ### 3. Running Verifiability Experiments
 
-Run the following command from the repository root directory `XLingEval/`. 
+Run the following command from the repository root directory `XLingEval/`. Both GPT-3.5/4 and MedAlpaca models share the same code.
 
-```bash
-python verifiability/verifiability.py --dataset <DATASET> --model <MODEL>
-```
+* Prompt the LLMs to generate answers
 
-- `dataset`: select from `healthqa`, `liveqa`, `medicationqa`;
-- `model`: select from `gpt35`, `gpt4`, `medalpaca`.
+  ```bash
+  python verifiability/verifiability.py --dataset <DATASET> --model <MODEL>
+  ```
 
-For example, if you run experiments on LiveQA using the GPT-3.5 model:
+  - `dataset`: select from `healthqa`, `liveqa`, `medicationqa`;
+  - `model`: select from `gpt35`, `gpt4`, `medalpaca-7b`, `medalpaca-13b`, `medalpaca-30b`.
 
-```bash
-python verifiability/verifiability.py --dataset liveqa --model gpt35
-```
+  For example, if you run experiments on LiveQA using the GPT-3.5 model:
 
+  ```bash
+  python verifiability/verifiability.py --dataset liveqa --model gpt35
+  ```
 
-By default, we run the experiments on all languages, including `English`, `Spanish`, `Chinese`, and `Hindi`. 
+  By default, we run the experiments on all languages, including `English`, `Spanish`, `Chinese`, and `Hindi`. 
+
+* Summarize the verifiability metrics
+
+  ```bash
+  python verifiability/summarize_verifiability.py --dataset <DATASET> --model <MODEL>
+  ```
+
+  For example, if you run experiments on LiveQA using the GPT-3.5 model:
+
+  ```bash
+  python verifiability/summarize_verifiability.py --dataset liveqa --model gpt35
+  ```
+
+  The results will be saved in `outputs/verifiability/<DATASET>/<MODEL>/summary.csv`.
 
 <div align="center">
   <img src="static/img/alpaca_doctor2.png" width="400">
