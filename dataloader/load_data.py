@@ -13,18 +13,18 @@ import const
 def load_HealthQA(split: str, language: str = 'English', task: str = "consistency"):
     print(f"Loading HealthQA with split {split} and Language {language} ...")
 
-    if osp.basename(os.getcwd()) == "XLingHealth_Benchmark":
+    if osp.basename(os.getcwd()) == "XLingHealth_Dataset":
         path = "HealthQA.xlsx"
 
     else:
-        path = osp.join("XLingHealth_Benchmark", "HealthQA.xlsx")
+        path = osp.join("XLingHealth_Dataset", "HealthQA.xlsx")
 
     raw_df = pd.read_excel(path, sheet_name=language)
 
     if task == "verifiability":
         return raw_df
 
-    elif task in ["consistency", "accuracy"]:
+    elif task in ["consistency", "correctness"]:
         df = raw_df[raw_df["label"] == 1]
         return df
 
@@ -36,11 +36,11 @@ def load_HealthQA(split: str, language: str = 'English', task: str = "consistenc
 
 def load_MedicationQA(language: str = "English", task: str = "consistency"):
 
-    if osp.basename(os.getcwd()) == "XLingHealth_Benchmark":
+    if osp.basename(os.getcwd()) == "XLingHealth_Dataset":
         path = "MedicationQA.xlsx"
 
     else:
-        path = osp.join("XLingHealth_Benchmark", "MedicationQA.xlsx")
+        path = osp.join("XLingHealth_Dataset", "MedicationQA.xlsx")
 
     raw_df = pd.read_excel(path, sheet_name=language)
 
@@ -64,11 +64,11 @@ def load_MedicationQA(language: str = "English", task: str = "consistency"):
 
 
 def load_LiveQA(language="English", task: str = "consistency"):
-    if osp.basename(os.getcwd()) == "XLingHealth_Benchmark":
+    if osp.basename(os.getcwd()) == "XLingHealth_Dataset":
         path = "LiveQA.xlsx"
 
     else:
-        path = osp.join("XLingHealth_Benchmark", "LiveQA.xlsx")
+        path = osp.join("XLingHealth_Dataset", "LiveQA.xlsx")
 
     raw_df = pd.read_excel(path, sheet_name=language)
 
