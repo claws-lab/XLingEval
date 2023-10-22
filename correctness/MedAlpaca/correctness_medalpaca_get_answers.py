@@ -2,9 +2,10 @@ import os
 import os.path as osp
 import platform
 import sys
-import const
 import traceback
+from os import path as osp
 import pandas as pd
+sys.path.append(osp.dirname(osp.dirname(osp.dirname(osp.abspath(__file__)))))
 
 from argparse import ArgumentParser
 
@@ -12,14 +13,12 @@ import re
 import string
 import gc
 
-from medalpaca.inferer import Inferer
+from correctness.MedAlpaca.inferer import Inferer
 
-from medalpaca.params_medalpaca import *
+from correctness.MedAlpaca.params_medalpaca import *
 
-
-# sys.path.append(osp.join(os.getcwd(), "consistency"))
-
-# from consistency import statistical_test
+from dataloader.load_data import load_HealthQA, load_MedicationQA, load_LiveQA
+import torch
 
 
 
@@ -150,9 +149,42 @@ if __name__ == "__main__":
 
     model = load_model(model_name)
 
-    data_df = pd.read_csv(dataset_path, sep='\t')
-    #only keep the question, answer, translated_question_Hindi, translated_answer_Hindi,translated_question_Spanish, translated_answer_Spanish, translated_question_Chinese, translated_answer_Chinese columns
-    data_df = data_df[['question', 'answer', 'translated_question_Hindi', 'translated_answer_Hindi', 'translated_question_Spanish', 'translated_answer_Spanish', 'translated_question_Chinese', 'translated_answer_Chinese']]
+    #if dataset path ends with pkl, then use pandas read_pickle method
+    if dataset_path.endswith("pkl"):
+        data_df = pd.read_pickle(dataset_path)
+    else:
+
+        df_li = []
+
+        for lang in language_list:
+            if "HealthQA" in args.dataset_path:
+                # Only consider the dev set for HealthQA
+                df = load_HealthQA(split="dev",
+                                    language=lang, task="correctness")
+
+            elif "MedicationQA" in args.dataset_path:
+                df = load_MedicationQA(language=lang, task="correctness")
+
+            elif "LiveQA" in args.dataset_path:
+                df = load_LiveQA(language=lang, task="correctness")
+
+            else:
+                raise ValueError(f"Unknown dataset {args.dataset_path}")
+
+            if lang == "English":
+                df = df[["question", "answer"]]
+
+            else:
+                df = df[["question_translated", "answer_translated"]]
+
+                df = df.rename({
+                    "question_translated": f"translated_question_{lang}",
+                    "answer_translated": f"translated_answer_{lang}"
+                })
+
+            df_li += [df.reset_index(drop=True)]
+
+        data_df = pd.concat(df_li, axis=1)
 
     for language in language_list:
         data_df = accuracy_medalpaca(data_df, model, batch_size, language)

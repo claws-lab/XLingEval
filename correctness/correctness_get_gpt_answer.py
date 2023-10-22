@@ -2,7 +2,9 @@ import os
 import time
 import traceback
 import sys
+from os import path as osp
 import pandas as pd
+sys.path.append(osp.dirname(osp.dirname(osp.abspath(__file__))))
 
 from dataloader.load_data import load_HealthQA, load_MedicationQA, load_LiveQA
 from setup import project_setup, openai_setup
@@ -131,16 +133,16 @@ if __name__ == "__main__":
         df_li = []
 
         for lang in lang_list:
-            if "healthqa" in args.dataset_path:
+            if "HealthQA" in args.dataset_path:
                 # Only consider the dev set for HealthQA
                 df = load_HealthQA(split="dev",
-                                    language=lang, task="accuracy")
+                                    language=lang, task="correctness")
 
-            elif "medicationqa" in args.dataset_path:
-                df = load_MedicationQA(language=lang, task="accuracy")
+            elif "MedicationQA" in args.dataset_path:
+                df = load_MedicationQA(language=lang, task="correctness")
 
-            elif "liveqa" in args.dataset_path:
-                df = load_LiveQA(language=lang, task="accuracy")
+            elif "LiveQA" in args.dataset_path:
+                df = load_LiveQA(language=lang, task="correctness")
 
             else:
                 raise ValueError(f"Unknown dataset {args.dataset_path}")
@@ -165,7 +167,8 @@ if __name__ == "__main__":
         print("Done with language: ", lang)
 
     #save the dataframe as tsv file if the dataset path ends with tsv
-    if dataset_path.endswith("tsv"):
-        data_df.to_csv(file_name+"_with_answers.tsv", sep="\t", index=False)
-    else:
+    if dataset_path.endswith("pkl"):
         data_df.to_pickle(file_name+"_with_answers.pkl")
+        
+    else:
+        data_df.to_csv(file_name+"_with_answers.tsv", sep="\t", index=False)
