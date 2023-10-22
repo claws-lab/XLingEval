@@ -148,10 +148,11 @@ Run the following command from the repository root directory `XLingEval/`. Both 
 
 ### Correctness
 - `const.py`: Constants used in the experiments.
-- `correctness_get_gpt_answer.py`: Retrieve GPT-3.5-based answers for evaluation.
+- `correctness_get_gpt_answer.py`: Script to retrieve GPT-3.5-based answers for evaluation.
 - `correctness_answer_evaluation.py`: Script to evaluate the correctness of llm-generated answers with the ground-truth using GPT-3.5.
 - `setup.py`: Installation script.
 - `utils_chatgpt.py`: Utilities for working with GPT-3.5 turbo using OpenAI API.
+- `MedAlpaca/correctness_medalpaca_get_answers`: Script to retrieve answers from MedAlpaca model.
 
 ### Consistency
 - `consistency_gpt.py` & `consistency_medalpaca.py`: Evaluate the consistency of answers from GPT and MedAlpaca models.
