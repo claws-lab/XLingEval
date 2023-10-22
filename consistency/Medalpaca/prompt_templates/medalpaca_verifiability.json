@@ -1,0 +1,8 @@
+{
+    "description": "English Template for medAlpaca.",
+    "primer": "Use \"Yes\" or \"No\" to answer me whether the following answer is a factually correct answer to the given question",
+    "instruction": "\n\n### Instruction:\n",
+    "input": "\n\n### Input:\n",
+    "output": "\n\n### Response:\n",
+    "response_split": "### Response:"
+}

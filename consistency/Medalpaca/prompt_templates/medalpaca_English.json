@@ -1,0 +1,8 @@
+{
+    "description": "English Template for medAlpaca.",
+    "primer": "Write a response in English language that appropriately answers the question",
+    "instruction": "\n\n### Instruction:\n",
+    "input": "\n\n### Input:\n",
+    "output": "\n\n### Response:\n",
+    "response_split": "### Response:"
+}
