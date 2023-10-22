@@ -114,7 +114,7 @@ def consistency(args):
 
 if __name__ == "__main__":
 
-    project_setup(args)
+    project_setup()
     openai_setup(args)
 
     if args.dataset_name == "healthqa":
@@ -132,6 +132,6 @@ if __name__ == "__main__":
                 f"> Lang {args.target_language}, Temperature {args.temperature}")
             print("-" * 20)
 
-            if args.dataset_name in ["liveqa", "medicationqa", "healthqa",
-                                     "mlecqa"]:
-                consistency(args)
+            assert args.dataset_name in ["liveqa", "medicationqa", "healthqa"]
+
+            consistency(args)

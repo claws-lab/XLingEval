@@ -1,8 +1,11 @@
+from utils.utils_misc import check_cwd
+
 
 def project_setup():
     import warnings
     import pandas as pd
     warnings.simplefilter(action='ignore', category=FutureWarning)
+
     pd.set_option('display.max_rows', 20)
     pd.set_option('display.max_columns', 20)
 
@@ -39,7 +42,6 @@ KEYS = [
         "key2": "enter your key 2 here",
         "region": "East US",
     }
-
 ]
 
 def openai_setup():

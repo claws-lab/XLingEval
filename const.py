@@ -7,8 +7,6 @@ LANGUAGE_CODES = ["en", "es", "zh", "hi"]
 HOME_DIR_LINUX = "/home/ahren"
 HOME_DIR_LINUX_SERVER = "/nethome/yjin328"
 
-
-
 # Features
 ID = "id"
 OPTION = "option"
@@ -39,40 +37,37 @@ DATASET2LENGTH = {
     "medicationqa": 690,
 }
 
-
 CONSISTENCY_METRICS_SIMILARITY = ["bert_sim",
-                          "bertscore_P",
-                          "bertscore_R", "bertscore_F1", "unigram_jaccard",
-                          "bigram_jaccard", "length_mean", "length_std"]
-
-
+                                  "bertscore_P",
+                                  "bertscore_R", "bertscore_F1", "unigram_jaccard",
+                                  "bigram_jaccard", "length_mean", "length_std"]
 
 METRIC_NAME2FULLNAME = {
-        "macro_precision": "Macro Precision",
-        "macro_recall": "Macro Recall",
-        "macro_f1": "Macro F1",
-        "accuracy": "Accuracy",
-        "auc": "AUC",
-        'bert_sim': r"$\mathrm{sim}_{\mathrm{sent}}$",
-        'bertscore_P': "BERTScore (Precision)",
-        'bertscore_R': "BERTScore (Recall)",
-        'bertscore_F1': r"$\mathrm{BERTScore}$",
-        'unigram_jaccard': r"$\mathrm{sim}_{\mathrm{1-gram}}$",
-        'bigram_jaccard': r"$\mathrm{sim}_{\mathrm{2-gram}}$",
-        'length_mean': "Length",
-        'length_std': "Std. of Length",
-        'hdp_mean': r"$\mathrm{sim}_{\mathrm{HDP}}$", # "Avg. Topical Similarity (HDP)",
-        'lda20_mean': r"$\mathrm{sim}_{\mathrm{LDA}}^{20}$", # "Avg. Topical Similarity (LDA w/ 20 Topics)",
-        'hdp_std': "Std. Topical Similarity (HDP)",
-    }
+    "macro_precision": "Macro Precision",
+    "macro_recall": "Macro Recall",
+    "macro_f1": "Macro F1",
+    "accuracy": "Accuracy",
+    "auc": "AUC",
+    'bert_sim': r"$\mathrm{sim}_{\mathrm{sent}}$",
+    'bertscore_P': "BERTScore (Precision)",
+    'bertscore_R': "BERTScore (Recall)",
+    'bertscore_F1': r"$\mathrm{BERTScore}$",
+    'unigram_jaccard': r"$\mathrm{sim}_{\mathrm{1-gram}}$",
+    'bigram_jaccard': r"$\mathrm{sim}_{\mathrm{2-gram}}$",
+    'length_mean': "Length",
+    'length_std': "Std. of Length",
+    'hdp_mean': r"$\mathrm{sim}_{\mathrm{HDP}}$",  # "Avg. Topical Similarity (HDP)",
+    'lda20_mean': r"$\mathrm{sim}_{\mathrm{LDA}}^{20}$",  # "Avg. Topical Similarity (LDA w/ 20 Topics)",
+    'hdp_std': "Std. Topical Similarity (HDP)",
+}
 
 VERIFIABILITY_METRICS_VISUALIZATION = ["macro_precision", "macro_recall", "macro_f1",
-                    "accuracy", "auc"]
+                                       "accuracy", "auc"]
 
 CONSISTENCY_METRICS_TOPIC_MODELING = ["hdp_mean", "hdp_std"]
 for num_topics in [10, 20, 50, 100, 200, 500]:
     CONSISTENCY_METRICS_TOPIC_MODELING += [f"lda{num_topics}_mean",
-                               f"lda{num_topics}_std"]
+                                           f"lda{num_topics}_std"]
 
 LANG2SHORT = {
     "English": "en",
@@ -87,7 +82,6 @@ MNLI_LABEL2ID = {
     "contradiction": 2,
 }
 
-
 # Tasks
 TRANSLATE = "translate"
 MEDICAL = "medical"
@@ -99,47 +93,7 @@ DEV = "dev"
 TEST = "test"
 
 
-ANSWER_MAP = {
-    "Yes": {
-        "Chinese": {"Yes", "Entailment", "可能是正确的", "可能性很大", "正确", "是的", "对"},
-        "English": {"Yes", "Entailment"},
-        "Hindi": {"Yes", "Entailment", "हाँ", "निश्चित रूप से हाँ।", "जी हाँ"},
-        "Spanish": {"Yes", "Sí"},
-    },
-    "No": {
-        "Chinese": {"No", "Not entailment", "不是", "不正确", "错误", "以上都不", "I'm sorry, but the response you provided is not related to the question",
-                    "I'm sorry, but your response does not seem to be related to the question asked",
-                    },
-        "English": {"No",
-                    "Not entailment",
-                    "I'm sorry, but the response you provided is not related to the question",
-                    "I'm sorry, but your response does not seem to be related to the question asked",
-                    },
-        "Hindi": {"No", "Not entailment", "नहीं", "नहीं", "नो",
-                  "यह उत्तर नहीं है",
-                  "यह उत्तर प्रश्न के साथ संबंधित नहीं है। कृपया पुनः प्रश्न देखें",
-                  "यह उत्तर दिया गया प्रश्न संबंधित नहीं है। कृपया सही प्रश्न पूछें",
-                  "माफ़ कीजिए, लेकिन यह प्रतिक्रिया दिए गए प्रश्न से मेल नहीं खाती है",
-                  "I'm sorry, but the response you provided is not related to the question",
-                  "I'm sorry, but your response does not seem to be related to the question asked",
-                  "यह उत्तर दिया गया प्रश्न से मेल नहीं खाता है",
-                  "I'm sorry, but i am unable to understand",
-                  },
-        "Spanish": {"No", "I'm sorry, but the response you provided is not related to the question",},
-    },
 
-    "Unknown": {
-        "Chinese": {"Unknown", "N/a", "Depends", "无法判断", "不确定"},
-        "English": {"Unknown", "N/a", "Depends", },
-        "Hindi": {
-            "कारण पता नहीं है",
-                  },
-        "Spanish": {
-            "Unknown", "N/a", "Depends",
-                  },
-    }
-
-}
 CHINESE_HINDI_PUNCTUATION = "，。？！；：।॥"
 
 CONFIDENCE_LIKERT_SCALE = """

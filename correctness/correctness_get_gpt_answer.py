@@ -3,6 +3,8 @@ import time
 import traceback
 import sys
 import pandas as pd
+
+from dataloader.load_data import load_HealthQA, load_MedicationQA, load_LiveQA
 from setup import project_setup, openai_setup
 from utils_chatgpt import get_response
 from const import set_constants
@@ -125,8 +127,38 @@ if __name__ == "__main__":
     if dataset_path.endswith("pkl"):
         data_df = pd.read_pickle(dataset_path)
     else:
-        data_df = pd.read_csv(dataset_path, sep="\t")
-    
+
+        df_li = []
+
+        for lang in lang_list:
+            if "healthqa" in args.dataset_path:
+                # Only consider the dev set for HealthQA
+                df = load_HealthQA(split="dev",
+                                    language=lang, task="accuracy")
+
+            elif "medicationqa" in args.dataset_path:
+                df = load_MedicationQA(language=lang, task="accuracy")
+
+            elif "liveqa" in args.dataset_path:
+                df = load_LiveQA(language=lang, task="accuracy")
+
+            else:
+                raise ValueError(f"Unknown dataset {args.dataset_path}")
+
+            if lang == "English":
+                df = df[["question", "answer"]]
+
+            else:
+                df = df[["question_translated", "answer_translated"]]
+
+                df = df.rename({
+                    "question_translated": f"translated_question_{lang}",
+                    "answer_translated": f"translated_answer_{lang}"
+                })
+
+            df_li += [df.reset_index(drop=True)]
+
+        data_df = pd.concat(df_li, axis=1)
 
     for lang in lang_list:
         data_df = get_eval(data_df, lang, open_ai_object_list, constants)

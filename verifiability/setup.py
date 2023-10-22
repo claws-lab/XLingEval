@@ -11,7 +11,6 @@ def project_setup():
 
 
 KEYS = [
-
     {
         "name": "project-name",
         "deployment_id": "deployment 1",
@@ -44,6 +43,8 @@ def set_seed(seed, use_torch=True):
 
     import warnings
     warnings.simplefilter(action='ignore', category=FutureWarning)
+
+    check_cwd()
 
     print(f"Setting seed to {seed}")
 

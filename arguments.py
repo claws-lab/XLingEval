@@ -58,9 +58,7 @@ parser.add_argument('--idx_start', type=int, default=0,
                     help="Index to start processing.")
 
 parser.add_argument('--interval', type=int, default=1, help="Interval.")
-parser.add_argument('--label', type=str, default=const.POSITIVE,
-                    choices=[const.POSITIVE, const.NEGATIVE],
-                    help="Do we experiment with the postive or randomly sampled negative answers?")
+
 parser.add_argument('--model', type=str, choices=["gpt35", "gpt4", "llama2",
                                                   "medalpaca-7b",
                                                   "medalpaca-13b",
@@ -89,8 +87,8 @@ parser.add_argument('--target_language', type=str,
                     choices=['Chinese', 'Spanish', "Hindi", "English"],
                     help="Language to translate to.")
 parser.add_argument('--task', type=str,
-                    default=const.MEDICAL,
-                    choices=[const.MEDICAL, const.TRANSLATE, const.PARAPHRASE],
+                    default="medical",
+                    choices=["medical", "translate"],
                     help="Language to translate to.")
 parser.add_argument('--temperature', type=float, default=0., help="")
 parser.add_argument('--verbose', action='store_true',

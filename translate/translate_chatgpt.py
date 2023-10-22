@@ -13,26 +13,15 @@ from openai import APIError
 
 import const
 from arguments import args
-from dataloader.load_data import load_HealthQA, load_medqa
 
 
-from keys import KEYS
-from prompts.prompts_translate import prompt_translate, \
-    prompt_translate_dictionary
-from setup import project_setup, openai_setup
+from translate.prompts import prompt_translate
+from verifiability.setup import project_setup, openai_setup
 from utils.utils_chatgpt import get_response
 from utils.utils_misc import get_model_prefix
 
-project_setup(args)
-
+project_setup()
 openai_setup(args)
-SOURCE_LANG = "English"
-TARGET_LANG = "Chinese"
-SOURCE_LANG_SHORT = "en"
-TARGET_LANG_SHORT = "zh-CN"
-LANG = "zh"
-
-
 
 def translate_answers():
 

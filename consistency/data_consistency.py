@@ -8,27 +8,20 @@ sys.path.append(osp.dirname(osp.dirname(osp.abspath(__file__))))
 sys.path.append("..")
 
 import const
-from dataloader import load_data
+from dataloader.load_data import load_LiveQA, load_MedicationQA, load_HealthQA
 
 
 def load_data_consistency(args):
     if args.dataset_name == "liveqa":
-        examples = load_data.load_LiveQA(language=args.target_language)
+        examples = load_LiveQA(language=args.target_language)
 
     elif args.dataset_name == "medicationqa":
-        examples = load_data.load_MedicationQA(language=args.target_language)
+        examples = load_MedicationQA(language=args.target_language)
 
     elif args.dataset_name == "healthqa":
         assert args.interval == 10
-        examples = load_data.load_HealthQA(split=args.split,
+        examples = load_HealthQA(split=args.split,
                                  language=args.target_language)
-
-    elif args.dataset_name == "mlecqa":
-
-        examples = load_data.load_MLECQA(language=args.target_language)
-        if args.split == const.DEV:
-            assert len(examples) == 2205
-
 
     else:
         raise NotImplementedError
@@ -47,7 +40,7 @@ def get_consistency_results_path(args):
         path = osp.join(args.output_dir, "consistency",
                         f"{model_prefix}{args.dataset_name}_consistency_temp{args.temperature}_{args.target_language}.xlsx")
 
-    elif args.dataset_name in ["healthqa", "mlecqa"]:
+    elif args.dataset_name in ["healthqa"]:
         path = osp.join(args.output_dir, "consistency",
                         f"{model_prefix}{args.dataset_name}_{args.split}_consistency_temp{args.temperature}_{args.target_language}.xlsx")
 

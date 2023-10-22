@@ -1,7 +1,6 @@
 import os.path as osp
 import string
 
-import numpy as np
 import pandas as pd
 from sklearn.metrics import precision_recall_fscore_support, accuracy_score, \
     roc_auc_score, confusion_matrix
@@ -9,17 +8,92 @@ from sklearn.metrics import precision_recall_fscore_support, accuracy_score, \
 import const
 from arguments import args
 from setup import project_setup
-from utils.utils_misc import map_prediction_to_binary, map_prediction_to_binary_MedAlpaca
+from utils.utils_misc import map_prediction_to_binary_MedAlpaca, get_model_prefix
 
-project_setup(args)
 
-ANSWER_MAP = {
-    'Entailment': 1,
-    'Not entailment': 0,
-    "Yes": 1,
-    "No": 0,
-    np.NaN: -1,
-}
+def map_prediction_to_binary(x, return_string=True, return_unknown=False):
+    """Map the predictions to binary (Yes/No/Unknown).
+
+    GPT models tend to generate more verbose contents than we instructed them to do.
+    This function maps their verbose answers to categorical outputs.
+
+    Args:
+        x (str): The prediction string.
+        return_string (bool): Whether to return the result as a string.
+        return_unknown (bool): Whether to return 'Unknown' when result is ambiguous.
+
+    Returns:
+        str or int: Mapped prediction in either string or integer format.
+    """
+
+    ANSWER_MAP = {
+        "Yes": {"Yes"'Entailment', 'Sí', 'Yes', 'जी हाँ', 'निश्चित रूप से हाँ।', 'हाँ', '可能性很大', '可能是正确的',
+                '对',
+                '是的', '正确'
+                },
+        "No": {'No', 'Not entailment', "I'm sorry, but i am unable to understand",
+               "I'm sorry, but the response you provided is not related to the question",
+               "I'm sorry, but your response does not seem to be related to the question asked", 'नहीं', 'नो',
+               'माफ़ कीजिए, लेकिन यह प्रतिक्रिया दिए गए प्रश्न से मेल नहीं खाती है',
+               'यह उत्तर दिया गया प्रश्न संबंधित नहीं है। कृपया सही प्रश्न पूछें',
+               'यह उत्तर दिया गया प्रश्न से मेल नहीं खाता है', 'यह उत्तर नहीं है',
+               'यह उत्तर प्रश्न के साथ संबंधित नहीं है। कृपया पुनः प्रश्न देखें', '不是', '不正确', '以上都不', '错误'},
+
+        "Unknown": {'Unknown', 'Depends', 'N/a', 'कारण पता नहीं है', '不确定', '无法判断'}
+    }
+
+    if not isinstance(x, str):
+        return -1 if not return_string else "Unknown" if return_unknown else x
+
+    x_lower = x.lower()
+
+    if any(prefix in x_lower for prefix in map(str.lower, ANSWER_MAP["No"])) and "yes" not in x_lower:
+        return "No" if return_string else 0
+
+    if any(prefix in x_lower for prefix in map(str.lower, ANSWER_MAP["Yes"])) and "no" not in x_lower:
+        return "Yes" if return_string else 1
+
+    if any(prefix in x_lower for prefix in map(str.lower, ANSWER_MAP["Unknown"])):
+        return "Unknown" if return_string else -1
+
+    return -1 if not return_string else ("Unknown" if return_unknown else x)
+
+
+def map_prediction_to_binary_med_alpaca(x, return_string=True, return_unknown=False):
+    """Map the predictions of MedAlpaca to binary (Yes/No/Unknown).
+
+    MedAlpaca's answers are significantly different from GPT-3.5's,
+    requiring a different mapping format.
+
+    Args:
+        x (str): The prediction string.
+        return_string (bool): Whether to return the result as a string.
+        return_unknown (bool): Whether to return 'Unknown' when result is ambiguous.
+
+    Returns:
+        str or int: Mapped prediction in either string or integer format.
+    """
+
+    ANSWER_MAP = {
+        'Yes': {'Yes', 'Entailment'},
+        'No': {'No', 'Not entailment'},
+        'Unknown': {'Unknown', 'Depends', 'N/a'}
+    }
+
+    if isinstance(x, str):
+        x = x.split('### Input')[-1].split('Question')[-1].split('Response')[-1]
+
+    if not isinstance(x, str):
+        return -1 if not return_string else 'Unknown' if return_unknown else x
+
+    if all(any(segment in x for segment in ANSWER_MAP[key]) for key in ['Yes', 'No']):
+        return 'Unknown' if return_string else -1
+
+    for key, value in ANSWER_MAP.items():
+        if any(segment in x for segment in value):
+            return key if return_string else 1 if key == 'Yes' else 0 if key == 'No' else -1
+
+    return -1 if not return_string else ('Unknown' if return_unknown else x)
 
 
 def plot_confusion_matrix(df: pd.DataFrame, language: str, pos_label: int,
@@ -53,8 +127,7 @@ def plot_confusion_matrix(df: pd.DataFrame, language: str, pos_label: int,
     plt.title(f'{title}')
     plt.ylabel('Actual')
     plt.xlabel('Predicted')
-
-    plt.savefig(f"{name}.png", dpi=300)
+    plt.show()
 
 
 def assign_binary_label_verifiability(x):
@@ -84,12 +157,12 @@ def convert_prediction_to_binary(df: pd.DataFrame, model_name: str):
 
     df[const.PRED_BINARY] = df[const.PRED].apply(
         lambda x: f(x, args.target_language,
-                                           return_string=False))
+                    return_string=False))
 
     return df
 
 
-def summarize_results(language: str, temperature: float):
+def summarize_verifiability_results(language: str, temperature: float):
     model_prefix = "" if args.model == "gpt35" else f"{args.model}_"
 
     model_name = args.model
@@ -99,82 +172,33 @@ def summarize_results(language: str, temperature: float):
         path = osp.join(args.output_dir, "verifiability",
                         f"{model_prefix}{args.dataset_name}_verifiability_temp{temperature}_{args.split}_{language}.xlsx")
 
-        # TODO
-        # path = osp.join(args.output_dir, "verifiability", f"bak_healthqa_verifiability_dev_English_uses_entailment_prompt.xlsx")
-
-        if not osp.exists(path):
-            return None
-
-        df = pd.read_excel(path)
-
     elif args.dataset_name in ["liveqa", "medicationqa"]:
-        df_li = []
-
-        for label in ["positive", "negative"]:
-            path = osp.join(args.output_dir, "verifiability",
-                            f"{model_prefix}{args.dataset_name}_verifiability_temp{temperature}_{language}_{label}.xlsx")
-
-            if not osp.exists(path):
-                return None
-
-            if model_name in ["gpt35", "gpt4"]:
-                f = map_prediction_to_binary
-
-            elif model_name.startswith("medalpaca"):
-                f = map_prediction_to_binary_MedAlpaca
-
-            else:
-                raise ValueError(f"Unknown model name: {model_name}")
-
-            df = pd.read_excel(path)
-            df[const.LABEL] = const.LABEL2ID[label]
-
-
-
-            df[const.PRED] = df[const.PRED].apply(
-                lambda x: f(x, language=language))
-            # df.to_excel(path, index=False)
-            df_li.append(df)
-
-        df = pd.concat(df_li)
-
-    elif args.dataset_name == "mlecqa":
 
         path = osp.join(args.output_dir, "verifiability",
-                        f"{model_prefix}{args.dataset_name}_verifiability_temp{temperature}_{args.split}_{language}.xlsx")
-        df = pd.read_excel(path)
+                        f"{model_prefix}{args.dataset_name}_verifiability_temp{temperature}.xlsx")
 
-        new_df = pd.DataFrame()
-        new_df[const.PRED] = df[list('ABCDE')].values.reshape(-1)
-        new_df[const.ANSWER] = df[const.ANSWER].values.repeat(5)
-        new_df[const.OPTION] = list('ABCDE') * len(df)
-        new_df[const.LABEL] = new_df[const.ANSWER] == new_df[const.OPTION]
-
-        df = new_df
-
-    # elif args.dataset_name == "medicationqa":
-    #     for label in ["positive", "negative"]:
-    #         path = osp.join(args.output_dir, "verifiability",
-    #                         f"{args.dataset_name}_verifiability_{language}_{label}.xlsx")
-    #         df = pd.read_excel(path)
-    #
-    #         # Map "positive" to 1 and "negative" to 0
-    #         df[const.LABEL] = const.LABEL2ID[label]
-    #         df[const.PRED] = df[const.PRED].apply(lambda x: map_prediction_to_binary(x, language=language))
 
     else:
         raise NotImplementedError
 
-    df[const.PRED] = df[const.PRED].apply(
-        lambda x: map_prediction_to_binary(x, args.target_language,
-                                           return_string=True))
-    # df.to_excel(path, index=False)
+    if not osp.exists(path):
+        return None
 
-    # df[const.PRED_BINARY] = df[const.PRED].apply(assign_binary_label_verifiability)
-    # TODO
-    # df.to_excel(path)
-    # Convert string labels to binary values
-    df[const.PRED_BINARY] = df[const.PRED].map(ANSWER_MAP).fillna(-1).astype(
+    df = pd.read_excel(path, sheet_name=language)
+
+    if model_name in ["gpt35", "gpt4"]:
+        f = map_prediction_to_binary
+
+    elif model_name.startswith("medalpaca"):
+        f = map_prediction_to_binary_MedAlpaca
+
+    else:
+        raise ValueError(f"Unknown model name: {model_name}")
+
+    df[const.PRED_BINARY] = df[const.PRED].apply(
+        lambda x: f(x, return_string=False))
+
+    df[const.PRED_BINARY] = df[const.PRED_BINARY].fillna(-1).astype(
         int)
 
     print(f"Length (original) {len(df)}")
@@ -185,9 +209,6 @@ def summarize_results(language: str, temperature: float):
     print(f"Length (after drop unknown answers) {len(df)}")
 
     results = {}
-
-
-
 
     for pos_label in [0, 1]:
 
@@ -213,30 +234,25 @@ def summarize_results(language: str, temperature: float):
             'auc': auc,
         }
 
-        PLOT_CONFUSION_MATRIX = False
-
-        if PLOT_CONFUSION_MATRIX:
-
-            if pos_label == 1:
-                plot_confusion_matrix(df, language=language, pos_label=pos_label,
-                                      args=args)
+        if PLOT_CONFUSION_MATRIX and pos_label == 1:
+            plot_confusion_matrix(df, language=language, pos_label=pos_label,
+                                  args=args)
 
     return results
 
 
 if __name__ == '__main__':
-    project_setup(args)
+    project_setup()
+    PLOT_CONFUSION_MATRIX = True
 
-    # for temperature in const.TEMPERATURES:
-    for temperature in [0.0, 1.0]:
+    for temperature in [0.0, 0.25, 0.5, 0.75, 1.0]:
 
-        # for language in ["English", "Hindi"]:
-        for language in const.LANGUAGES:
+        for language in ["English", "Spanish", "Chinese", "Hindi"]:
             print(f"Language: {language}, Temperature {temperature}")
             args.target_language = language
 
             model_prefix = "" if args.model == "gpt35" else f"{args.model}_"
-            results = summarize_results(args.target_language, temperature)
+            results = summarize_verifiability_results(args.target_language, temperature)
 
             if results is None:
                 print(f"Not found: {args.dataset_name}\t{args.target_language}\t{temperature}")
@@ -249,11 +265,8 @@ if __name__ == '__main__':
 
             print(results)
 
-
-
-
             path = osp.join(args.output_dir, "summary",
-                            f"{model_prefix}{args.dataset_name}_verifiability_temp{temperature}.xlsx")
+                            f"{get_model_prefix(args)}{args.dataset_name}_verifiability_temp{temperature}.xlsx")
             if osp.exists(path):
                 with pd.ExcelWriter(path, mode='a', engine='openpyxl',
                                     if_sheet_exists='replace') as writer:

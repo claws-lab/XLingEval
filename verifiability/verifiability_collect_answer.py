@@ -1,3 +1,4 @@
+import os
 import os.path as osp
 import traceback
 
@@ -5,14 +6,15 @@ import numpy as np
 import pandas as pd
 
 import const
+import const_verifiability
 from arguments import args
 from dataloader.load_data import load_HealthQA, load_LiveQA, load_MedicationQA
 from verifiability.prompts import prompt_verifiability
-from setup import project_setup, openai_setup
+from verifiability.setup import project_setup, openai_setup
 from utils.utils_chatgpt import get_response
 from utils.utils_misc import get_model_prefix, capitalize_and_strip_punctuation
 
-project_setup(args)
+project_setup()
 openai_setup(args)
 RETURN_EXPLANATION = False
 
@@ -20,15 +22,15 @@ results = {}
 
 
 
-
-
 def run_verifiability(temperature: float, dataset_name: str, target_language: str):
     from utils.utils_misc import map_prediction_to_binary
+
+    os.makedirs(osp.join(args.output_dir, "verifiability"), exist_ok=True)
 
     if dataset_name in ['healthqa']:
 
         path = osp.join(args.output_dir, "verifiability",
-                        f"{get_model_prefix(args)}_{dataset_name}_verifiability_temp{temperature}_{args.split}"
+                        f"{get_model_prefix(args)}{dataset_name}_verifiability_temp{temperature}_{args.split}"
                         f"_{target_language}.xlsx")
 
         examples = load_HealthQA(args.split, target_language)
@@ -111,15 +113,15 @@ def run_verifiability(temperature: float, dataset_name: str, target_language: st
 
         results_df.loc[idx_row, const.PRED] = response
 
-        if (idx_row + 1) % 1000 == 0:
+        if (idx_row + 1) % 20 == 0:
             save()
 
     save()
 
 if __name__ == "__main__":
 
-    for temperature in const.TEMPERATURES:
-        for language in const.LANGUAGES:
+    for temperature in [0.0, 0.25, 0.5, 0.75, 1.0]:
+        for language in ["Spanish", "English", "Chinese", "Hindi"]:
             args.target_language = language
             args.temperature = temperature
             run_verifiability(dataset_name=args.dataset_name, temperature=temperature, target_language=language)
