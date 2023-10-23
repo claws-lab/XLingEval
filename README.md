@@ -3,7 +3,7 @@
 # Paper Title: _Ask Me in English Instead: Cross-Lingual Evaluation of Large Language Models for Healthcare Queries_
 
 <div align="center">
-  <img src="static/img/alpaca_doctor1.png" width="400">
+  <img src="static/img/Ask_Me_in_English.png" width="400">
 </div>
 
 This is the project file from the paper **Ask Me in English Instead: Cross-Lingual Evaluation of Large Language 
