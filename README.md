@@ -6,7 +6,7 @@
 </div>
 
 This is the project file from the paper **Ask Me in English Instead: Cross-Lingual Evaluation of Large Language 
-Models for Healthcare Queries** ([arXiv Link]())
+Models for Healthcare Queries** ([arXiv Link](https://arxiv.org/abs/2310.13132))
 
 XLingEval is an evaluation toolkit designed to assess the performance of large language models like GPT-3.5/4 and MedAlpaca in the context of medical queries across multiple languages. The toolkit focuses on three core metrics: correctness, consistency, and verifiability.
 
