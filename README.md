@@ -1,5 +1,6 @@
-# XLingEval
+# XLingEval (Cross-Lingual Evaluation of LLMs)
 
+# Paper Title: _Ask Me in English Instead: Cross-Lingual Evaluation of Large Language Models for Healthcare Queries_
 
 <div align="center">
   <img src="static/img/alpaca_doctor1.png" width="400">
@@ -12,7 +13,7 @@ XLingEval is an evaluation toolkit designed to assess the performance of large l
 
 ## Introduction
 
-Large language models (LLMs) are transforming the ways the general public accesses and consumes information. Their influence is particularly pronounced in pivotal sectors like healthcare, where lay individuals are increasingly appropriating LLMs as conversational agents for everyday queries. While LLMs demonstrate impressive language understanding and generation proficiencies, concerns regarding their safety remain paramount in these high-stake domains. Moreover, the development of LLMs is disproportionately focused on English. It remains unclear how these LLMs perform in the context of non-English languages, a gap that is critical for ensuring equity in the real-world use of these systems.This paper provides a framework to investigate the effectiveness of LLMs as multi-lingual dialogue systems for healthcare queries. Our empirically-derived framework XlingEval focuses on three fundamental criteria for evaluating LLM responses to naturalistic human-authored health-related questions: correctness, consistency, and verifiability. Through extensive experiments on four major global languages, including English, Spanish, Chinese, and Hindi, spanning three expert-annotated large health Q&A datasets, and through an amalgamation of algorithmic and human-evaluation strategies, we found a pronounced disparity in LLM responses across these languages, indicating a need for enhanced cross-lingual capabilities. We further propose XlingHealth, a cross-lingual benchmark for examining the multilingual capabilities of LLMs in the healthcare context. Our findings underscore the pressing need to bolster the cross-lingual capacities of these models, and to provide an equitable information ecosystem accessible to all.
+Large language models (LLMs) are transforming the ways the general public accesses and consumes information. Their influence is particularly pronounced in pivotal sectors like healthcare, where lay individuals are increasingly appropriating LLMs as conversational agents for everyday queries. While LLMs demonstrate impressive language understanding and generation proficiencies, concerns regarding their safety remain paramount in these high-stake domains. Moreover, the development of LLMs is disproportionately focused on English. It remains unclear how these LLMs perform in the context of non-English languages, a gap that is critical for ensuring equity in the real-world use of these systems.This paper provides a framework to investigate the effectiveness of LLMs as multi-lingual dialogue systems for healthcare queries. Our empirically derived framework XlingEval focuses on three fundamental criteria for evaluating LLM responses to naturalistic human-authored health-related questions: correctness, consistency, and verifiability. Through extensive experiments on four major global languages, including English, Spanish, Chinese, and Hindi, spanning three expert-annotated large health Q&A datasets, and through an amalgamation of algorithmic and human-evaluation strategies, we found a pronounced disparity in LLM responses across these languages, indicating a need for enhanced cross-lingual capabilities. We further propose XlingHealth, a cross-lingual benchmark for examining the multilingual capabilities of LLMs in the healthcare context. Our findings underscore the pressing need to bolster the cross-lingual capacities of these models, and to provide an equitable information ecosystem accessible to all.
 
 
 ## Installation
@@ -45,12 +46,12 @@ pip install -r requirements.txt
 - To retrieve answers for questions using GPT-3.5 execute the following command in the root directory:
 
   ```bash
-  python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --model gpt-35-turbo
+  python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --model gpt-3.5-turbo
   ```
-- To evaluate the quality between ground-truth answer and LLM answer, execute the following command in the root directory:
+- To evaluate the quality between the ground-truth answer and the LLM answer, execute the following command in the root directory:
 
   ```bash
-  python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --model gpt-35-turbo
+  python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --model gpt-3.5-turbo
   ```
   
 
@@ -63,7 +64,7 @@ pip install -r requirements.txt
 - Evaluate the quality between ground-truth answer and MedAlpaca LLM answer using GPT-3.5 execute the following command in the root directory:
 
   ```bash
-  python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset with MedAlpaca llm answers> --model gpt-35-turbo
+  python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset with MedAlpaca llm answers> --model gpt-3.5-turbo
   ```
     
 ### 2. Running Consistency Experiments
