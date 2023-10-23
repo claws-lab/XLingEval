@@ -1,8 +1,36 @@
+/* Default styles for mobile */
+
 body {
   font-family: 'Noto Sans', sans-serif;
-  margin-left: 20%;
-  margin-right: 20%;
+  margin-left: 3%;
+  margin-right: 3%;
 }
+
+.c300 img {
+    width: 60%;
+    height: auto;
+}
+
+/* Media query for larger screens */
+@media screen and (min-width: 768px) {
+  body {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+    .c3 img {
+    width: 600px;
+    height: auto;
+  }
+
+    .c300 img {
+    width: 300px;
+    height: auto;
+  }
+
+}
+
+
+
 
 
 .footer .icon-link {
