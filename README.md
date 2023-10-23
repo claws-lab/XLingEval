@@ -2,6 +2,8 @@
 
 # Paper Title: _Better to Ask in English: Cross-Lingual Evaluation of Large Language Models for Healthcare Queries_
 
+## Webpage: [https://claws-lab.github.io/XLingEval/](https://claws-lab.github.io/XLingEval/)
+
 <div align="center">
   <img src="static/img/Ask_Me_in_English_v2.png" width="400">
 </div>
