@@ -92,15 +92,16 @@ Run the following commands from the repository root directory `XLingEval/`.
   
 * Evaluate the consistency metrics
 * ```bash
-  python consistency/eval_consistency.py --dataset <DATASET> --model <MODEL> --num_answers <NUM_ANSWERS>
+  python consistency/consistency_answer_evaluation.py --dataset <DATASET> --model <MODEL> --num_answers <NUM_ANSWERS>
   ```
   
   For example
   
   ```bash
-  python consistency/consistency_gpt.py --dataset liveqa --model gpt35
+  python consistency/consistency_answer_evaluation.py --dataset liveqa --model gpt35
   ```
-
+  
+  The results will be saved in `outputs/consistency/`.
 
 
 
@@ -111,7 +112,7 @@ Run the following command from the repository root directory `XLingEval/`. Both 
 * Prompt the LLMs to generate answers
 
   ```bash
-  python verifiability/verifiability.py --dataset <DATASET> --model <MODEL>
+  python verifiability/verifiability_get_answer.py --dataset <DATASET> --model <MODEL>
   ```
 
   - `dataset`: select from `healthqa`, `liveqa`, `medicationqa`;
@@ -120,7 +121,7 @@ Run the following command from the repository root directory `XLingEval/`. Both 
   For example, if you run experiments on LiveQA using the GPT-3.5 model:
 
   ```bash
-  python verifiability/verifiability.py --dataset liveqa --model gpt35
+  python verifiability/verifiability_get_answer.py --dataset liveqa --model gpt35
   ```
 
   By default, we run the experiments on all languages, including `English`, `Spanish`, `Chinese`, and `Hindi`. 
@@ -128,16 +129,16 @@ Run the following command from the repository root directory `XLingEval/`. Both 
 * Summarize the verifiability metrics
 
   ```bash
-  python verifiability/summarize_verifiability.py --dataset <DATASET> --model <MODEL>
+  python verifiability/verifiability_answer_evaluation.py --dataset <DATASET> --model <MODEL>
   ```
 
   For example, if you run experiments on LiveQA using the GPT-3.5 model:
 
   ```bash
-  python verifiability/summarize_verifiability.py --dataset liveqa --model gpt35
+  python verifiability/verifiability_answer_evaluation.py --dataset liveqa --model gpt35
   ```
 
-  The results will be saved in `outputs/verifiability/<DATASET>/<MODEL>/summary.csv`.
+  The results will be saved in `outputs/verifiability/`.
 
 <div align="center">
   <img src="static/img/alpaca_doctor2.png" width="400">

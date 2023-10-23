@@ -87,7 +87,6 @@ def run_verifiability(temperature: float, dataset_name: str, target_language: st
         answers = examples[const.ANSWER if
         args.target_language == "English" else const.ANSWER_TRANSLATED].tolist()
 
-        ids = examples[const.ID].values
 
         input_questions = [format_question(question, answer) for question,
         answer in
@@ -95,9 +94,8 @@ def run_verifiability(temperature: float, dataset_name: str, target_language: st
 
         sampling['temperature'] = args.temperature
 
-        results_df[const.ID] = ids
-        results_df[const.QUESTION] = None
-        results_df[const.ANSWER] = None
+        results_df[const.QUESTION] = [None] * len(input_questions)
+        results_df[const.ANSWER] = [None] * len(input_questions)
 
         for idx_row in trange(idx_start, len(input_questions), args.batch_size):
 
@@ -122,12 +120,14 @@ def run_verifiability(temperature: float, dataset_name: str, target_language: st
 
             results_df.loc[idx_row:idx_row + args.batch_size - 1, const.PRED] = responses
 
-            if (idx_row % 20 == 0 or idx_row == len(liveqa_examples) - 1):
+            if (idx_row % 20 == 0 or idx_row == len(examples) - 1):
                 print(f"Saving results to {path}...", end=" ")
                 # results_df.reset_index(drop=True).drop("Unnamed: 0", axis=1, errors="ignore").to_excel(path, index=False)
 
-                results_df.to_excel(path, index=False)
+                save()
                 print("Done")
+
+        save()
 
 
     else:
@@ -187,7 +187,12 @@ if __name__ == "__main__":
     else:
         model = None
 
-    for temperature in [0.0, 0.25, 0.5, 0.75, 1.0]:
+    # We set batch_size to 5 because we generate 10 answers per question
+    args.batch_size = 5
+
+    # Note: Medalpaca only accepts a strictly positive temperature
+
+    for temperature in [0.001, 0.25, 0.5, 0.75, 1.0]:
         for language in ["Spanish", "English", "Chinese", "Hindi"]:
             args.target_language = language
             args.temperature = temperature
