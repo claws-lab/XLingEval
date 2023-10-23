@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="*Better to Ask in English*: Cross-Lingual Evaluation of Large Language Models for Healthcare Queries.">
+  <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cross-Lingual Evaluation of Large Language Models for Healthcare Queries</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/GeorgiaTech_square.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+  <style type="text/css">
+    .lst-kix_g0wktaqlf9ay-2>li:before {
+        content: "\0025a0   "
+    }
+
+    .lst-kix_g0wktaqlf9ay-3>li:before {
+        content: "\0025cf   "
+    }
+
+    .lst-kix_g0wktaqlf9ay-6>li:before {
+        content: "\0025cf   "
+    }
+
+    ul.lst-kix_ry1hnwm4ziww-8 {
+        list-style-type: none
+    }
+
+    .lst-kix_87l2rdbsv697-8>li:before {
+        content: "\0025a0   "
+    }
+
+    .lst-kix_twqfgh3pwpdj-6>li:before {
+        content: "\0025cf   "
+    }
+
+    .lst-kix_twqfgh3pwpdj-8>li:before {
+        content: "\0025a0   "
+    }
+
+    .lst-kix_g0wktaqlf9ay-4>li:before {
+        content: "\0025cb   "
+    }
+
+    .lst-kix_87l2rdbsv697-7>li:before {
+        content: "\0025cb   "
+    }
+
+    ul.lst-kix_ry1hnwm4ziww-4 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_ry1hnwm4ziww-5 {
+        list-style-type: none
+    }
+
+    .lst-kix_g0wktaqlf9ay-5>li:before {
+        content: "\0025a0   "
+    }
+
+    ul.lst-kix_ry1hnwm4ziww-6 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_ry1hnwm4ziww-7 {
+        list-style-type: none
+    }
+
+    .lst-kix_twqfgh3pwpdj-7>li:before {
+        content: "\0025cb   "
+    }
+
+    .lst-kix_87l2rdbsv697-5>li:before {
+        content: "\0025a0   "
+    }
+
+    ul.lst-kix_twqfgh3pwpdj-6 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_twqfgh3pwpdj-7 {
+        list-style-type: none
+    }
+
+    .lst-kix_87l2rdbsv697-4>li:before {
+        content: "\0025cb   "
+    }
+
+    .lst-kix_87l2rdbsv697-6>li:before {
+        content: "\0025cf   "
+    }
+
+    ul.lst-kix_twqfgh3pwpdj-4 {
+        list-style-type: none
+    }
+
+    .lst-kix_ry1hnwm4ziww-0>li:before {
+        content: "\0025cf   "
+    }
+
+    ul.lst-kix_twqfgh3pwpdj-5 {
+        list-style-type: none
+    }
+
+    .lst-kix_g0wktaqlf9ay-7>li:before {
+        content: "\0025cb   "
+    }
+
+    ul.lst-kix_twqfgh3pwpdj-8 {
+        list-style-type: none
+    }
+
+    .lst-kix_87l2rdbsv697-2>li:before {
+        content: "\0025a0   "
+    }
+
+    .lst-kix_g0wktaqlf9ay-8>li:before {
+        content: "\0025a0   "
+    }
+
+    .lst-kix_87l2rdbsv697-3>li:before {
+        content: "\0025cf   "
+    }
+
+    ul.lst-kix_twqfgh3pwpdj-2 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_twqfgh3pwpdj-3 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_twqfgh3pwpdj-0 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_twqfgh3pwpdj-1 {
+        list-style-type: none
+    }
+
+    .lst-kix_ry1hnwm4ziww-6>li:before {
+        content: "\0025cf   "
+    }
+
+    .lst-kix_ry1hnwm4ziww-8>li:before {
+        content: "\0025a0   "
+    }
+
+    .lst-kix_ry1hnwm4ziww-7>li:before {
+        content: "\0025cb   "
+    }
+
+    .lst-kix_ry1hnwm4ziww-2>li:before {
+        content: "\0025a0   "
+    }
+
+    .lst-kix_twqfgh3pwpdj-0>li:before {
+        content: "\0025cf   "
+    }
+
+    .lst-kix_ry1hnwm4ziww-1>li:before {
+        content: "\0025cb   "
+    }
+
+    .lst-kix_twqfgh3pwpdj-2>li:before {
+        content: "\0025a0   "
+    }
+
+    .lst-kix_twqfgh3pwpdj-4>li:before {
+        content: "\0025cb   "
+    }
+
+    .lst-kix_ry1hnwm4ziww-3>li:before {
+        content: "\0025cf   "
+    }
+
+    .lst-kix_twqfgh3pwpdj-1>li:before {
+        content: "\0025cb   "
+    }
+
+    .lst-kix_twqfgh3pwpdj-5>li:before {
+        content: "\0025a0   "
+    }
+
+    .lst-kix_ry1hnwm4ziww-4>li:before {
+        content: "\0025cb   "
+    }
+
+    .lst-kix_ry1hnwm4ziww-5>li:before {
+        content: "\0025a0   "
+    }
+
+    .lst-kix_twqfgh3pwpdj-3>li:before {
+        content: "\0025cf   "
+    }
+
+    .lst-kix_7ozem99tqost-7>li:before {
+        content: "\0025cb   "
+    }
+
+    ul.lst-kix_87l2rdbsv697-1 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_87l2rdbsv697-2 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_87l2rdbsv697-0 {
+        list-style-type: none
+    }
+
+    .lst-kix_7ozem99tqost-6>li:before {
+        content: "\0025cf   "
+    }
+
+    .lst-kix_7ozem99tqost-8>li:before {
+        content: "\0025a0   "
+    }
+
+    .lst-kix_7ozem99tqost-5>li:before {
+        content: "\0025a0   "
+    }
+
+    ul.lst-kix_7ozem99tqost-8 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_87l2rdbsv697-7 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_87l2rdbsv697-8 {
+        list-style-type: none
+    }
+
+    .lst-kix_7ozem99tqost-2>li:before {
+        content: "\0025a0   "
+    }
+
+    .lst-kix_7ozem99tqost-4>li:before {
+        content: "\0025cb   "
+    }
+
+    ul.lst-kix_87l2rdbsv697-5 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_87l2rdbsv697-6 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_87l2rdbsv697-3 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_87l2rdbsv697-4 {
+        list-style-type: none
+    }
+
+    .lst-kix_7ozem99tqost-3>li:before {
+        content: "\0025cf   "
+    }
+
+    .lst-kix_7ozem99tqost-0>li:before {
+        content: "\0025cf   "
+    }
+
+    .lst-kix_7ozem99tqost-1>li:before {
+        content: "\0025cb   "
+    }
+
+    ul.lst-kix_7ozem99tqost-7 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_7ozem99tqost-6 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_7ozem99tqost-5 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_7ozem99tqost-4 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_7ozem99tqost-3 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_7ozem99tqost-2 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_7ozem99tqost-1 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_7ozem99tqost-0 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_g0wktaqlf9ay-3 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_g0wktaqlf9ay-4 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_g0wktaqlf9ay-1 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_g0wktaqlf9ay-2 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_g0wktaqlf9ay-7 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_g0wktaqlf9ay-8 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_g0wktaqlf9ay-5 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_g0wktaqlf9ay-6 {
+        list-style-type: none
+    }
+
+    .lst-kix_87l2rdbsv697-1>li:before {
+        content: "\0025cb   "
+    }
+
+    .lst-kix_87l2rdbsv697-0>li:before {
+        content: "\0025cf   "
+    }
+
+    ul.lst-kix_ry1hnwm4ziww-0 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_ry1hnwm4ziww-1 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_ry1hnwm4ziww-2 {
+        list-style-type: none
+    }
+
+    ul.lst-kix_ry1hnwm4ziww-3 {
+        list-style-type: none
+    }
+
+    .lst-kix_g0wktaqlf9ay-0>li:before {
+        content: "\0025cf   "
+    }
+
+    ul.lst-kix_g0wktaqlf9ay-0 {
+        list-style-type: none
+    }
+
+    .lst-kix_g0wktaqlf9ay-1>li:before {
+        content: "\0025cb   "
+    }
+
+    ol {
+        margin: 0;
+        padding: 0
+    }
+
+    table td,
+    table th {
+        padding: 0
+    }
+
+    .c26 {
+        background-color: #fefefe;
+        color: #60697b;
+        font-weight: 400;
+        text-decoration: none;
+        vertical-align: baseline;
+        font-size: 13pt;
+        font-family: "Arial";
+        font-style: italic
+    }
+
+    .c22 {
+        padding-top: 16pt;
+        padding-bottom: 4pt;
+        line-height: 1.15;
+        page-break-after: avoid;
+        orphans: 2;
+        widows: 2;
+        text-align: left
+    }
+
+    .c23 {
+        padding-top: 20pt;
+        padding-bottom: 6pt;
+        line-height: 1.15;
+        page-break-after: avoid;
+        orphans: 2;
+        widows: 2;
+        text-align: left
+    }
+
+    .c21 {
+        color: #000000;
+        font-weight: 400;
+        text-decoration: none;
+        vertical-align: baseline;
+        font-size: 20pt;
+        font-family: "Arial";
+        font-style: normal
+    }
+
+    .c8 {
+        color: #000000;
+        font-weight: 400;
+        text-decoration: none;
+        vertical-align: baseline;
+        font-size: 18pt;
+        font-family: "Arial";
+        font-style: normal
+    }
+
+    .c2 {
+        padding-top: 0pt;
+        padding-bottom: 0pt;
+        line-height: 1.15;
+        orphans: 2;
+        widows: 2;
+        text-align: center;
+        height: 11pt
+    }
+
+    .c0 {
+        color: #000000;
+        font-weight: 400;
+        text-decoration: none;
+        vertical-align: baseline;
+        font-size: 11pt;
+        font-family: "Arial";
+        font-style: normal
+    }
+
+    .c19 {
+        
+        font-weight: 400;
+        text-decoration: none;
+        vertical-align: baseline;
+        font-size: 14pt;
+        font-family: "Arial";
+        font-style: normal
+    }
+
+    .c10 {
+        padding-top: 18pt;
+        padding-bottom: 6pt;
+        line-height: 1.15;
+        page-break-after: avoid;
+        orphans: 2;
+        widows: 2;
+        text-align: left
+    }
+
+    .c6 {
+        color: #000000;
+        font-weight: 400;
+        text-decoration: none;
+        vertical-align: baseline;
+        font-size: 9pt;
+        font-family: "Arial";
+        font-style: normal
+    }
+
+    .c13 {
+        padding-top: 0pt;
+        padding-bottom: 0pt;
+        line-height: 1.8;
+        orphans: 2;
+        widows: 2;
+        font-size: 12pt;
+    }
+
+    .c1 {
+        padding-top: 0pt;
+        padding-bottom: 0pt;
+        line-height: 1.5;
+        orphans: 2;
+        widows: 2;
+        text-align: left;
+        font-size: 16px;  /* Enlarge font size */
+    }
+
+    .c16 {
+        margin-left: 72pt;
+        padding-top: 3pt;
+        padding-left: 0pt;
+        padding-bottom: 0pt;
+        line-height: 1.8;
+        text-align: left;
+        font-size: 18px;  /* Enlarge font size */
+    }
+
+    .c24 {
+        margin-left: 36pt;
+        padding-top: 3pt;
+        padding-left: 0pt;
+        padding-bottom: 0pt;
+        line-height: 1.8;
+        text-align: left;
+        font-size: 18px;  /* Enlarge font size */
+    }
+
+    .c11 {
+        color: #000000;
+        font-weight: 400;
+        text-decoration: none;
+        font-size: 11pt;
+        font-family: "Arial";
+        font-style: normal
+    }
+
+    .c3 {
+        padding-top: 0pt;
+        padding-bottom: 0pt;
+        line-height: 1.15;
+        orphans: 2;
+        widows: 2;
+        text-align: center
+    }
+
+    .c15 {
+        color: #000000;
+        text-decoration: none;
+        vertical-align: baseline;
+        font-size: 11pt;
+        font-family: "Arial";
+        font-style: normal
+    }
+
+    .c18 {
+        font-weight: 400;
+        vertical-align: baseline;
+        font-size: 11pt;
+        font-family: "Arial";
+        font-style: normal
+    }
+
+    .c27 {
+        background-color: #fefefe;
+        font-size: 16pt;
+        font-style: italic;
+        color: #60697b
+    }
+
+    .c7 {
+        text-decoration-skip-ink: none;
+        -webkit-text-decoration-skip: none;
+        color: #1155cc;
+        text-decoration: underline
+    }
+
+    .c28 {
+        background-color: #ffffff;
+        max-width: 468pt;
+        padding: 72pt 72pt 72pt 72pt
+    }
+
+    .c14 {
+        color: inherit;
+        text-decoration: inherit
+    }
+
+    .c20 {
+        padding: 0;
+        margin: 0
+    }
+
+    .c25 {
+        margin-left: 36pt;
+        padding-left: 0pt
+    }
+
+    .c9 {
+        font-size: 9pt;
+        font-weight: 700
+    }
+
+    .c17 {
+        font-size: 9pt
+    }
+
+    .c5 {
+        vertical-align: sub
+    }
+
+    .c12 {
+        font-weight: 700
+    }
+
+    .c4 {
+        height: 11pt
+    }
+
+    .title {
+        padding-top: 0pt;
+        color: #000000;
+        font-size: 26pt;
+        padding-bottom: 3pt;
+        font-family: "Arial";
+        line-height: 1.15;
+        page-break-after: avoid;
+        orphans: 2;
+        widows: 2;
+        text-align: left
+    }
+
+    .subtitle {
+        padding-top: 0pt;
+        color: #666666;
+        font-size: 15pt;
+        padding-bottom: 16pt;
+        font-family: "Arial";
+        line-height: 1.15;
+        page-break-after: avoid;
+        orphans: 2;
+        widows: 2;
+        text-align: left
+    }
+
+    li {
+        color: #000000;
+        font-size: 11pt;
+        font-family: "Arial"
+    }
+
+    p {
+        margin: 0;
+        color: #000000;
+        font-size: 11pt;
+        font-family: "Arial"
+    }
+
+    h1 {
+        padding-top: 20pt;
+        color: #000000;
+        font-size: 20pt;
+        padding-bottom: 6pt;
+        font-family: "Arial";
+        line-height: 1.15;
+        page-break-after: avoid;
+        orphans: 2;
+        widows: 2;
+        text-align: left
+    }
+
+    h2 {
+        padding-top: 18pt;
+        color: #000000;
+        font-size: 16pt;
+        padding-bottom: 6pt;
+        font-family: "Arial";
+        line-height: 1.15;
+        page-break-after: avoid;
+        orphans: 2;
+        widows: 2;
+        text-align: left
+    }
+
+    h3 {
+        padding-top: 16pt;
+        color: #434343;
+        font-size: 14pt;
+        padding-bottom: 4pt;
+        font-family: "Arial";
+        line-height: 1.15;
+        page-break-after: avoid;
+        orphans: 2;
+        widows: 2;
+        text-align: left
+    }
+
+    h4 {
+        padding-top: 14pt;
+        color: #666666;
+        font-size: 12pt;
+        padding-bottom: 4pt;
+        font-family: "Arial";
+        line-height: 1.15;
+        page-break-after: avoid;
+        orphans: 2;
+        widows: 2;
+        text-align: left
+    }
+
+    h5 {
+        padding-top: 12pt;
+        color: #666666;
+        font-size: 11pt;
+        padding-bottom: 4pt;
+        font-family: "Arial";
+        line-height: 1.15;
+        page-break-after: avoid;
+        orphans: 2;
+        widows: 2;
+        text-align: left
+    }
+
+    h6 {
+        padding-top: 12pt;
+        color: #666666;
+        font-size: 11pt;
+        padding-bottom: 4pt;
+        font-family: "Arial";
+        line-height: 1.15;
+        page-break-after: avoid;
+        font-style: italic;
+        orphans: 2;
+        widows: 2;
+        text-align: left
+    }
+</style>
+
+</head>
+
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+        <a class="navbar-item" href="https://keunhong.com">
+          <span class="icon">
+            <i class="fas fa-home"></i>
+          </span>
+        </a>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            More Research
+          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://ahren09.github.io/pages/kdd2023/">
+              INPAC
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title" style="text-align: center;"><i>Better to Ask in English:</i> <br />Cross-Lingual Evaluation
+              of Large Language Models for Healthcare Queries</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://ahren09.github.io/">Yiqiao Jin</a><sup>1</sup><sup>*</sup>,</span>
+              <span class="author-block">
+                <a href="https://mohit3011.github.io/">Mohit Chandra</a><sup>1</sup><sup>*</sup>,</span>
+              <span class="author-block">
+                <a href="https://gaurav22verma.github.io/">Gaurav Verma</a><sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://snowood1.github.io/">Yibo Hu</a><sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a href="http://www.munmund.net/">Munmun De Choudhury</a><sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://faculty.cc.gatech.edu/~srijan/">Srijan Kumar</a><sup>1</sup>,
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>Georgia Institute of Technology</span>
+              <br />
+              <span class="author-block"><sup>*</sup>Equal Contribution</span>
+              <br />
+              <img src="./static/images/GeorgiaTech.png" class="interpolation-image" alt="Georgia Tech."
+                style="width: 20%; height: auto;" />
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2310.13132" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2310.13132" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- Video Link. -->
+                <span class="link-block">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                    </span>
+                    <span>Video</span>
+                  </a>
+                </span>
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/claws-lab/XLingEval" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+                <!-- Dataset Link. -->
+                <span class="link-block">
+                  <a href="https://drive.google.com/drive/folders/1iZOhWXVNHGQXqPnGTQJMlaDQVznIRHci?usp=share_link" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="far fa-images"></i>
+                    </span>
+                    <span>Data</span>
+                  </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <video id="teaser" autoplay muted loop playsinline height="100%">
+          <source src="./static/videos/teaser.mp4" type="video/mp4">
+        </video>
+        <h2 class="subtitle has-text-centered">
+          <span class="textsc">Nerfies</span> turns selfie videos from your phone into
+          free-viewpoint
+          portraits.
+        </h2>
+      </div>
+    </div>
+  </section> -->
+
+
+  <!-- <section class="hero is-light is-small">
+    <div class="hero-body">
+      <div class="container">
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="item item-steve">
+            <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/steve.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-chair-tp">
+            <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/chair-tp.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-shiba">
+            <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/shiba.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-fullbody">
+            <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/fullbody.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-blueshirt">
+            <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/blueshirt.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-mask">
+            <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/mask.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-coffee">
+            <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/coffee.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-toby">
+            <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/toby2.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+
+  <!--
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Large language models (LLMs) are transforming the ways the general public accesses and consumes
+              information. Their influence is particularly pronounced in pivotal sectors like healthcare, where lay
+              individuals are increasingly appropriating LLMs as conversational agents for everyday queries.
+            </p>
+            <p>While LLMs demonstrate impressive language understanding and generation proficiencies, concerns regarding
+              their safety remain paramount in these high-stake domains. Moreover, the development of LLMs is
+              disproportionately focused on English. It remains unclear how these LLMs perform in the context of
+              non-English languages, a gap that is critical for ensuring equity in the real-world use of these systems.
+            </p>
+            <p>
+
+              This paper provides a framework to investigate the effectiveness of LLMs as multi-lingual dialogue systems
+              for healthcare queries. Our empirically-derived framework <span class="textsc">XlingEval</span> focuses on
+              three fundamental criteria for evaluating LLM responses to naturalistic human-authored health-related
+              questions: correctness, consistency, and verifiability. Through extensive experiments on four major global
+              languages, including English, Spanish, Chinese, and Hindi, spanning three expert-annotated large health
+              Q&A datasets, and through an amalgamation of algorithmic and human-evaluation strategies, we found a
+              pronounced disparity in LLM responses across these languages, indicating a need for enhanced cross-lingual
+              capabilities.
+            </p>
+            <p>
+              We further propose <span class="textsc">XlingHealth</span> , a cross-lingual benchmark for examining the
+              multilingual capabilities of LLMs in the healthcare context. Our findings underscore the pressing need to
+              bolster the cross-lingual capacities of these models, and to provide an equitable information ecosystem
+              accessible to all.
+            </p>
+          </div>
+        </div>
+      </div>
+      -->
+
+      <!-- 
+      <section class="section">
+
+
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3"></h2>
+            <div class="content has-text-justified">
+              <ul>
+                <li>
+                  In response to these challenges, we propose XLingEval, a comprehensive cross-lingual framework to
+                  assess the behavior of LLMs, especially in high-risk domains such as healthcare.
+                </li>
+                <li>
+                  Our framework emphasizes the importance of <b>equity</b> across languages and <b>generalizability</b> across models,
+                  guided by our proposed evaluation metrics for LLM evaluations.
+                </li>
+                <li>
+                  We specifically propose three criteria for conversational language models:
+                  <ul>
+                    <li>
+                      <b>Correctness</b>: The model's responses should exhibit factual correctness and comprehensively address
+                      the query.
+                    </li>
+                    <li>
+                      <b>Consistency</b>: The model should produce consistent responses to identical queries, reflecting high
+                      similarity in lexical, semantic, and topic aspects.
+                    </li>
+                    <li>
+                      <b>Verifiability</b>: The model should be capable to authenticate accurate claims and clearly distinguish
+                      between correct and erroneous responses to a query.
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        
+
+    </div>
+    -->
+
+
+
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span class="c27">We create a new cross-lingual benchmark for Large Language Models to answer
+            healthcare queries in four languages. This benchmark is used to assess the effectiveness of LLMs as
+            multilingual dialogue systems for healthcare queries. &nbsp;Our evaluation shows
+            that LLMs give higher quality response in English than in non-English languages &mdash; higher quality means
+            more correct, comprehensive, consistent, and verifiable answers. This highlights the multilinguality
+            performance gap of LLMs and the resulting disparities in healthcare information access via LLMs
+            worldwide.</span></p>
+    <h2 class="c10" id="h.estj3tfv0vue"><span class="c8">Table of Contents</span></h2>
+    <ul class="c20 lst-kix_twqfgh3pwpdj-0 start">
+        <li class="c24"><span class="c7"><a class="c14" href="#h.qkh2iqp0ebjn">Introduction</a></span></li>
+        <li class="c24"><span class="c7"><a class="c14" href="#h.kii980n2m3ga">XLingHealth
+                    Dataset</a></span></li>
+        <li class="c24"><span class="c7"><a class="c14" href="#h.rltgtbccm0u1">XLingEval
+                    Benchmark</a></span></li>
+        <li class="c24"><span class="c7"><a class="c14" href="#h.cf0bim4e6vnv">Finding #1: LLMs generate
+                    more number of correct and comprehensive answers in English than Non-English languages.</a></span>
+        </li>
+        <li class="c24"><span class="c7"><a class="c14" href="#h.82o9o4n10g15">Finding #2: In terms of
+                    consistency, GPT-3.5 demonstrates a higher performance in English and Spanish compared to Chinese
+                    and Hindi, and this difference is statistically significant.</a></span></li>
+        <li class="c24"><span class="c7"><a class="c14" href="#h.jw3eh13x6eyh">Finding #3</a></span></li>
+        <li class="c24"><span class="c7"><a class="c14" href="#h.7ix7szq9ogk5">Implications of Our
+                    Work</a></span>
+            <ul class="c20 lst-kix_twqfgh3pwpdj-1 start">
+              <li class="c16"><span class="c7"><a class="c14" href="#h.nklqfyv9x8ly">Equity and accessibility of
+                          healthcare information</a></span></li>
+              <li class="c16"><span class="c7"><a class="c14" href="#h.3qcebxh6d3st">Likely causes of language
+                          disparity</a></span></li>
+              <li class="c16"><span class="c7"><a class="c14" href="#h.j7zlnpbnvq64">Future of LLMs in
+                          Healthcare</a></span></li>
+              </ul>
+          </li>
+    </ul>
+
+        
+    <p class="c1 c4"><span></span></p>
+    <p class="c1 c4"><span></span></p>
+    <h2 class="c10" id="h.qkh2iqp0ebjn"><span class="c8">Introduction</span></h2>
+    <p class="c1 c4"><span></span></p>
+    <p class="c3"><span
+            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 510.50px; height: 197.32px;"><img
+                alt="" src="static/images/image7.png"
+                style="width: 510.50px; height: 197.32px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+                title=""></span></p>
+    <p class="c3"><span class="c9">Figure 1:</span><span class="c6">&nbsp;We present XLingEval, a comprehensive
+            framework for assessing cross-lingual behaviors of LLMs for high risk domains such as healthcare. We present
+            XLingHealth, a cross-lingual benchmark for healthcare queries.</span></p>
+
+              <br />
+    <p class="c1"><span>In recent years, large language models (LLMs) have revolutionized the field of
+            natural language processing (NLP) and have shown remarkable performance in various language-related tasks.
+            However, their effectiveness in the healthcare domain, particularly in multilingual settings, remains
+            largely unexplored. </span></p>
+
+    <p class="c1"><span>We introduce our recent work &quot;Better to Ask in English: </span><span>Cross-Lingual
+            Evaluation of Large Language Models for Healthcare Queries&quot;</span><span>&nbsp;that investigates the
+            effectiveness of LLMs as multilingual dialogue systems for healthcare queries. We propose a novel
+            cross-lingual framework named </span><span class="c12">XLingEval</span><span>&nbsp;and a cross-lingual
+            benchmark dataset for healthcare queries named </span><span class="c12 c15">XLingHealth.</span></p>
+    <p class="c1"><span>We used the </span><span class="c12">XLingEval</span><span>&nbsp;framework and </span><span
+            class="c12">XLingHealth</span><span>&nbsp;datasets to evaluate the performance of GPT-3.5 and
+            MedAlpaca (a specialized language model fine-tuned on medical documents) on healthcare queries in English,
+            Spanish, Chinese and Hindi.</span></p>
+    <p class="c1 c4"><span class="c15 c12"></span></p>
+    <h2 class="c10" id="h.kii980n2m3ga"><span>XLingHealth </span><span>Dataset</span></h2>
+    <p class="c1 c4"><span></span></p>
+    <p class="c3"><span
+            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 474.46px; height: 128.50px;"><img
+                alt="" src="static/images/image1.png"
+                style="width: 474.46px; height: 128.50px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+                title=""></span></p>
+    <p class="c3"><span class="c9">Table 1:</span><span> Statistics of the datasets in </span><span
+            class="c9">XLingHealth</span><span class="c17">&nbsp;with languages in which the datasets are
+            available.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span class="c12">XLingHealth</span><span>&nbsp;is a novel cross-lingual healthcare dataset
+            for clinical health inquiry. It is based on three prominent healthcare datasets consisting of
+            question-and-answer pairs curated by medical experts -- 1) HealthQA, 2) Medication QA, and 3) LiveQA. Given
+            the scarcity of multilingual health and medical question-answering datasets, we create a novel multilingual
+            benchmark by translating these datasets into Hindi, Chinese, and Spanish.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c2"><span class="c6"></span></p>
+    <p class="c2"><span></span></p>
+    <p class="c2"><span></span></p>
+    <h2 class="c10" id="h.rltgtbccm0u1"><span>XLingEval </span><span>Benchmark</span></h2>
+    <p class="c3"><span
+            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 624.00px; height: 174.67px;"><img
+                alt="" src="static/images/image9.png"
+                style="width: 624.00px; height: 174.67px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+                title=""></span></p>
+    <p class="c3"><span class="c9">Figure 2:</span><span class="c17">&nbsp;Evaluation pipelines for correctness,
+            consistency, and verifiability criteria in the </span><span class="c9">XLingEval</span><span
+            class="c6">&nbsp;framework.</span></p>
+    <p class="c4 c13"><span></span></p>
+    <p class="c13 c4"><span></span></p>
+    <p class="c1"><span>We propose </span><span class="c12">XLingEval</span><span>, a
+            comprehensive</span><span>&nbsp;cross-lingual framework to assess the behavior of LLMs, especially in
+            high-risk domains such as healthcare. Our framework emphasizes the importance of </span><span
+            class="c12">equity across languages</span><span>&nbsp;and </span><span class="c12">generalizability across
+            models</span><span>, guided by our proposed evaluation metrics for LLM evaluations. We specifically propose
+        </span><span class="c12">three criteria</span><span>&nbsp;for conversational language models:</span>
+    </p>
+    <p class="c13 c4"><span></span></p>
+    <ul class="c20 lst-kix_7ozem99tqost-0 start">
+        <li class="c13 c25"><span class="c12">Correctness</span><span>: The model&#39;s responses
+                should exhibit factual correctness and comprehensively address the query.</span></li>
+        <li class="c13 c25"><span class="c12">Consistency</span><span>: The model should produce
+                consistent responses to identical queries, reflecting high similarity in lexical, semantic, and topic
+                aspects.</span></li>
+        <li class="c13 c25"><span class="c12">Verifiability</span><span>: The model should be
+                capable to authenticate accurate claims and clearly distinguish &nbsp;between correct and erroneous
+                responses to a query. </span></li>
+    </ul>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>We used the </span><span class="c12">XLingEval</span><span>&nbsp;framework and </span><span
+            class="c12">XLingHealth</span><span>&nbsp;datasets to evaluate the performance of GPT-3.5 and
+            MedAlpaca (a specialized language model fine-tuned on medical documents) on healthcare queries in English,
+            Spanish, Chinese and Hindi.</span></p>
+    <h2 class="c10" id="h.cf0bim4e6vnv"><span class="c8">Finding #1: LLMs generate more correct and comprehensive
+            answers in English than in Non-English languages.</span></h2>
+    <p class="c3"><span
+            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 624.00px; height: 125.33px;"><img
+                alt="" src="static/images/image8.png"
+                style="width: 624.00px; height: 125.33px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+                title=""></span></p>
+    <p class="c3"><span class="c9">Table 2:</span><span class="c6">&nbsp;Automated correctness evaluation in four
+            languages: English (en), Spanish (es), Chinese(zh), and Hindi (hi) for GPT-3.5. Each number represents the
+            number of answers assigned to the respective label in the dataset.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>The first fundamental criterion of XLingEval is </span><span class="c12">correctness</span><span
+           >, which pertains to the accuracy, comprehensiveness, and contextual appropriateness of
+            LLMs&rsquo; responses to healthcare inquiries. To evaluate the correctness criterion, we conducted
+            experiments to compare LLMs&rsquo; responses to expert-curated ground-truth answers across the three
+            healthcare datasets.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>Table 2 presents the results for the automated comparative evaluation. Across all
+            datasets, we observed a drastic decrease in the number of examples where GPT-3.5 provides more comprehensive
+            and appropriate answers compared to the ground-truth answers. For HealthQA, we observed a relative decrease
+            in the number of GPT-3.5 answers providing more comprehensive and appropriate information by 38.62% for
+            Hindi answers, 11.90% for Chinese answers and 10.76% for Spanish answers as compared to that of answers
+            in</span></p>
+    <p class="c1"><span>English. LiveQA and MedicationQA followed similar trends, with relative decreases of
+            34.15%, 5.69%, and 5.28% for LiveQA and 30.58%, 15.8%, and 10.29% for MedicationQA &nbsp;in Hindi, Chinese,
+            and Spanish respectively.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>Meanwhile, the number of GPT-3.5 answers in Hindi, Chinese, and Spanish with
+            contradictory information increased compared to the ground-truth answers, relative to the answers GPT-3.5
+            provided in English. While GPT-3.5 produced 3 contradictory answers in English for the HealthQA dataset, it
+            produced 47 (15.67 times) contradictory answers for Hindi, 14 (4.67 times) for Chinese, and 5 (1.67 times)
+            for Spanish. For LiveQA we observed GPT-3.5 producing 4.33 times more contradictory answers in Hindi as
+            compared to English. Finally, for MedicationQA dataset, we observed a huge increase in the number of
+            contradictory answers with GPT-3.5 producing 51 (10.2 times) in Hindi, 48 (9.6 times) in Chinese, and 23
+            (4.6 times) in Spanish.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c3"><span
+            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 624.00px; height: 140.00px;"><img
+                alt="" src="static/images/image2.png"
+                style="width: 624.00px; height: 140.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+                title=""></span></p>
+    <p class="c3"><span class="c9">Table 3</span><span class="c6">: &nbsp;Automated Correctness evaluation across four
+            languages: English (en), Spanish (es), Chinese (zh), and Hindi (hi) for MedAlpaca-30b.</span></p>
+    <p class="c2"><span class="c6"></span></p>
+    <p class="c1 c4"><span class="c6"></span></p>
+    <p class="c1"><span>The correctness results for MedAlpaca-30b is shown in Table 3. As observed, there is
+            a sharp decrease in the number of answers where MedAlpaca produces a more comprehensive and appropriate
+            answer as compared to Ground Truth. For HealthQA, we observed a relative decrease of &sim;92.23%,
+            &sim;97.93%, and &sim;93.26% for Spanish, Chinese, and Hindi respectively as compared to English. A parallel
+            trend was observed for LiveQA and MedicationQA. In contrast to GPT-3.5 results, we observed the majority
+            proportion of answers in non-English languages being assigned the &lsquo;Neither contradictory nor
+            similar&rsquo; label. This observation stems from the fact that MedAlpaca either did not produce the answer
+            in the respective language or produced a hallucinated answer with repeated tokens.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c2"><span></span></p>
+    <p class="c1 c4"><span></span></p>
+    <h2 class="c10" id="h.82o9o4n10g15"><span class="c8">Finding #2: Responses generated by GPT-3.5 in English and
+            Spanish are more consistent compared to Chinese and Hindi.</span></h2>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>The consistency criteria measures the model&rsquo;s ability to produce consistent
+            responses to identical queries. For each question, we prompt the LLM K=10 times using the same question in
+            the dataset. Then, we measure the consistency of LLM answers to each question from 3 levels: </span></p>
+    <p class="c1 c4"><span></span></p>
+    <ul class="c20 lst-kix_g0wktaqlf9ay-0 start">
+        <li class="c1 c25"><span class="c12">Surface-level consistency</span><span>&nbsp;measures
+                the resemblance between two answers based on their superficial attributes. These include n-gram
+                similarity and the length of responses</span></li>
+        <li class="c1 c25"><span class="c12">Semantic-level consistency</span><span>&nbsp;measures the
+                semantic association between two answers. These include BERTScore and Sentence Embedding Similarity
+                (sim</span><span class="c5">sent</span><span>)</span></li>
+        <li class="c1 c25"><span class="c12">Topic Consistency </span><span>measures whether two answers
+                discuss similar topics from a macro perspective. These include sim</span><span
+                class="c5">LDA</span><span>&nbsp;and sim</span><span class="c5">HDP</span><span>.</span></li>
+    </ul>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>Overall, GPT-3.5 exhibited higher consistency in its answers in English compared to
+            other languages. For BERTScore, GPT-3.5 achieved 0.9206 / 0.6160 / 0.5299 for temperatures of 0.0 / 0.5 /
+            1.0, whereas its performances in Chinese dropped to 0.8454 / 0.5536 / 0.4860 for the same temperatures.
+        </span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>The performance disparity between GPT-3.5&#39;s performance in English and Spanish is
+            relatively narrow compared to the other languages. For BERTScore, GPT-3.5 demonstrates performances of
+            0.9097 / 0.5910 / 0.5092 under the three temperatures for Spanish, which are comparable to its performances
+            in English. </span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c3"><span
+            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 192.24px; height: 229.94px;"><img
+                alt="" src="static/images/image6.png"
+                style="width: 198.41px; height: 229.94px; margin-left: -6.17px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+                title=""></span></p>
+    <p class="c3"><span class="c9">Figure 3</span><span class="c6">: consistency results in terms of BERTScore.
+            Performances for English and Spanish are similar, whereas those for Chinese / Hindi </span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>We also performed an ANOVA followed by a post-hoc Tukey Honestly Significant
+            Difference (HSD) test. and found that English and Spanish have similar performances, as shown from the
+            p-values which generally exceed 0.05. All other language pairs exhibit statistically significant performance
+            differences. </span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>The results on Medalpaca is similar. Meanwhile, smaller-scale LLMs tend to still
+            generate responses in English when we prompt them with Spanish / Chinese / Hindi. Such tendency is more
+            pronounced in Spanish than Chinese / Hindi. </span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1 c4"><span></span></p>
+    <h2 class="c10" id="h.jw3eh13x6eyh"><span>Finding #3 </span><span>GPT-3.5 exhibits better verifiability in English
+            than in Spanish / Chinese / Hindi</span></h2>
+    <p class="c1"><span>The </span><span class="c12">verifiability</span><span>&nbsp;criteria measures how
+            well the model is able to authenticate accurate claims and distinguish between correct and erroneous
+            responses to a query. Empirically, the model takes as input a set of question-answer pairs, where the answer
+            can be either an accurate or an inaccurate claim. The model then predicts a binary label whether the
+            response is a correct answer to the question. 5 metrics are used to evaluate the model&rsquo;s
+            verifiability, including macro-precision/recall/F1, accuracy, and AUC.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c3"><span
+            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 202.50px; height: 213.16px;"><img
+                alt="" src="static/images/image3.png"
+                style="width: 202.50px; height: 213.16px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+                title=""></span></p>
+    <p class="c2"><span></span></p>
+    <p class="c3"><span class="c9">Figure 4</span><span class="c17">: Results of HealthQA in terms of macro F1-score.
+            Each column represents a distinct metric. The x- and y-axis represent varying languages and temperatures,
+            respectively.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>On HealthQA, GPT-3.5 yielded comparable performances in English and Spanish but
+            significantly worse results on Chinese and Hindi.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c3"><span
+            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 192.23px; height: 201.43px;"><img
+                alt="" src="static/images/image4.png"
+                style="width: 192.23px; height: 201.43px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+                title=""></span></p>
+    <p class="c2"><span></span></p>
+    <p class="c3"><span class="c9">Figure 5</span><span class="c17">: Results of LiveQA in terms of macro
+            F1-score.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>On LiveQA, GPT-3.5 achieved only 0.66/0.62/0.67 on the 3 non-English datasets, a
+            sharp decrease compared to its performance of 0.73 in English.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1 c4"><span></span></p>
+    <p style="text-align: center;">
+      <img alt="" src="static/images/image5.png" style="display: inline-block; margin: 0 auto; width: 624px; height: 246.67px;" title="">
+    </p>
+    
+    <p class="c3"><span class="c9">Table 4</span><span class="c17">: </span><span class="c6" >Average verifiability
+            performances on GPT-3.5 across five temperatures and their standard deviation. English (en) and Spanish (es)
+            performances are consistently better than Chinese (zh) and Hindi (hi). The performance variations across
+            languages are minimal, with Hindi showing the most significant variations.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>Interestingly, GPT-3.5&rsquo;s performance remained relatively stable across
+            different temperatures, suggesting that modulating the model&#39;s generative randomness does not
+            substantially influence its ability to validate answers. As shown in Table 4, the standard deviation of
+            performances is lower than 0.01. In most settings, English/Hindi demonstrated the most/least variations.
+        </span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1 c4"><span></span></p>
+    <h2 class="c10" id="h.7ix7szq9ogk5"><span class="c8">Implications of Our Work</span></h2>
+    <h3 class="c22" id="h.nklqfyv9x8ly"><span class="c19">&#128073 Equity and accessibility of healthcare information</span>
+    </h3>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>Large language models are advocated as language technologies that provide accessible
+            healthcare information. However, our study demonstrates that key measures relating to LLM capabilities like
+            correctness, consistency, and verifiability are repeatedly lower for non-English languages than for the
+            English language. As &gt;82% of the global population do not speak English as their f girst or second
+            language, our work provides empirical evidence to raise questions about whether such claims about
+            accessibility ignore aspects related to equity in language technologies in healthcare. Do the claims about
+            accessibility of healthcare information using LLMs only apply to people who prefer to communicate in the
+            English language? </span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>Besides developing LLMs that provide equitable services across languages in critical
+            domains like healthcare, which is still an open challenge, some immediate steps involve clearer
+            communication of capabilities and potential harms. For instance, the limited capabilities of LLMs to answer
+            healthcare-related queries, specifically in non-English languages, could be made more prominent
+            trustworthiness cues. Trustworthiness cues could empower users to make well-calibrated judgments while
+            adopting AI technologies. &nbsp;Similarly, the accessibility claims relating to large language models in
+            healthcare should be communicated while precisely mentioning the languages such capabilities were evaluated
+            on. This is particularly important as LLMs are being integrated within Web-based search frameworks (e.g.,
+            Bing Chat and Google&#39;s Generative AI Search) as a notable fraction of search queries on platforms like
+            Google and Bing are health-related.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <h3 class="c22" id="h.3qcebxh6d3st"><span class="c19">&#128073 Likely causes of language disparity</span></h3>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>Across our evaluation metrics, we noted a disparity in LLM performance among
+            languages. This disparity is notably more pronounced in the case of Hindi and Chinese as compared to
+            Spanish. The underlying rationale for this discrepancy can be attributed primarily to two key factors: the
+            limited availability of data resources for Non-English languages and the presence of a highly imbalanced
+            data distribution employed in the training of the. High-precision machine translation has been employed as a
+            possible solution in past works. However, critical domains such as healthcare require extensive human
+            evaluation of translation to prevent serious ramifications. A potential solution for this problem requires
+            close collaboration with medical experts and endorsement of specific training data resources by
+            medical/healthcare organizations.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <h3 class="c22" id="h.j7zlnpbnvq64"><span class="c19">&#128073 Future of LLMs in Healthcare</span></h3>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1"><span>One of the implications arising from our study centers on the discourse surrounding
+            the future of LLMs within high-stakes domains, particularly healthcare. While a prevailing strategy focuses
+            on the development of general-purpose LLMs with larger number of parameters trained on larger datasets, it
+            is essential to acknowledge the inherent limitations of such models, including their deficiency in
+            domain-specific knowledge and vulnerability to hallucinations. In contrast, domain-specific LLMs have shown
+            promising potential and efficacy within the healthcare domain. However, it is critical to underscore that
+            additional precautions and safeguards are required to mitigate the risk of adverse consequences stemming
+            from the information generated by these models.</span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1 c4"><span></span></p>
+    <p class="c1 c4"><span></span></p>
+
+
+
+
+    <!-- Paper video. 
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video (In-Progress)</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0" frameborder="0"
+              allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>-->
+
+
+  <!-- <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Related Links</h2>
+
+          <div class="content has-text-justified">
+            <p>
+              There's a lot of excellent work that was introduced around the same time as ours.
+            </p>
+            <p>
+              <a href="https://faculty.cc.gatech.edu/~srijan/">CLAWS Lab</a>, led by Professor <a href="https://faculty.cc.gatech.edu/~srijan/">Srijan Kumar</a>
+            </p>
+            <p>
+              <a href="https://socweb.cc.gatech.edu/">SOCWEB Lab</a> led by Professor  <a
+                href="http://www.munmund.net/">Munmun De Choudhury</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section> -->
+
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{TODO,
+    author    = {Jin, Yiqiao and Chandra, Mohit and Verma, Gaurav and Hu, Yibo and De Choudhury, Munmun and Kumar, Srijan},
+    title     = {Better to Ask in English: Cross-Lingual Evaluation of Large Language Models for Healthcare Queries},
+    journal   = {arXiv},
+    year      = {2023},
+  }</code></pre>
+
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <a class="icon-link" href="./static/videos/nerfies_paper.pdf">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+        <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              This means you are free to borrow the <a href="https://github.com/nerfies/nerfies.github.io">source
+                code</a> of this website,
+              we just ask that you link back to this page in the footer.
+              Please remember to remove the analytics code included in the header of the website which
+              you do not want on your website.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
