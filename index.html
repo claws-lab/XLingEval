@@ -786,6 +786,9 @@
                         <h1 class="title is-1 publication-title" style="text-align: center;"><i>Better to Ask in
                                 English:</i> <br />Cross-Lingual Evaluation
                             of Large Language Models for Healthcare Queries</h1>
+
+                        <h4><i>In Proceedings of the ACM Web Conference 2024 (WWW ’24),</i></h4>
+
                         <div class="is-size-5 publication-authors">
                             <span class="author-block">
                                 <a href="https://ahren09.github.io/">Yiqiao Jin</a><sup>1</sup><sup>*</sup>,</span>
@@ -837,7 +840,7 @@
                                 </span>
                                 <!-- Video Link. -->
                                 <span class="link-block">
-                                    <a href="#" class="external-link button is-normal is-rounded is-dark">
+                                    <a href="https://www.youtube.com/watch?v=pmEafw5ZOPg" class="external-link button is-normal is-rounded is-dark">
                                         <span class="icon">
                                             <i class="fab fa-youtube"></i>
                                         </span>
@@ -856,7 +859,7 @@
                                 </span>
                                 <!-- Dataset Link. -->
                                 <span class="link-block">
-                                    <a href="https://drive.google.com/drive/folders/1iZOhWXVNHGQXqPnGTQJMlaDQVznIRHci?usp=share_link"
+                                    <a href="https://huggingface.co/datasets/claws-lab/XLingHealth"
                                         class="external-link button is-normal is-rounded is-dark">
                                         <span class="icon">
                                             <i class="far fa-images"></i>
@@ -1096,7 +1099,7 @@
             class="c9">XLingHealth</span><span class="c17">&nbsp;with languages in which the datasets are
             available.</span></p>
     <p class="c1 c4"><span></span></p>
-    <p class="c1"><span class="c12">XLingHealth</span><span>&nbsp;is a novel cross-lingual healthcare dataset
+    <p class="c1"><a href="https://huggingface.co/datasets/claws-lab/XLingHealth"><span class="c12">XLingHealth</span></a>&nbsp;is a novel cross-lingual healthcare dataset
             for clinical health inquiry. It is based on three prominent healthcare datasets consisting of
             question-and-answer pairs curated by medical experts -- 1) HealthQA, 2) Medication QA, and 3) LiveQA. Given
             the scarcity of multilingual health and medical question-answering datasets, we create a novel multilingual
@@ -1134,8 +1137,7 @@
     </ul>
     <p class="c1 c4"><span></span></p>
     <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>We used the </span><span class="c12">XLingEval</span><span>&nbsp;framework and </span><span
-            class="c12">XLingHealth</span><span>&nbsp;datasets to evaluate the performance of GPT-3.5 and
+    <p class="c1"><span>We used the </span><span class="c12">XLingEval</span><span>&nbsp;framework and </span><p class="c1"><a href="https://huggingface.co/datasets/claws-lab/XLingHealth"><span class="c12">XLingHealth</span></a><span>&nbsp;datasets to evaluate the performance of GPT-3.5 and
             MedAlpaca (a specialized language model fine-tuned on medical documents) on healthcare queries in English,
             Spanish, Chinese and Hindi.</span></p>
     <h2 class="c10" id="h.cf0bim4e6vnv"><span class="c8">Finding #1: LLMs generate more correct and comprehensive
@@ -1387,14 +1389,14 @@
     <section class="section" id="BibTeX">
         <div class="container is-max-desktop content">
             <h2 class="title">BibTeX</h2>
-            <pre><code>
-                @article{jin2023better,
-                  title={Better to Ask in English: Cross-Lingual Evaluation of Large Language Models for Healthcare Queries},
-                  author={Jin, Yiqiao and Chandra, Mohit and Verma, Gaurav and Hu, Yibo and De Choudhury, Munmun and Kumar, Srijan},
-                  journal={arXiv e-prints},
-                  pages={arXiv--2310},
-                  year={2023}
-                }</code></pre>
+            <pre><code>@article{jin2023better,
+                title={Better to Ask in English: Cross-Lingual Evaluation of Large Language Models for Healthcare Queries},
+                author={Yiqiao Jin and Mohit Chandra and Gaurav Verma and Yibo Hu and Munmun De Choudhury and Srijan Kumar},
+                year={2023},
+                eprint={2310.13132},
+                archivePrefix={arXiv},
+                primaryClass={cs.CL}
+            }</code></pre>
         </div>
     </section>
 
