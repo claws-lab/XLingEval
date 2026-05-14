@@ -1,1438 +1,1744 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="description"
-        content="*Better to Ask in English*: Cross-Lingual Evaluation of Large Language Models for Healthcare Queries.">
-    <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cross-Lingual Evaluation of Large Language Models for Healthcare Queries</title>
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-
-        gtag('config', 'G-PYVRSFMDRL');
-    </script>
-
-    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
-
-    <link rel="stylesheet" href="./static/css/bulma.min.css">
-    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
-    <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
-    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-    <link rel="stylesheet" href="./static/css/index.css">
-    <link rel="icon" href="./static/images/GeorgiaTech_square.png">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script defer src="./static/js/fontawesome.all.min.js"></script>
-    <script src="./static/js/bulma-carousel.min.js"></script>
-    <script src="./static/js/bulma-slider.min.js"></script>
-    <script src="./static/js/index.js"></script>
-
-    <style type="text/css">
-        .lst-kix_g0wktaqlf9ay-2>li:before {
-            content: "\0025a0   "
-        }
-
-        .lst-kix_g0wktaqlf9ay-3>li:before {
-            content: "\0025cf   "
-        }
-
-        .lst-kix_g0wktaqlf9ay-6>li:before {
-            content: "\0025cf   "
-        }
-
-        ul.lst-kix_ry1hnwm4ziww-8 {
-            list-style-type: none
-        }
-
-        .lst-kix_87l2rdbsv697-8>li:before {
-            content: "\0025a0   "
-        }
-
-        .lst-kix_twqfgh3pwpdj-6>li:before {
-            content: "\0025cf   "
-        }
-
-        .lst-kix_twqfgh3pwpdj-8>li:before {
-            content: "\0025a0   "
-        }
-
-        .lst-kix_g0wktaqlf9ay-4>li:before {
-            content: "\0025cb   "
-        }
-
-        .lst-kix_87l2rdbsv697-7>li:before {
-            content: "\0025cb   "
-        }
-
-        ul.lst-kix_ry1hnwm4ziww-4 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_ry1hnwm4ziww-5 {
-            list-style-type: none
-        }
-
-        .lst-kix_g0wktaqlf9ay-5>li:before {
-            content: "\0025a0   "
-        }
-
-        ul.lst-kix_ry1hnwm4ziww-6 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_ry1hnwm4ziww-7 {
-            list-style-type: none
-        }
-
-        .lst-kix_twqfgh3pwpdj-7>li:before {
-            content: "\0025cb   "
-        }
-
-        .lst-kix_87l2rdbsv697-5>li:before {
-            content: "\0025a0   "
-        }
-
-        ul.lst-kix_twqfgh3pwpdj-6 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_twqfgh3pwpdj-7 {
-            list-style-type: none
-        }
-
-        .lst-kix_87l2rdbsv697-4>li:before {
-            content: "\0025cb   "
-        }
-
-        .lst-kix_87l2rdbsv697-6>li:before {
-            content: "\0025cf   "
-        }
-
-        ul.lst-kix_twqfgh3pwpdj-4 {
-            list-style-type: none
-        }
-
-        .lst-kix_ry1hnwm4ziww-0>li:before {
-            content: "\0025cf   "
-        }
-
-        ul.lst-kix_twqfgh3pwpdj-5 {
-            list-style-type: none
-        }
-
-        .lst-kix_g0wktaqlf9ay-7>li:before {
-            content: "\0025cb   "
-        }
-
-        ul.lst-kix_twqfgh3pwpdj-8 {
-            list-style-type: none
-        }
-
-        .lst-kix_87l2rdbsv697-2>li:before {
-            content: "\0025a0   "
-        }
-
-        .lst-kix_g0wktaqlf9ay-8>li:before {
-            content: "\0025a0   "
-        }
-
-        .lst-kix_87l2rdbsv697-3>li:before {
-            content: "\0025cf   "
-        }
-
-        ul.lst-kix_twqfgh3pwpdj-2 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_twqfgh3pwpdj-3 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_twqfgh3pwpdj-0 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_twqfgh3pwpdj-1 {
-            list-style-type: none
-        }
-
-        .lst-kix_ry1hnwm4ziww-6>li:before {
-            content: "\0025cf   "
-        }
-
-        .lst-kix_ry1hnwm4ziww-8>li:before {
-            content: "\0025a0   "
-        }
-
-        .lst-kix_ry1hnwm4ziww-7>li:before {
-            content: "\0025cb   "
-        }
-
-        .lst-kix_ry1hnwm4ziww-2>li:before {
-            content: "\0025a0   "
-        }
-
-        .lst-kix_twqfgh3pwpdj-0>li:before {
-            content: "\0025cf   "
-        }
-
-        .lst-kix_ry1hnwm4ziww-1>li:before {
-            content: "\0025cb   "
-        }
-
-        .lst-kix_twqfgh3pwpdj-2>li:before {
-            content: "\0025a0   "
-        }
-
-        .lst-kix_twqfgh3pwpdj-4>li:before {
-            content: "\0025cb   "
-        }
-
-        .lst-kix_ry1hnwm4ziww-3>li:before {
-            content: "\0025cf   "
-        }
-
-        .lst-kix_twqfgh3pwpdj-1>li:before {
-            content: "\0025cb   "
-        }
-
-        .lst-kix_twqfgh3pwpdj-5>li:before {
-            content: "\0025a0   "
-        }
-
-        .lst-kix_ry1hnwm4ziww-4>li:before {
-            content: "\0025cb   "
-        }
-
-        .lst-kix_ry1hnwm4ziww-5>li:before {
-            content: "\0025a0   "
-        }
-
-        .lst-kix_twqfgh3pwpdj-3>li:before {
-            content: "\0025cf   "
-        }
-
-        .lst-kix_7ozem99tqost-7>li:before {
-            content: "\0025cb   "
-        }
-
-        ul.lst-kix_87l2rdbsv697-1 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_87l2rdbsv697-2 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_87l2rdbsv697-0 {
-            list-style-type: none
-        }
-
-        .lst-kix_7ozem99tqost-6>li:before {
-            content: "\0025cf   "
-        }
-
-        .lst-kix_7ozem99tqost-8>li:before {
-            content: "\0025a0   "
-        }
-
-        .lst-kix_7ozem99tqost-5>li:before {
-            content: "\0025a0   "
-        }
-
-        ul.lst-kix_7ozem99tqost-8 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_87l2rdbsv697-7 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_87l2rdbsv697-8 {
-            list-style-type: none
-        }
-
-        .lst-kix_7ozem99tqost-2>li:before {
-            content: "\0025a0   "
-        }
-
-        .lst-kix_7ozem99tqost-4>li:before {
-            content: "\0025cb   "
-        }
-
-        ul.lst-kix_87l2rdbsv697-5 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_87l2rdbsv697-6 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_87l2rdbsv697-3 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_87l2rdbsv697-4 {
-            list-style-type: none
-        }
-
-        .lst-kix_7ozem99tqost-3>li:before {
-            content: "\0025cf   "
-        }
-
-        .lst-kix_7ozem99tqost-0>li:before {
-            content: "\0025cf   "
-        }
-
-        .lst-kix_7ozem99tqost-1>li:before {
-            content: "\0025cb   "
-        }
-
-        ul.lst-kix_7ozem99tqost-7 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_7ozem99tqost-6 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_7ozem99tqost-5 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_7ozem99tqost-4 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_7ozem99tqost-3 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_7ozem99tqost-2 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_7ozem99tqost-1 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_7ozem99tqost-0 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_g0wktaqlf9ay-3 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_g0wktaqlf9ay-4 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_g0wktaqlf9ay-1 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_g0wktaqlf9ay-2 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_g0wktaqlf9ay-7 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_g0wktaqlf9ay-8 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_g0wktaqlf9ay-5 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_g0wktaqlf9ay-6 {
-            list-style-type: none
-        }
-
-        .lst-kix_87l2rdbsv697-1>li:before {
-            content: "\0025cb   "
-        }
-
-        .lst-kix_87l2rdbsv697-0>li:before {
-            content: "\0025cf   "
-        }
-
-        ul.lst-kix_ry1hnwm4ziww-0 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_ry1hnwm4ziww-1 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_ry1hnwm4ziww-2 {
-            list-style-type: none
-        }
-
-        ul.lst-kix_ry1hnwm4ziww-3 {
-            list-style-type: none
-        }
-
-        .lst-kix_g0wktaqlf9ay-0>li:before {
-            content: "\0025cf   "
-        }
-
-        ul.lst-kix_g0wktaqlf9ay-0 {
-            list-style-type: none
-        }
-
-        .lst-kix_g0wktaqlf9ay-1>li:before {
-            content: "\0025cb   "
-        }
-
-        ol {
-            margin: 0;
-            padding: 0
-        }
-
-        table td,
-        table th {
-            padding: 0
-        }
-
-        .c26 {
-            background-color: #fefefe;
-            color: #60697b;
-            font-weight: 400;
-            text-decoration: none;
-            vertical-align: baseline;
-            font-size: 13pt;
-            font-family: "Arial";
-            font-style: italic
-        }
-
-        .c22 {
-            padding-top: 16pt;
-            padding-bottom: 4pt;
-            line-height: 1.15;
-            page-break-after: avoid;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-
-
-        .c8 {
-            color: #000000;
-            font-weight: 400;
-            text-decoration: none;
-            vertical-align: baseline;
-            font-size: 16pt;
-            font-family: "Arial";
-            font-style: normal
-        }
-
-        .c2 {
-            padding-top: 0pt;
-            padding-bottom: 0pt;
-            line-height: 1.15;
-            orphans: 2;
-            widows: 2;
-            text-align: center;
-            height: 11pt
-        }
-
-        .c0 {
-            color: #000000;
-            font-weight: 400;
-            text-decoration: none;
-            vertical-align: baseline;
-            font-size: 11pt;
-            font-family: "Arial";
-            font-style: normal
-        }
-
-        .c19 {
-
-            font-weight: 400;
-            text-decoration: none;
-            vertical-align: baseline;
-            font-size: 14pt;
-            font-family: "Arial";
-            font-style: normal
-        }
-
-        .c10 {
-            padding-top: 16pt;
-            padding-bottom: 6pt;
-            line-height: 1.15;
-            page-break-after: avoid;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-
-        .c6 {
-            color: #000000;
-            font-weight: 400;
-            text-decoration: none;
-            vertical-align: baseline;
-            font-size: 9pt;
-            font-family: "Arial";
-            font-style: normal
-        }
-
-        .c13 {
-            padding-top: 0pt;
-            padding-bottom: 0pt;
-            line-height: 1.8;
-            orphans: 2;
-            widows: 2;
-            font-size: 12pt;
-        }
-
-        .c1 {
-            padding-top: 0pt;
-            padding-bottom: 0pt;
-            line-height: 1.5;
-            orphans: 2;
-            widows: 2;
-            text-align: left;
-            font-size: 16px;
-            /* Enlarge font size */
-        }
-
-        .c16 {
-            margin-left: 5pt;
-            padding-top: 3pt;
-            padding-left: 0pt;
-            padding-bottom: 0pt;
-            line-height: 1.8;
-            text-align: left;
-            font-size: 16px;
-            /* Enlarge font size */
-        }
-
-        .c24 {
-            margin-left: 5pt;
-            padding-top: 3pt;
-            padding-left: 0pt;
-            padding-bottom: 0pt;
-            line-height: 1.8;
-            text-align: left;
-            font-size: 16px;
-            /* Enlarge font size */
-        }
-
-        .c11 {
-            color: #000000;
-            font-weight: 400;
-            text-decoration: none;
-            font-size: 11pt;
-            font-family: "Arial";
-            font-style: normal
-        }
-
-        .c3 {
-            padding-top: 0pt;
-            padding-bottom: 0pt;
-            line-height: 1.15;
-            orphans: 2;
-            widows: 2;
-            text-align: center
-        }
-
-        .c300 {
-            padding-top: 0pt;
-            padding-bottom: 0pt;
-            line-height: 1.15;
-            orphans: 2;
-            widows: 2;
-            text-align: center
-        }
-
-        .c15 {
-            color: #000000;
-            text-decoration: none;
-            vertical-align: baseline;
-            font-size: 11pt;
-            font-family: "Arial";
-            font-style: normal
-        }
-
-        .c27 {
-            background-color: #fefefe;
-            font-size: 14pt;
-            font-style: italic;
-            color: #60697b
-        }
-
-        .c7 {
-            text-decoration-skip-ink: none;
-            -webkit-text-decoration-skip: none;
-            color: #1155cc;
-            text-decoration: underline
-        }
-
-        .c14 {
-            color: inherit;
-            text-decoration: inherit
-        }
-
-        .c20 {
-            padding: 0;
-            margin: 0
-        }
-
-        .c25 {
-            margin-left: 5pt;
-            padding-left: 0pt
-        }
-
-        .c9 {
-            font-size: 9pt;
-            font-weight: 700
-        }
-
-        .c17 {
-            font-size: 9pt
-        }
-
-        .c5 {
-            vertical-align: sub
-        }
-
-        .c12 {
-            font-weight: 700
-        }
-
-        .c4 {
-            height: 11pt
-        }
-
-        .title {
-            padding-top: 0pt;
-            color: #000000;
-            font-size: 26pt;
-            padding-bottom: 3pt;
-            font-family: "Arial";
-            line-height: 1.15;
-            page-break-after: avoid;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-
-
-        li {
-            color: #000000;
-            font-size: 11pt;
-            font-family: "Arial"
-        }
-
-        p {
-            margin: 0;
-            color: #000000;
-            font-size: 11pt;
-            font-family: "Arial"
-        }
-
-        h1 {
-            padding-top: 20pt;
-            color: #000000;
-            font-size: 20pt;
-            padding-bottom: 6pt;
-            font-family: "Arial";
-            line-height: 1.15;
-            page-break-after: avoid;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-
-        h2 {
-            padding-top: 16pt;
-            color: #000000;
-            font-size: 16pt;
-            padding-bottom: 6pt;
-            font-family: "Arial";
-            line-height: 1.15;
-            page-break-after: avoid;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-
-        h3 {
-            padding-top: 16pt;
-            color: #434343;
-            font-size: 14pt;
-            padding-bottom: 4pt;
-            font-family: "Arial";
-            line-height: 1.15;
-            page-break-after: avoid;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-
-        h4 {
-            padding-top: 14pt;
-            color: #666666;
-            font-size: 12pt;
-            padding-bottom: 4pt;
-            font-family: "Arial";
-            line-height: 1.15;
-            page-break-after: avoid;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-
-        h5 {
-            padding-top: 12pt;
-            color: #666666;
-            font-size: 11pt;
-            padding-bottom: 4pt;
-            font-family: "Arial";
-            line-height: 1.15;
-            page-break-after: avoid;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-
-        h6 {
-            padding-top: 12pt;
-            color: #666666;
-            font-size: 11pt;
-            padding-bottom: 4pt;
-            font-family: "Arial";
-            line-height: 1.15;
-            page-break-after: avoid;
-            font-style: italic;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-    </style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Better to Ask in English · XLingEval (WWW '24 Oral)</title>
+  <meta name="description" content="Large language models (LLMs) are transforming the ways the general public accesses and consumes information. Their influence is particularly pronounced in pivotal sect">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Better to Ask in English · XLingEval (WWW '24 Oral)">
+  <meta property="og:description" content="Cross-Lingual Evaluation of Large Language Models for Healthcare Queries. WWW 2024 Oral paper from Georgia Tech.">
+  <meta property="og:image" content="media/og-card.png">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Better to Ask in English · XLingEval (WWW '24 Oral)">
+  <meta name="twitter:description" content="Cross-Lingual Evaluation of Large Language Models for Healthcare Queries. WWW 2024 Oral.">
+  <meta name="twitter:image" content="media/og-card.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="media/gatech.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.2/css/academicons.min.css">
+
+  <style>
+    /* =========================================================
+       DESIGN TOKENS
+    ========================================================= */
+    :root {
+      --primary-1: #667eea;
+      --primary-2: #764ba2;
+      --accent-1:  #10b981;
+      --accent-2:  #059669;
+      --warm-1:    #f59e0b;
+      --warm-2:    #d97706;
+      --rose-1:    #ec4899;
+      --rose-2:    #be185d;
+      --ink:       #1f2937;
+      --ink-soft:  #4b5563;
+      --ink-xsoft: #6b7280;
+      --paper:     #ffffff;
+      --tint:      #f5f7ff;
+      --line:      #e5e7eb;
+      --radius:    16px;
+      --radius-lg: 20px;
+      --shadow:    0 4px 16px rgba(31,41,55,0.06);
+      --shadow-hi: 0 16px 36px rgba(102,126,234,0.16);
+      --nav-h:     64px;
+    }
+
+    /* =========================================================
+       RESET & BASE
+    ========================================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--nav-h) + 12px);
+    }
+
+    body {
+      font-family: 'Noto Sans', 'Inter', system-ui, sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--ink);
+      background: var(--paper);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* =========================================================
+       TYPOGRAPHY HELPERS
+    ========================================================= */
+    .font-display {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-text-teal {
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-text-amber {
+      background: linear-gradient(135deg, var(--warm-1), var(--warm-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-text-rose {
+      background: linear-gradient(135deg, var(--rose-1), var(--rose-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* =========================================================
+       LAYOUT
+    ========================================================= */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section {
+      padding: 4rem 1.5rem;
+    }
+
+    .section-tint {
+      background: linear-gradient(180deg, var(--tint) 0%, #ffffff 100%);
+    }
+
+    /* =========================================================
+       MOTION
+    ========================================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .orb { animation: none !important; }
+      * { transition-duration: 0.01ms !important; }
+    }
+
+    /* =========================================================
+       STICKY NAV
+    ========================================================= */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .nav-wordmark {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      padding: 0.3rem 0.7rem;
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-1);
+      background: rgba(102,126,234,0.08);
+    }
+
+    .nav-github {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      color: var(--ink-soft);
+      font-size: 1.1rem;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .nav-github:hover {
+      color: var(--primary-1);
+      background: rgba(102,126,234,0.08);
+    }
+
+    .nav-hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--ink-soft);
+      font-size: 1.2rem;
+      padding: 0.3rem;
+      border-radius: 6px;
+      transition: color 0.2s;
+    }
+
+    .nav-hamburger:hover { color: var(--primary-1); }
+
+    .nav-mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      right: 0;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      border-bottom: 1px solid var(--line);
+      padding: 1rem 1.5rem;
+      z-index: 99;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .nav-mobile-menu.open { display: flex; }
+
+    .nav-mobile-menu a {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      padding: 0.6rem 0.8rem;
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .nav-mobile-menu a:hover {
+      color: var(--primary-1);
+      background: rgba(102,126,234,0.08);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; align-items: center; }
+    }
+
+    /* =========================================================
+       HERO
+    ========================================================= */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(160deg, #f0f4ff 0%, #faf5ff 50%, #f0fdf4 100%);
+      padding: 5rem 1.5rem 3rem;
+      text-align: center;
+    }
+
+    .hero-orbs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.35;
+    }
+
+    .orb-1 {
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, var(--primary-1), transparent 70%);
+      top: -180px;
+      left: -120px;
+      animation: float-orb 18s ease-in-out infinite;
+    }
+
+    .orb-2 {
+      width: 440px;
+      height: 440px;
+      background: radial-gradient(circle, var(--primary-2), transparent 70%);
+      top: -100px;
+      right: -140px;
+      animation: float-orb 22s ease-in-out infinite reverse;
+    }
+
+    .orb-3 {
+      width: 360px;
+      height: 360px;
+      background: radial-gradient(circle, var(--accent-1), transparent 70%);
+      bottom: -80px;
+      left: 30%;
+      opacity: 0.2;
+      animation: float-orb 26s ease-in-out infinite 4s;
+    }
+
+    @keyframes float-orb {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%       { transform: translate(30px, -20px) scale(1.04); }
+      66%       { transform: translate(-20px, 15px) scale(0.97); }
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ORAL TAG — most important element */
+    .oral-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.55rem 1.4rem;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: saturate(200%) blur(16px);
+      -webkit-backdrop-filter: saturate(200%) blur(16px);
+      border: 1.5px solid transparent;
+      background-clip: padding-box;
+      position: relative;
+      margin-bottom: 2rem;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: var(--primary-2);
+      box-shadow: 0 0 0 1.5px rgba(102,126,234,0.35), 0 8px 28px rgba(102,126,234,0.22), inset 0 1px 0 rgba(255,255,255,0.9);
+      cursor: default;
+    }
+
+    .oral-tag::before {
+      content: '';
+      position: absolute;
+      inset: -1.5px;
+      border-radius: 100px;
+      padding: 1.5px;
+      background: linear-gradient(135deg, var(--primary-1), var(--primary-2), var(--accent-1));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .oral-tag-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
+      flex-shrink: 0;
+      box-shadow: 0 0 6px rgba(102,126,234,0.6);
+      animation: pulse-dot 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50%       { transform: scale(1.25); opacity: 0.8; }
+    }
+
+    .hero-title {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 1.8rem;
+      max-width: 820px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-authors {
+      font-size: 1rem;
+      color: var(--ink-soft);
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-authors sup {
+      font-size: 0.7em;
+      color: var(--primary-1);
+      font-weight: 600;
+    }
+
+    .hero-authors .author-link {
+      color: inherit;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .hero-authors .author-link:hover {
+      color: var(--primary-1);
+      border-bottom-color: var(--primary-1);
+    }
+
+    .hero-note {
+      font-size: 0.85rem;
+      color: var(--ink-xsoft);
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+
+    .hero-affiliation {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+    }
+
+    .hero-affiliation img {
+      height: 22px;
+      width: auto;
+      display: inline-block;
+    }
+
+    .hero-venue {
+      font-size: 0.9rem;
+      color: var(--ink-xsoft);
+      margin-bottom: 2rem;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.62rem 1.3rem;
+      border-radius: 100px;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      background: var(--ink);
+      color: var(--paper);
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      box-shadow: 0 2px 8px rgba(31,41,55,0.18);
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(31,41,55,0.22);
+      background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
+    }
+
+    .cta-btn i, .cta-btn span.btn-icon {
+      font-size: 1em;
+    }
+
+    /* =========================================================
+       METRICS STRIP
+    ========================================================= */
+    .metrics-strip {
+      position: relative;
+      z-index: 2;
+      max-width: 1100px;
+      margin: -2rem auto 0;
+      padding: 0 1.5rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+    }
+
+    .metric-card {
+      background: var(--paper);
+      border-radius: var(--radius-lg);
+      padding: 1.8rem 1.5rem;
+      box-shadow: var(--shadow-hi);
+      text-align: center;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+      border-top: 4px solid transparent;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(102,126,234,0.2);
+    }
+
+    .metric-card.purple { border-top-color: var(--primary-1); }
+    .metric-card.teal   { border-top-color: var(--accent-1); }
+    .metric-card.amber  { border-top-color: var(--warm-1); }
+    .metric-card.rose   { border-top-color: var(--rose-1); }
+
+    .metric-number {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 0.4rem;
+    }
+
+    .metric-label {
+      font-size: 0.83rem;
+      color: var(--ink-soft);
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    @media (max-width: 860px) {
+      .metrics-strip {
+        grid-template-columns: repeat(2, 1fr);
+        margin-top: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .metrics-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* =========================================================
+       ABSTRACT
+    ========================================================= */
+    .abstract-card {
+      background: var(--paper);
+      border-radius: var(--radius-lg);
+      padding: 2rem 2.2rem;
+      box-shadow: var(--shadow);
+      border-left: 5px solid transparent;
+      border-image: linear-gradient(180deg, var(--primary-1), var(--primary-2)) 1;
+      position: relative;
+    }
+
+    .abstract-card p {
+      text-align: justify;
+      color: var(--ink-soft);
+      font-size: 1.02rem;
+      line-height: 1.8;
+    }
+
+    .abstract-card strong.highlight {
+      color: var(--primary-2);
+      font-weight: 700;
+    }
+
+    /* =========================================================
+       TEASER FIGURE
+    ========================================================= */
+    .teaser-figure {
+      background: var(--paper);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+    }
+
+    .teaser-figure img {
+      border-radius: 10px;
+      width: 100%;
+    }
+
+    figure { width: 100%; }
+
+    figcaption {
+      font-style: italic;
+      text-align: center;
+      color: var(--ink-xsoft);
+      font-size: 0.88rem;
+      margin-top: 0.8rem;
+      max-width: 820px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.5;
+    }
+
+    /* =========================================================
+       CONTRIBUTION CARDS
+    ========================================================= */
+    .contrib-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 768px) {
+      .contrib-grid { grid-template-columns: 1fr; }
+    }
+
+    .contrib-card {
+      background: var(--paper);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      border-top: 4px solid transparent;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .contrib-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hi);
+    }
+
+    .contrib-card.purple { border-top-color: var(--primary-1); }
+    .contrib-card.teal   { border-top-color: var(--accent-1); }
+    .contrib-card.amber  { border-top-color: var(--warm-1); }
+
+    .contrib-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: white;
+      margin-bottom: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .contrib-icon.purple { background: linear-gradient(135deg, var(--primary-1), var(--primary-2)); }
+    .contrib-icon.teal   { background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); }
+    .contrib-icon.amber  { background: linear-gradient(135deg, var(--warm-1), var(--warm-2)); }
+
+    .contrib-card h3 {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.01em;
+    }
+
+    .contrib-card p {
+      font-size: 0.91rem;
+      color: var(--ink-soft);
+      line-height: 1.65;
+    }
+
+    /* =========================================================
+       BENCHMARK SECTION
+    ========================================================= */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    .dataset-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .dataset-item {
+      background: var(--paper);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.4rem;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--primary-1);
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .dataset-item:nth-child(2) { border-left-color: var(--accent-1); }
+    .dataset-item:nth-child(3) { border-left-color: var(--warm-1); }
+
+    .dataset-item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hi);
+    }
+
+    .dataset-item h4 {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .dataset-item p {
+      font-size: 0.87rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+
+    .dataset-langs {
+      margin-top: 1.2rem;
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+      background: var(--tint);
+      border-radius: var(--radius);
+      padding: 0.9rem 1.2rem;
+    }
+
+    .dataset-langs strong { color: var(--ink); }
+
+    /* =========================================================
+       METHODOLOGY CARDS
+    ========================================================= */
+    .method-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      margin-top: 2rem;
+    }
+
+    .method-card {
+      display: flex;
+      gap: 1.4rem;
+      align-items: flex-start;
+      background: var(--paper);
+      border-radius: var(--radius-lg);
+      padding: 1.6rem 1.8rem;
+      box-shadow: var(--shadow);
+      border-left: 5px solid transparent;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .method-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hi);
+    }
+
+    .method-card.purple { border-left-color: var(--primary-1); }
+    .method-card.teal   { border-left-color: var(--accent-1); }
+    .method-card.amber  { border-left-color: var(--warm-1); }
+
+    .method-num {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .method-num.purple { background: rgba(102,126,234,0.12); color: var(--primary-2); }
+    .method-num.teal   { background: rgba(16,185,129,0.12); color: var(--accent-2); }
+    .method-num.amber  { background: rgba(245,158,11,0.12); color: var(--warm-2); }
+
+    .method-card h3 {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .method-card p {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      line-height: 1.65;
+    }
+
+    /* =========================================================
+       FINDINGS
+    ========================================================= */
+    .finding-block {
+      margin-bottom: 3.5rem;
+    }
+
+    .finding-block:last-child { margin-bottom: 0; }
+
+    .finding-badge {
+      display: inline-block;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      margin-bottom: 0.8rem;
+    }
+
+    .finding-badge.purple { background: rgba(102,126,234,0.12); color: var(--primary-2); }
+    .finding-badge.teal   { background: rgba(16,185,129,0.12); color: var(--accent-2); }
+    .finding-badge.amber  { background: rgba(245,158,11,0.12); color: var(--warm-2); }
+
+    .finding-block h3 {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.65rem;
+    }
+
+    .finding-block .lead {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      margin-bottom: 1.4rem;
+      max-width: 820px;
+    }
+
+    .fig-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 640px) {
+      .fig-row { grid-template-columns: 1fr; }
+    }
+
+    .fig-card {
+      background: var(--paper);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .fig-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hi);
+    }
+
+    .fig-card img { border-radius: 8px; margin: 0 auto; }
+    .fig-card figure, .fig-card-full figure { margin: 0; text-align: center; }
+    .fig-card-full img { margin: 0 auto; }
+
+    .fig-card-full {
+      background: var(--paper);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      margin-top: 1.25rem;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .fig-card-full:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hi);
+    }
+
+    .fig-card-full img { border-radius: 8px; }
+
+    /* =========================================================
+       IMPLICATIONS CARDS
+    ========================================================= */
+    .implications-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 768px) {
+      .implications-grid { grid-template-columns: 1fr; }
+    }
+
+    .impl-card {
+      background: var(--paper);
+      border-radius: var(--radius-lg);
+      padding: 1.8rem 1.6rem;
+      box-shadow: var(--shadow);
+      border-top: 4px solid transparent;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .impl-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hi);
+    }
+
+    .impl-card.purple { border-top-color: var(--primary-1); }
+    .impl-card.teal   { border-top-color: var(--accent-1); }
+    .impl-card.rose   { border-top-color: var(--rose-1); }
+
+    .impl-card-icon {
+      font-size: 1.6rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .impl-card.purple .impl-card-icon { color: var(--primary-1); }
+    .impl-card.teal   .impl-card-icon { color: var(--accent-1); }
+    .impl-card.rose   .impl-card-icon { color: var(--rose-1); }
+
+    .impl-card h3 {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .impl-card p {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      line-height: 1.65;
+    }
+
+    /* =========================================================
+       BIBTEX
+    ========================================================= */
+    .bibtex-card {
+      background: #0f172a;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .bibtex-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.2rem;
+      background: #1e293b;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .bibtex-dots {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .bibtex-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .bibtex-dot.red    { background: #ef4444; }
+    .bibtex-dot.yellow { background: #f59e0b; }
+    .bibtex-dot.green  { background: #22c55e; }
+
+    .bibtex-filename {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+
+    .bibtex-copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #94a3b8;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      padding: 0.3rem 0.7rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .bibtex-copy-btn:hover {
+      background: rgba(255,255,255,0.12);
+      color: #e2e8f0;
+    }
+
+    .bibtex-copy-btn.copied {
+      color: #22c55e;
+      border-color: rgba(34,197,94,0.3);
+      background: rgba(34,197,94,0.1);
+    }
+
+    .bibtex-body {
+      padding: 1.6rem 1.8rem;
+      overflow-x: auto;
+    }
+
+    .bibtex-body pre {
+      margin: 0;
+    }
+
+    .bibtex-body code {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.88rem;
+      line-height: 1.75;
+      color: #e2e8f0;
+      white-space: pre;
+    }
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+    .footer {
+      background: var(--tint);
+      border-top: 1px solid var(--line);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .footer-copy {
+      font-size: 0.88rem;
+      color: var(--ink-xsoft);
+      margin-bottom: 0.4rem;
+    }
+
+    .footer-license {
+      font-size: 0.8rem;
+      color: var(--ink-xsoft);
+      margin-bottom: 1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.83rem;
+      color: var(--ink-xsoft);
+      padding: 0.3rem 0.6rem;
+      border-radius: 7px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .footer-link:hover {
+      color: var(--primary-1);
+      background: rgba(102,126,234,0.08);
+    }
+
+    /* =========================================================
+       SECTION HEADINGS
+    ========================================================= */
+    .section-header {
+      margin-bottom: 2.5rem;
+    }
+
+    .section-title {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    /* =========================================================
+       UTILITY
+    ========================================================= */
+    .text-center { text-align: center; }
+    .mt-2  { margin-top: 2rem; }
+    .mb-1  { margin-bottom: 1rem; }
+  </style>
 </head>
 
 <body>
 
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
-        <div class="navbar-menu">
-            <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
-                <a class="navbar-item" href="https://github.com/claws-lab">
-                    <span class="icon">
-                        <i class="fas fa-home"></i>
-                    </span>
-                </a>
+<!-- ============================================================
+     STICKY NAVIGATION
+============================================================ -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a class="nav-wordmark" href="#top">XLingEval</a>
+    <ul class="nav-links" role="list">
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#benchmark">Benchmark</a></li>
+      <li><a href="#method">Method</a></li>
+      <li><a href="#findings">Findings</a></li>
+      <li><a href="#implications">Implications</a></li>
+      <li><a href="#bibtex">Cite</a></li>
+      <li>
+        <a class="nav-github" href="https://github.com/claws-lab/XLingEval" target="_blank" rel="noopener" aria-label="GitHub repository">
+          <i class="fa-brands fa-github"></i>
+        </a>
+      </li>
+    </ul>
+    <button class="nav-hamburger" id="hamburger-btn" aria-label="Toggle mobile menu" aria-expanded="false">
+      <i class="fa-solid fa-bars" id="hamburger-icon"></i>
+    </button>
+  </div>
+</nav>
 
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        More Research
-                    </a>
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="https://multimodality-language-disparity.github.io/">
-                            Language Disparity
-                        </a>
-                    </div>
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="https://dl.acm.org/doi/10.1145/3578503.3583602">
-                            Remote Work Experiences
-                        </a>
-                    </div>
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="https://ahren09.github.io/pages/kdd2023/">
-                            Information Pathways
-                        </a>
-                    </div>
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="https://claws-lab.github.io/multimodal-robustness/">
-                            Multimodal Robustness
-                        </a>
-                    </div>
-                </div>
-            </div>
+<div class="nav-mobile-menu" id="mobile-menu" role="menu">
+  <a href="#abstract" role="menuitem">Abstract</a>
+  <a href="#benchmark" role="menuitem">Benchmark</a>
+  <a href="#method" role="menuitem">Method</a>
+  <a href="#findings" role="menuitem">Findings</a>
+  <a href="#implications" role="menuitem">Implications</a>
+  <a href="#bibtex" role="menuitem">Cite</a>
+  <a href="https://github.com/claws-lab/XLingEval" target="_blank" rel="noopener" role="menuitem">
+    <i class="fa-brands fa-github"></i> GitHub
+  </a>
+</div>
 
-        </div>
-    </nav>
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section class="hero" id="top">
+  <div class="hero-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
 
+  <div class="hero-inner">
+    <!-- ORAL TAG — most prominent element -->
+    <div class="oral-tag" role="note" aria-label="Conference and presentation type">
+      <span class="oral-tag-dot" aria-hidden="true"></span>
+      <i class="fa-solid fa-circle-dot" style="font-size:0.9em;opacity:0;" aria-hidden="true"></i>
+      Web Conference 2024&nbsp;·&nbsp;Oral
+    </div>
 
-    <section class="hero">
-        <div class="hero-body">
-            <div class="container is-max-desktop">
-                <div class="columns is-centered">
-                    <div class="column has-text-centered">
-                        <h1 class="title is-1 publication-title" style="text-align: center;"><i>Better to Ask in
-                                English:</i> <br />Cross-Lingual Evaluation
-                            of Large Language Models for Healthcare Queries</h1>
+    <h1 class="hero-title font-display">
+      Better to Ask in English: Cross-Lingual Evaluation of Large Language Models for Healthcare Queries
+    </h1>
 
-                        <h4><i>In Proceedings of the ACM Web Conference 2024 (WWW ’24),</i></h4>
+    <p class="hero-authors">
+      <a class="author-link" href="https://ahren09.github.io/" target="_blank" rel="noopener">Yiqiao Jin</a><sup>1*</sup>,&nbsp;
+      <a class="author-link" href="https://mohit3011.github.io/" target="_blank" rel="noopener">Mohit Chandra</a><sup>1*</sup>,&nbsp;
+      <a class="author-link" href="https://gaurav22verma.github.io/" target="_blank" rel="noopener">Gaurav Verma</a><sup>1</sup>,&nbsp;
+      <a class="author-link" href="https://itm.iit.edu/hu/" target="_blank" rel="noopener">Yibo Hu</a><sup>1</sup>,&nbsp;
+      <a class="author-link" href="http://www.munmund.net/" target="_blank" rel="noopener">Munmun De Choudhury</a><sup>1</sup>,&nbsp;
+      <a class="author-link" href="https://faculty.cc.gatech.edu/~srijan/" target="_blank" rel="noopener">Srijan Kumar</a><sup>1</sup>
+    </p>
 
-                        <div class="is-size-5 publication-authors">
-                            <span class="author-block">
-                                <a href="https://ahren09.github.io/">Yiqiao Jin</a><sup>1</sup><sup>*</sup>,</span>
-                            <span class="author-block">
-                                <a href="https://mohit3011.github.io/">Mohit Chandra</a><sup>1</sup><sup>*</sup>,</span>
-                            <span class="author-block">
-                                <a href="https://gaurav22verma.github.io/">Gaurav Verma</a><sup>1</sup>,
-                            </span>
-                            <span class="author-block">
-                                <a href="https://snowood1.github.io/">Yibo Hu</a><sup>1</sup>,
-                            </span>
-                            <span class="author-block">
-                                <a href="http://www.munmund.net/">Munmun De Choudhury</a><sup>1</sup>,
-                            </span>
-                            <span class="author-block">
-                                <a href="https://faculty.cc.gatech.edu/~srijan/">Srijan Kumar</a><sup>1</sup>,
-                            </span>
-                        </div>
+    <p class="hero-note">* Equal contribution</p>
 
-                        <div class="is-size-5 publication-authors">
-                            <span class="author-block"><sup>1</sup>Georgia Institute of Technology</span>
-                            <br />
-                            <span class="author-block"><sup>*</sup>Equal Contribution</span>
-                            <br />
-                            <img src="./static/images/GeorgiaTech.png" class="interpolation-image" alt="Georgia Tech."
-                                style="width: 20%; height: auto;" />
-                        </div>
+    <div class="hero-affiliation">
+      <img src="media/gatech.png" alt="Georgia Institute of Technology logo">
+      <span><sup>1</sup> Georgia Institute of Technology</span>
+    </div>
 
-                        <div class="column has-text-centered">
-                            <div class="publication-links">
-                                <!-- PDF Link. -->
-                                <span class="link-block">
-                                    <a href="https://arxiv.org/abs/2310.13132"
-                                        class="external-link button is-normal is-rounded is-dark">
-                                        <span class="icon">
-                                            <i class="fas fa-file-pdf"></i>
-                                        </span>
-                                        <span>Paper</span>
-                                    </a>
-                                </span>
-                                <span class="link-block">
-                                    <a href="https://arxiv.org/abs/2310.13132"
-                                        class="external-link button is-normal is-rounded is-dark">
-                                        <span class="icon">
-                                            <i class="ai ai-arxiv"></i>
-                                        </span>
-                                        <span>arXiv</span>
-                                    </a>
-                                </span>
-                                <!-- Video Link. -->
-                                <span class="link-block">
-                                    <a href="https://www.youtube.com/watch?v=pmEafw5ZOPg" class="external-link button is-normal is-rounded is-dark">
-                                        <span class="icon">
-                                            <i class="fab fa-youtube"></i>
-                                        </span>
-                                        <span>Video</span>
-                                    </a>
-                                </span>
-                                <!-- Code Link. -->
-                                <span class="link-block">
-                                    <a href="https://github.com/claws-lab/XLingEval"
-                                        class="external-link button is-normal is-rounded is-dark">
-                                        <span class="icon">
-                                            <i class="fab fa-github"></i>
-                                        </span>
-                                        <span>Code</span>
-                                    </a>
-                                </span>
-                                <!-- Dataset Link. -->
-                                <span class="link-block">
-                                    <a href="https://huggingface.co/datasets/claws-lab/XLingHealth"
-                                        class="external-link button is-normal is-rounded is-dark">
-                                        <span class="icon">
-                                            <i class="far fa-images"></i>
-                                        </span>
-                                        <span>Data</span>
-                                    </a>
-                                </span>
-                            </div>
+    <p class="hero-venue">
+      Proceedings of the ACM Web Conference 2024 (WWW '24) &nbsp;·&nbsp; May 13–17, 2024 &nbsp;·&nbsp; Singapore
+    </p>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- <section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <video id="teaser" autoplay muted loop playsinline height="100%">
-        <source src="./static/videos/teaser.mp4" type="video/mp4">
-      </video>
-      <h2 class="subtitle has-text-centered">
-        <span class="textsc">Nerfies</span> turns selfie videos from your phone into
-        free-viewpoint
-        portraits.
-      </h2>
+    <div class="cta-row" role="list" aria-label="Paper resources">
+      <a class="cta-btn" href="https://arxiv.org/pdf/2310.13132" target="_blank" rel="noopener" role="listitem" aria-label="Download paper PDF">
+        <i class="fa-solid fa-file-pdf"></i> Paper (PDF)
+      </a>
+      <a class="cta-btn" href="https://arxiv.org/abs/2310.13132" target="_blank" rel="noopener" role="listitem" aria-label="View on arXiv">
+        <i class="ai ai-arxiv"></i> arXiv
+      </a>
+      <a class="cta-btn" href="https://www.youtube.com/watch?v=pmEafw5ZOPg" target="_blank" rel="noopener" role="listitem" aria-label="Watch video presentation">
+        <i class="fa-brands fa-youtube"></i> Video
+      </a>
+      <a class="cta-btn" href="https://github.com/claws-lab/XLingEval" target="_blank" rel="noopener" role="listitem" aria-label="View source code on GitHub">
+        <i class="fa-brands fa-github"></i> Code
+      </a>
+      <a class="cta-btn" href="https://huggingface.co/datasets/claws-lab/XLingHealth" target="_blank" rel="noopener" role="listitem" aria-label="Access dataset on HuggingFace">
+        <span class="btn-icon" aria-hidden="true">🤗</span> Data
+      </a>
     </div>
   </div>
-</section> -->
+</section>
 
+<!-- ============================================================
+     METRICS STRIP
+============================================================ -->
+<div class="metrics-strip" aria-label="Key research metrics">
+  <div class="metric-card purple reveal">
+    <div class="metric-number gradient-text">5.82×</div>
+    <div class="metric-label">more incorrect responses in non-English languages</div>
+  </div>
+  <div class="metric-card amber reveal">
+    <div class="metric-number gradient-text-amber">50.5%</div>
+    <div class="metric-label">consistency drop in Hindi vs. English</div>
+  </div>
+  <div class="metric-card teal reveal">
+    <div class="metric-number gradient-text-teal">4 × 3</div>
+    <div class="metric-label">languages × health Q&amp;A datasets evaluated</div>
+  </div>
+  <div class="metric-card rose reveal">
+    <div class="metric-number gradient-text-rose" style="font-size:1.7rem;">XLingHealth</div>
+    <div class="metric-label">first cross-lingual healthcare benchmark</div>
+  </div>
+</div>
 
-    <!-- <section class="hero is-light is-small">
-  <div class="hero-body">
-    <div class="container">
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-steve">
-          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/steve.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-chair-tp">
-          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/chair-tp.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-shiba">
-          <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/shiba.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-fullbody">
-          <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/fullbody.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-blueshirt">
-          <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/blueshirt.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-mask">
-          <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/mask.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-coffee">
-          <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/coffee.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-toby">
-          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/toby2.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
+<!-- ============================================================
+     ABSTRACT
+============================================================ -->
+<section class="section" id="abstract">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <div class="eyebrow">Abstract</div>
+      <h2 class="section-title">Equity in AI-Mediated Health Information</h2>
+    </div>
+    <div class="abstract-card reveal">
+      <p>
+        Large language models (LLMs) are transforming the ways the general public accesses and consumes information.
+        Their influence is particularly pronounced in pivotal sectors like healthcare, where lay individuals are
+        increasingly appropriating LLMs as conversational agents for everyday queries. While LLMs demonstrate
+        impressive language understanding and generation proficiencies, concerns regarding their safety remain
+        paramount in these high-stake domains. Moreover, the development of LLMs is disproportionately focused
+        on English. It remains unclear how these LLMs perform in the context of non-English languages, a gap
+        that is critical for ensuring equity in the real-world use of these systems. This paper provides a
+        framework to investigate the effectiveness of LLMs as multi-lingual dialogue systems for healthcare
+        queries. Our empirically-derived framework <strong class="highlight">XLingEval</strong> focuses on three
+        fundamental criteria for evaluating LLM responses to naturalistic human-authored health-related questions:
+        correctness, consistency, and verifiability. Through extensive experiments on four major global languages,
+        including English, Spanish, Chinese, and Hindi, spanning three expert-annotated large health Q&amp;A
+        datasets, and through an amalgamation of algorithmic and human-evaluation strategies, we found a pronounced
+        disparity in LLM responses across these languages, indicating a need for enhanced cross-lingual capabilities.
+        We further propose <strong class="highlight">XLingHealth</strong>, a cross-lingual benchmark for examining
+        the multilingual capabilities of LLMs in the healthcare context. Our findings underscore the pressing need
+        to bolster the cross-lingual capacities of these models, and to provide an equitable information ecosystem
+        accessible to all.
+      </p>
     </div>
   </div>
-</section> -->
+</section>
 
+<!-- ============================================================
+     TEASER FIGURE
+============================================================ -->
+<section class="section section-tint">
+  <div class="container">
+    <figure class="teaser-figure reveal">
+      <img src="media/teaser.png" alt="Overview of the XLingEval framework and XLingHealth benchmark">
+      <figcaption>Overview of the XLingEval framework and the XLingHealth benchmark for assessing cross-lingual LLM behavior in healthcare.</figcaption>
+    </figure>
+  </div>
+</section>
 
-    <!--
-
+<!-- ============================================================
+     KEY CONTRIBUTIONS
+============================================================ -->
 <section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-            Large language models (LLMs) are transforming the ways the general public accesses and consumes
-            information. Their influence is particularly pronounced in pivotal sectors like healthcare, where lay
-            individuals are increasingly appropriating LLMs as conversational agents for everyday queries.
-          </p>
-          <p>While LLMs demonstrate impressive language understanding and generation proficiencies, concerns regarding
-            their safety remain paramount in these high-stake domains. Moreover, the development of LLMs is
-            disproportionately focused on English. It remains unclear how these LLMs perform in the context of
-            non-English languages, a gap that is critical for ensuring equity in the real-world use of these systems.
-          </p>
-          <p>
-
-            This paper provides a framework to investigate the effectiveness of LLMs as multi-lingual dialogue systems
-            for healthcare queries. Our empirically-derived framework <span class="textsc">XlingEval</span> focuses on
-            three fundamental criteria for evaluating LLM responses to naturalistic human-authored health-related
-            questions: correctness, consistency, and verifiability. Through extensive experiments on four major global
-            languages, including English, Spanish, Chinese, and Hindi, spanning three expert-annotated large health
-            Q&A datasets, and through an amalgamation of algorithmic and human-evaluation strategies, we found a
-            pronounced disparity in LLM responses across these languages, indicating a need for enhanced cross-lingual
-            capabilities.
-          </p>
-          <p>
-            We further propose <span class="textsc">XlingHealth</span> , a cross-lingual benchmark for examining the
-            multilingual capabilities of LLMs in the healthcare context. Our findings underscore the pressing need to
-            bolster the cross-lingual capacities of these models, and to provide an equitable information ecosystem
-            accessible to all.
-          </p>
-        </div>
-      </div>
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <div class="eyebrow">Contributions</div>
+      <h2 class="section-title">Three Core Contributions</h2>
     </div>
-    -->
+    <div class="contrib-grid">
 
-    <!--
-<section class="section">
+      <div class="contrib-card purple reveal">
+        <div class="contrib-icon purple" aria-hidden="true">
+          <i class="fa-solid fa-scale-balanced"></i>
+        </div>
+        <h3 class="gradient-text">XLingEval Framework</h3>
+        <p>
+          A unified framework that evaluates LLMs along three healthcare-critical axes: correctness, consistency,
+          and verifiability — combining algorithmic metrics with expert human evaluation. The framework provides
+          a reproducible methodology applicable to any multilingual LLM deployment.
+        </p>
+      </div>
 
+      <div class="contrib-card teal reveal">
+        <div class="contrib-icon teal" aria-hidden="true">
+          <i class="fa-solid fa-globe"></i>
+        </div>
+        <h3 class="gradient-text-teal">XLingHealth Benchmark</h3>
+        <p>
+          The first cross-lingual healthcare benchmark, spanning four major world languages — English, Spanish,
+          Chinese, and Hindi — over three expert-annotated Q&amp;A datasets: HealthQA, LiveQA, and MedicationQA.
+          Professionally translated with rigorous quality controls.
+        </p>
+      </div>
 
-  <div class="columns is-centered has-text-centered">
-    <div class="column is-four-fifths">
-      <h2 class="title is-3"></h2>
-      <div class="content has-text-justified">
-        <ul>
-          <li>
-            In response to these challenges, we propose XLingEval, a comprehensive cross-lingual framework to
-            assess the behavior of LLMs, especially in high-risk domains such as healthcare.
+      <div class="contrib-card amber reveal">
+        <div class="contrib-icon amber" aria-hidden="true">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <h3 class="gradient-text-amber">Empirical Cross-Lingual Disparity</h3>
+        <p>
+          Comprehensive evidence that LLMs are markedly less safe and reliable in non-English healthcare
+          conversations, with the largest gaps in Hindi and Chinese — calling for equitable, language-aware
+          LLM development and policy reform.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     BENCHMARK
+============================================================ -->
+<section class="section section-tint" id="benchmark">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="eyebrow">Dataset</div>
+      <h2 class="section-title">The XLingHealth Benchmark</h2>
+    </div>
+
+    <div class="two-col">
+      <div class="reveal">
+        <figure class="teaser-figure">
+          <img src="media/dataset_table.png" alt="Table 1 — XLingHealth dataset statistics">
+          <figcaption>Table 1 &middot; XLingHealth dataset statistics across languages and datasets.</figcaption>
+        </figure>
+      </div>
+
+      <div class="reveal">
+        <p style="font-size:0.95rem;color:var(--ink-soft);line-height:1.75;margin-bottom:1.2rem;">
+          XLingHealth is the first benchmark purpose-built for evaluating multilingual LLM behavior in healthcare.
+          It unifies three established expert-annotated Q&amp;A corpora, each covering a different facet of
+          consumer health information-seeking.
+        </p>
+        <ul class="dataset-list">
+          <li class="dataset-item">
+            <h4 class="gradient-text">HealthQA</h4>
+            <p>1,134 dev-set Q&amp;A pairs sourced from Patient.info, covering diverse consumer health topics across primary care and specialty medicine.</p>
           </li>
-          <li>
-            Our framework emphasizes the importance of <b>equity</b> across languages and <b>generalizability</b> across models,
-            guided by our proposed evaluation metrics for LLM evaluations.
+          <li class="dataset-item">
+            <h4 class="gradient-text-teal">LiveQA</h4>
+            <p>246 consumer health Q&amp;A pairs collected from NIH-affiliated trusted platforms, reflecting real-world health questions submitted by the public.</p>
           </li>
-          <li>
-            We specifically propose three criteria for conversational language models:
-            <ul>
-              <li>
-                <b>Correctness</b>: The model's responses should exhibit factual correctness and comprehensively address
-                the query.
-              </li>
-              <li>
-                <b>Consistency</b>: The model should produce consistent responses to identical queries, reflecting high
-                similarity in lexical, semantic, and topic aspects.
-              </li>
-              <li>
-                <b>Verifiability</b>: The model should be capable to authenticate accurate claims and clearly distinguish
-                between correct and erroneous responses to a query.
-              </li>
-            </ul>
+          <li class="dataset-item">
+            <h4 class="gradient-text-amber">MedicationQA</h4>
+            <p>690 drug-related queries submitted to MedlinePlus, paired with reference answers drawn from authoritative medical references.</p>
           </li>
         </ul>
+        <div class="dataset-langs">
+          All three datasets are professionally translated into
+          <strong>Spanish</strong>, <strong>Simplified Chinese</strong>, and <strong>Hindi</strong>
+          with quality controls to ensure medical accuracy and cultural appropriateness.
+        </div>
       </div>
     </div>
   </div>
+</section>
 
+<!-- ============================================================
+     METHOD
+============================================================ -->
+<section class="section" id="method">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="eyebrow">Methodology</div>
+      <h2 class="section-title">The XLingEval Framework</h2>
+    </div>
 
+    <figure class="teaser-figure reveal">
+      <img src="media/pipelines.png" alt="Figure 2 — XLingEval evaluation pipelines">
+      <figcaption>Evaluation pipelines for the three XLingEval criteria across languages.</figcaption>
+    </figure>
 
-</div>
--->
+    <div class="method-cards">
 
+      <div class="method-card purple reveal">
+        <span class="method-num purple">01</span>
+        <div>
+          <h3>Correctness</h3>
+          <p>
+            Compare LLM responses against expert ground-truth answers using both LLM-judge comparative analysis
+            (with chain-of-thought prompting) and human evaluation by medical annotators across all four languages.
+            Responses are categorized along a four-point scale from comprehensive and appropriate to incorrect or
+            misleading, enabling fine-grained cross-lingual comparison.
+          </p>
+        </div>
+      </div>
 
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span class="c27">We create a new cross-lingual benchmark for Large Language Models to answer
-            healthcare queries in four languages. This benchmark is used to assess the effectiveness of LLMs as
-            multilingual dialogue systems for healthcare queries. &nbsp;Our evaluation shows
-            that LLMs give higher quality response in English than in non-English languages &mdash; higher quality means
-            more correct, comprehensive, consistent, and verifiable answers. This highlights the multilinguality
-            performance gap of LLMs and the resulting disparities in healthcare information access via LLMs
-            worldwide.</span></p>
-    <h2 class="c10" id="h.estj3tfv0vue"><span class="c8">Table of Contents</span></h2>
-    <ul class="c20 lst-kix_twqfgh3pwpdj-0 start">
-        <li class="c24"><span class="c7"><a class="c14" href="#h.qkh2iqp0ebjn">Introduction</a></span></li>
-        <li class="c24"><span class="c7"><a class="c14" href="#h.kii980n2m3ga">XLingHealth
-                    Dataset</a></span></li>
-        <li class="c24"><span class="c7"><a class="c14" href="#h.rltgtbccm0u1">XLingEval
-                    Benchmark</a></span></li>
-        <li class="c24"><span class="c7"><a class="c14" href="#h.cf0bim4e6vnv">Finding #1: LLMs generate
-                    more number of correct and comprehensive answers in English than Non-English languages.</a></span>
-        </li>
-        <li class="c24"><span class="c7"><a class="c14" href="#h.82o9o4n10g15">Finding #2: In terms of
-                    consistency, GPT-3.5 demonstrates a higher performance in English and Spanish compared to Chinese
-                    and Hindi, and this difference is statistically significant.</a></span></li>
-        <li class="c24"><span class="c7"><a class="c14" href="#h.jw3eh13x6eyh">Finding #3</a></span></li>
-        <li class="c24"><span class="c7"><a class="c14" href="#h.7ix7szq9ogk5">Implications of Our
-                    Work</a></span>
-            <ul class="c20 lst-kix_twqfgh3pwpdj-1 start">
-                <li class="c16"><span class="c7"><a class="c14" href="#h.nklqfyv9x8ly">Equity and accessibility of
-                            healthcare information</a></span></li>
-                <li class="c16"><span class="c7"><a class="c14" href="#h.3qcebxh6d3st">Likely causes of language
-                            disparity</a></span></li>
-                <li class="c16"><span class="c7"><a class="c14" href="#h.j7zlnpbnvq64">Future of LLMs in
-                            Healthcare</a></span></li>
-            </ul>
-        </li>
-    </ul>
+      <div class="method-card teal reveal">
+        <span class="method-num teal">02</span>
+        <div>
+          <h3>Consistency</h3>
+          <p>
+            Vary the sampling temperature &tau; and probe whether the model produces stable answers to the same
+            question, scoring at the surface (n-gram overlap, response length), semantic (BERTScore,
+            sentence-embedding similarity) and topic (LDA, HDP) levels. Consistency across sampling runs
+            serves as a proxy for model reliability and confidence calibration.
+          </p>
+        </div>
+      </div>
 
-
-    <p class="c1 c4"><span></span></p>
-    <p class="c1 c4"><span></span></p>
-    <h2 class="c10" id="h.qkh2iqp0ebjn"><span class="c8">Introduction</span></h2>
-    <p class="c1 c4"><span></span></p>
-    <p class="c3"><span
-            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);width: 100%; height: auto;"><img
-                alt="" src="static/images/image7.png" title=""></span></p>
-    <p class="c3"><span class="c9">Figure 1:</span><span class="c6">&nbsp;We present XLingEval, a comprehensive
-            framework for assessing cross-lingual behaviors of LLMs for high risk domains such as healthcare. We present
-            XLingHealth, a cross-lingual benchmark for healthcare queries.</span></p>
-
-    <br />
-    <p class="c1"><span>In recent years, large language models (LLMs) have revolutionized the field of
-            natural language processing (NLP) and have shown remarkable performance in various language-related tasks.
-            However, their effectiveness in the healthcare domain, particularly in multilingual settings, remains
-            largely unexplored. </span></p>
-
-    <p class="c1"><span>We introduce our recent work &quot;Better to Ask in English: </span><span>Cross-Lingual
-            Evaluation of Large Language Models for Healthcare Queries&quot;</span><span>&nbsp;that investigates the
-            effectiveness of LLMs as multilingual dialogue systems for healthcare queries. We propose a novel
-            cross-lingual framework named </span><span class="c12">XLingEval</span><span>&nbsp;and a cross-lingual
-            benchmark dataset for healthcare queries named </span><span class="c12 c15">XLingHealth.</span></p>
-    <p class="c1"><span>We used the </span><span class="c12">XLingEval</span><span>&nbsp;framework and </span><span
-            class="c12">XLingHealth</span><span>&nbsp;datasets to evaluate the performance of GPT-3.5 and
-            MedAlpaca (a specialized language model fine-tuned on medical documents) on healthcare queries in English,
-            Spanish, Chinese and Hindi.</span></p>
-    <p class="c1 c4"><span class="c15 c12"></span></p>
-    <h2 class="c10" id="h.kii980n2m3ga"><span>XLingHealth </span><span>Dataset</span></h2>
-    <p class="c1 c4"><span></span></p>
-    <p class="c3"><span
-            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 100%; height: auto;"><img
-                alt="" src="static/images/image1.png" title=""></span></p>
-    <p class="c3"><span class="c9">Table 1:</span><span class="c17"> Statistics of the datasets in </span><span
-            class="c9">XLingHealth</span><span class="c17">&nbsp;with languages in which the datasets are
-            available.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><a href="https://huggingface.co/datasets/claws-lab/XLingHealth"><span class="c12">XLingHealth</span></a>&nbsp;is a novel cross-lingual healthcare dataset
-            for clinical health inquiry. It is based on three prominent healthcare datasets consisting of
-            question-and-answer pairs curated by medical experts -- 1) HealthQA, 2) Medication QA, and 3) LiveQA. Given
-            the scarcity of multilingual health and medical question-answering datasets, we create a novel multilingual
-            benchmark by translating these datasets into Hindi, Chinese, and Spanish.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c2"><span class="c6"></span></p>
-    <p class="c2"><span></span></p>
-    <p class="c2"><span></span></p>
-    <h2 class="c10" id="h.rltgtbccm0u1"><span>XLingEval </span><span>Benchmark</span></h2>
-    <p class="c3"><span
-            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 100%; height: auto;"><img
-                alt="" src="static/images/image9.png" title=""></span></p>
-    <p class="c3"><span class="c9">Figure 2:</span><span class="c17">&nbsp;Evaluation pipelines for correctness,
-            consistency, and verifiability criteria in the </span><span class="c9">XLingEval</span><span
-            class="c6">&nbsp;framework.</span></p>
-    <p class="c4 c13"><span></span></p>
-    <p class="c13 c4"><span></span></p>
-    <p class="c1"><span>We propose </span><span class="c12">XLingEval</span><span>, a
-            comprehensive</span><span>&nbsp;cross-lingual framework to assess the behavior of LLMs, especially in
-            high-risk domains such as healthcare. Our framework emphasizes the importance of </span><span
-            class="c12">equity across languages</span><span>&nbsp;and </span><span class="c12">generalizability across
-            models</span><span>, guided by our proposed evaluation metrics for LLM evaluations. We specifically propose
-        </span><span class="c12">three criteria</span><span>&nbsp;for conversational language models:</span>
-    </p>
-    <p class="c13 c4"><span></span></p>
-    <ul class="c20 lst-kix_7ozem99tqost-0 start">
-        <li class="c13 c25"><span class="c12">Correctness</span><span>: The model&#39;s responses
-                should exhibit factual correctness and comprehensively address the query.</span></li>
-        <li class="c13 c25"><span class="c12">Consistency</span><span>: The model should produce
-                consistent responses to identical queries, reflecting high similarity in lexical, semantic, and topic
-                aspects.</span></li>
-        <li class="c13 c25"><span class="c12">Verifiability</span><span>: The model should be
-                capable to authenticate accurate claims and clearly distinguish &nbsp;between correct and erroneous
-                responses to a query. </span></li>
-    </ul>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>We used the </span><span class="c12">XLingEval</span><span>&nbsp;framework and </span><p class="c1"><a href="https://huggingface.co/datasets/claws-lab/XLingHealth"><span class="c12">XLingHealth</span></a><span>&nbsp;datasets to evaluate the performance of GPT-3.5 and
-            MedAlpaca (a specialized language model fine-tuned on medical documents) on healthcare queries in English,
-            Spanish, Chinese and Hindi.</span></p>
-    <h2 class="c10" id="h.cf0bim4e6vnv"><span class="c8">Finding #1: LLMs generate more correct and comprehensive
-            answers in English than in Non-English languages.</span></h2>
-    <p class="c3"><span
-            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 100%; height: auto;"><img
-                alt="" src="static/images/image8.png" title=""></span></p>
-    <p class="c3"><span class="c9">Table 2:</span><span class="c6">&nbsp;Automated correctness evaluation in four
-            languages: English (en), Spanish (es), Chinese(zh), and Hindi (hi) for GPT-3.5. Each number represents the
-            number of answers assigned to the respective label in the dataset.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>The first fundamental criterion of XLingEval is </span><span
-            class="c12">correctness</span><span>, which pertains to the accuracy, comprehensiveness, and contextual
-            appropriateness of
-            LLMs&rsquo; responses to healthcare inquiries. To evaluate the correctness criterion, we conducted
-            experiments to compare LLMs&rsquo; responses to expert-curated ground-truth answers across the three
-            healthcare datasets.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>Table 2 presents the results for the automated comparative evaluation. Across all
-            datasets, we observed a drastic decrease in the number of examples where GPT-3.5 provides more comprehensive
-            and appropriate answers compared to the ground-truth answers. For HealthQA, we observed a relative decrease
-            in the number of GPT-3.5 answers providing more comprehensive and appropriate information by 38.62% for
-            Hindi answers, 11.90% for Chinese answers and 10.76% for Spanish answers as compared to that of answers
-            in</span></p>
-    <p class="c1"><span>English. LiveQA and MedicationQA followed similar trends, with relative decreases of
-            34.15%, 5.69%, and 5.28% for LiveQA and 30.58%, 15.8%, and 10.29% for MedicationQA &nbsp;in Hindi, Chinese,
-            and Spanish respectively.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>Meanwhile, the number of GPT-3.5 answers in Hindi, Chinese, and Spanish with
-            contradictory information increased compared to the ground-truth answers, relative to the answers GPT-3.5
-            provided in English. While GPT-3.5 produced 3 contradictory answers in English for the HealthQA dataset, it
-            produced 47 (15.67 times) contradictory answers for Hindi, 14 (4.67 times) for Chinese, and 5 (1.67 times)
-            for Spanish. For LiveQA we observed GPT-3.5 producing 4.33 times more contradictory answers in Hindi as
-            compared to English. Finally, for MedicationQA dataset, we observed a huge increase in the number of
-            contradictory answers with GPT-3.5 producing 51 (10.2 times) in Hindi, 48 (9.6 times) in Chinese, and 23
-            (4.6 times) in Spanish.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c3"><span
-            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 100%; height: auto;"><img
-                alt="" src="static/images/image2.png" title=""></span></p>
-    <p class="c3"><span class="c9">Table 3</span><span class="c6">: &nbsp;Automated Correctness evaluation across four
-            languages: English (en), Spanish (es), Chinese (zh), and Hindi (hi) for MedAlpaca-30b.</span></p>
-    <p class="c2"><span class="c6"></span></p>
-    <p class="c1 c4"><span class="c6"></span></p>
-    <p class="c1"><span>The correctness results for MedAlpaca-30b is shown in Table 3. As observed, there is
-            a sharp decrease in the number of answers where MedAlpaca produces a more comprehensive and appropriate
-            answer as compared to Ground Truth. For HealthQA, we observed a relative decrease of &sim;92.23%,
-            &sim;97.93%, and &sim;93.26% for Spanish, Chinese, and Hindi respectively as compared to English. A parallel
-            trend was observed for LiveQA and MedicationQA. In contrast to GPT-3.5 results, we observed the majority
-            proportion of answers in non-English languages being assigned the &lsquo;Neither contradictory nor
-            similar&rsquo; label. This observation stems from the fact that MedAlpaca either did not produce the answer
-            in the respective language or produced a hallucinated answer with repeated tokens.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c2"><span></span></p>
-    <p class="c1 c4"><span></span></p>
-    <h2 class="c10" id="h.82o9o4n10g15"><span class="c8">Finding #2: Responses generated by GPT-3.5 in English and
-            Spanish are more consistent compared to Chinese and Hindi.</span></h2>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>The consistency criteria measures the model&rsquo;s ability to produce consistent
-            responses to identical queries. For each question, we prompt the LLM K=10 times using the same question in
-            the dataset. Then, we measure the consistency of LLM answers to each question from 3 levels: </span></p>
-    <p class="c1 c4"><span></span></p>
-    <ul class="c20 lst-kix_g0wktaqlf9ay-0 start">
-        <li class="c1 c25"><span class="c12">Surface-level consistency</span><span>&nbsp;measures
-                the resemblance between two answers based on their superficial attributes. These include n-gram
-                similarity and the length of responses</span></li>
-        <li class="c1 c25"><span class="c12">Semantic-level consistency</span><span>&nbsp;measures the
-                semantic association between two answers. These include BERTScore and Sentence Embedding Similarity
-                (sim</span><span class="c5">sent</span><span>)</span></li>
-        <li class="c1 c25"><span class="c12">Topic Consistency </span><span>measures whether two answers
-                discuss similar topics from a macro perspective. These include sim</span><span
-                class="c5">LDA</span><span>&nbsp;and sim</span><span class="c5">HDP</span><span>.</span></li>
-    </ul>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>Overall, GPT-3.5 exhibited higher consistency in its answers in English compared to
-            other languages. For BERTScore, GPT-3.5 achieved 0.9206 / 0.6160 / 0.5299 for temperatures of 0.0 / 0.5 /
-            1.0, whereas its performances in Chinese dropped to 0.8454 / 0.5536 / 0.4860 for the same temperatures.
-        </span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>The performance disparity between GPT-3.5&#39;s performance in English and Spanish is
-            relatively narrow compared to the other languages. For BERTScore, GPT-3.5 demonstrates performances of
-            0.9097 / 0.5910 / 0.5092 under the three temperatures for Spanish, which are comparable to its performances
-            in English. </span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c300"><span
-            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 100%; height: auto;"><img
-                alt="" src="static/images/image6.png" title=""></span></p>
-    <p class="c3"><span class="c9">Figure 3</span><span class="c6">: consistency results in terms of BERTScore.
-            Performances for English and Spanish are similar, whereas those for Chinese / Hindi </span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>We also performed an ANOVA followed by a post-hoc Tukey Honestly Significant
-            Difference (HSD) test. and found that English and Spanish have similar performances, as shown from the
-            p-values which generally exceed 0.05. All other language pairs exhibit statistically significant performance
-            differences. </span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>The results on Medalpaca is similar. Meanwhile, smaller-scale LLMs tend to still
-            generate responses in English when we prompt them with Spanish / Chinese / Hindi. Such tendency is more
-            pronounced in Spanish than Chinese / Hindi. </span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1 c4"><span></span></p>
-    <h2 class="c10" id="h.jw3eh13x6eyh"><span>Finding #3 </span><span>GPT-3.5 exhibits better verifiability in English
-            than in Spanish / Chinese / Hindi</span></h2>
-    <p class="c1"><span>The </span><span class="c12">verifiability</span><span>&nbsp;criteria measures how
-            well the model is able to authenticate accurate claims and distinguish between correct and erroneous
-            responses to a query. Empirically, the model takes as input a set of question-answer pairs, where the answer
-            can be either an accurate or an inaccurate claim. The model then predicts a binary label whether the
-            response is a correct answer to the question. 5 metrics are used to evaluate the model&rsquo;s
-            verifiability, including macro-precision/recall/F1, accuracy, and AUC.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c300"><span
-            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 100%; height: auto;"><img
-                alt="" src="static/images/image3.png" title=""></span></p>
-    <p class="c2"><span></span></p>
-    <p class="c3"><span class="c9">Figure 4</span><span class="c17">: Results of HealthQA in terms of macro F1-score.
-            Each column represents a distinct metric. The x- and y-axis represent varying languages and temperatures,
-            respectively.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>On HealthQA, GPT-3.5 yielded comparable performances in English and Spanish but
-            significantly worse results on Chinese and Hindi.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c300"><span
-            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 100%; height: auto;"><img
-                alt="" src="static/images/image4.png" title=""></span></p>
-    <p class="c2"><span></span></p>
-    <p class="c3"><span class="c9">Figure 5</span><span class="c17">: Results of LiveQA in terms of macro
-            F1-score.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>On LiveQA, GPT-3.5 achieved only 0.66/0.62/0.67 on the 3 non-English datasets, a
-            sharp decrease compared to its performance of 0.73 in English.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1 c4"><span></span></p>
-    <p style="text-align: center;">
-        <span class="c3">
-            <img class="c3" alt="" src="static/images/image5.png">
-        </span>
-    </p>
-
-    <p class="c3"><span class="c9">Table 4</span><span class="c17">: </span><span class="c6">Average verifiability
-            performances on GPT-3.5 across five temperatures and their standard deviation. English (en) and Spanish (es)
-            performances are consistently better than Chinese (zh) and Hindi (hi). The performance variations across
-            languages are minimal, with Hindi showing the most significant variations.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>Interestingly, GPT-3.5&rsquo;s performance remained relatively stable across
-            different temperatures, suggesting that modulating the model&#39;s generative randomness does not
-            substantially influence its ability to validate answers. As shown in Table 4, the standard deviation of
-            performances is lower than 0.01. In most settings, English/Hindi demonstrated the most/least variations.
-        </span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1 c4"><span></span></p>
-    <h2 class="c10" id="h.7ix7szq9ogk5"><span class="c8">Implications of Our Work</span></h2>
-    <h3 class="c22" id="h.nklqfyv9x8ly"><span class="c19">&#128073 Equity and accessibility of healthcare
-            information</span>
-    </h3>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>Large language models are advocated as language technologies that provide accessible
-            healthcare information. However, our study demonstrates that key measures relating to LLM capabilities like
-            correctness, consistency, and verifiability are repeatedly lower for non-English languages than for the
-            English language. As &gt;82% of the global population do not speak English as their f girst or second
-            language, our work provides empirical evidence to raise questions about whether such claims about
-            accessibility ignore aspects related to equity in language technologies in healthcare. Do the claims about
-            accessibility of healthcare information using LLMs only apply to people who prefer to communicate in the
-            English language? </span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>Besides developing LLMs that provide equitable services across languages in critical
-            domains like healthcare, which is still an open challenge, some immediate steps involve clearer
-            communication of capabilities and potential harms. For instance, the limited capabilities of LLMs to answer
-            healthcare-related queries, specifically in non-English languages, could be made more prominent
-            trustworthiness cues. Trustworthiness cues could empower users to make well-calibrated judgments while
-            adopting AI technologies. &nbsp;Similarly, the accessibility claims relating to large language models in
-            healthcare should be communicated while precisely mentioning the languages such capabilities were evaluated
-            on. This is particularly important as LLMs are being integrated within Web-based search frameworks (e.g.,
-            Bing Chat and Google&#39;s Generative AI Search) as a notable fraction of search queries on platforms like
-            Google and Bing are health-related.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <h3 class="c22" id="h.3qcebxh6d3st"><span class="c19">&#128073 Likely causes of language disparity</span></h3>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>Across our evaluation metrics, we noted a disparity in LLM performance among
-            languages. This disparity is notably more pronounced in the case of Hindi and Chinese as compared to
-            Spanish. The underlying rationale for this discrepancy can be attributed primarily to two key factors: the
-            limited availability of data resources for Non-English languages and the presence of a highly imbalanced
-            data distribution employed in the training of the. High-precision machine translation has been employed as a
-            possible solution in past works. However, critical domains such as healthcare require extensive human
-            evaluation of translation to prevent serious ramifications. A potential solution for this problem requires
-            close collaboration with medical experts and endorsement of specific training data resources by
-            medical/healthcare organizations.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <h3 class="c22" id="h.j7zlnpbnvq64"><span class="c19">&#128073 Future of LLMs in Healthcare</span></h3>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1"><span>One of the implications arising from our study centers on the discourse surrounding
-            the future of LLMs within high-stakes domains, particularly healthcare. While a prevailing strategy focuses
-            on the development of general-purpose LLMs with larger number of parameters trained on larger datasets, it
-            is essential to acknowledge the inherent limitations of such models, including their deficiency in
-            domain-specific knowledge and vulnerability to hallucinations. In contrast, domain-specific LLMs have shown
-            promising potential and efficacy within the healthcare domain. However, it is critical to underscore that
-            additional precautions and safeguards are required to mitigate the risk of adverse consequences stemming
-            from the information generated by these models.</span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1 c4"><span></span></p>
-    <p class="c1 c4"><span></span></p>
-
-
-    <!-- Paper video.
-<div class="columns is-centered has-text-centered">
-  <div class="column is-four-fifths">
-    <h2 class="title is-3">Video (In-Progress)</h2>
-    <div class="publication-video">
-      <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0" frameborder="0"
-          allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <div class="method-card amber reveal">
+        <span class="method-num amber">03</span>
+        <div>
+          <h3>Verifiability</h3>
+          <p>
+            Cast the LLM as a discriminator that must authenticate medical claims, measuring macro-precision,
+            macro-recall, macro-F1, accuracy, and AUC over correct versus incorrect or irrelevant answer pairs.
+            This axis tests whether the model can distinguish trustworthy from untrustworthy health information —
+            a critical safety property for deployment.
+          </p>
+        </div>
+      </div>
 
     </div>
   </div>
-</div>
-</div>
-</section>-->
+</section>
 
+<!-- ============================================================
+     FINDINGS
+============================================================ -->
+<section class="section section-tint" id="findings">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="eyebrow">Findings</div>
+      <h2 class="section-title">What We Found</h2>
+    </div>
 
-    <!-- <section class="section">
-  <div class="container is-max-desktop">
-
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Related Links</h2>
-
-        <div class="content has-text-justified">
-          <p>
-            There's a lot of excellent work that was introduced around the same time as ours.
-          </p>
-          <p>
-            <a href="https://faculty.cc.gatech.edu/~srijan/">CLAWS Lab</a>, led by Professor <a href="https://faculty.cc.gatech.edu/~srijan/">Srijan Kumar</a>
-          </p>
-          <p>
-            <a href="https://socweb.cc.gatech.edu/">SOCWEB Lab</a> led by Professor  <a
-              href="http://www.munmund.net/">Munmun De Choudhury</a>
-          </p>
+    <!-- Finding 01 -->
+    <div class="finding-block reveal">
+      <span class="finding-badge purple">Finding 01</span>
+      <h3>Correctness drops sharply in non-English languages</h3>
+      <p class="lead">
+        GPT-3.5 produces 18.12% fewer comprehensive and appropriate answers and is 5.82&times; more likely
+        to give an incorrect response in non-English languages. The performance degradation persists for the
+        open-source MedAlpaca model, indicating the gap is not model-specific but reflects a systemic bias
+        in LLM training toward English-language data.
+      </p>
+      <div class="fig-row">
+        <div class="fig-card">
+          <figure>
+            <img src="media/correctness_gpt35.png" alt="Table 2 — GPT-3.5 correctness across languages">
+            <figcaption>Table 2 &middot; GPT-3.5 correctness across languages</figcaption>
+          </figure>
+        </div>
+        <div class="fig-card">
+          <figure>
+            <img src="media/correctness_medalpaca.png" alt="Table 3 — MedAlpaca correctness across languages">
+            <figcaption>Table 3 &middot; MedAlpaca correctness across languages</figcaption>
+          </figure>
         </div>
       </div>
     </div>
 
+    <!-- Finding 02 -->
+    <div class="finding-block reveal">
+      <span class="finding-badge teal">Finding 02</span>
+      <h3>Consistency degrades dramatically in Chinese and Hindi</h3>
+      <p class="lead">
+        Compared with English, semantic consistency drops by 9.1% in Spanish, 28.3% in Chinese, and
+        50.5% in Hindi. This gradient tracks the relative representation of each language in LLM pretraining
+        corpora and suggests that non-English speakers receive less predictable, less stable healthcare
+        information — with Hindi speakers facing the steepest reliability penalty.
+      </p>
+      <div class="fig-card">
+        <figure>
+          <img src="media/consistency.png" alt="Figure 3 — Consistency metrics across datasets">
+          <figcaption>Figure 3 &middot; Consistency metrics across the three datasets</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- Finding 03 -->
+    <div class="finding-block reveal">
+      <span class="finding-badge amber">Finding 03</span>
+      <h3>Verifiability is weaker for under-represented languages</h3>
+      <p class="lead">
+        GPT-3.5 reaches Macro-F1 &asymp; 0.85 on HealthQA in English and Spanish but only &asymp; 0.73 and
+        &asymp; 0.65 in Chinese and Hindi respectively — drops of 14.6% and 23.4%. The model's ability to
+        distinguish trustworthy from untrustworthy medical claims deteriorates markedly as language resource
+        availability decreases, posing a direct patient safety concern.
+      </p>
+      <div class="fig-row">
+        <div class="fig-card">
+          <figure>
+            <img src="media/verifiability_healthqa.png" alt="Figure 4 — HealthQA verifiability results">
+            <figcaption>Figure 4 &middot; HealthQA verifiability results across languages</figcaption>
+          </figure>
+        </div>
+        <div class="fig-card">
+          <figure>
+            <img src="media/verifiability_liveqa.png" alt="Figure 5 — LiveQA verifiability results">
+            <figcaption>Figure 5 &middot; LiveQA verifiability results across languages</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="fig-card-full">
+        <figure>
+          <img src="media/verifiability_table.png" alt="Table 4 — Average verifiability performance">
+          <figcaption>Table 4 &middot; Average verifiability performance across models, languages, and datasets</figcaption>
+        </figure>
+      </div>
+    </div>
+
   </div>
-</section> -->
+</section>
 
+<!-- ============================================================
+     IMPLICATIONS
+============================================================ -->
+<section class="section" id="implications">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <div class="eyebrow">Implications</div>
+      <h2 class="section-title">What This Means</h2>
+    </div>
 
-    <section class="section" id="BibTeX">
-        <div class="container is-max-desktop content">
-            <h2 class="title">BibTeX</h2>
-            <pre><code>@article{jin2023better,
-                title={Better to Ask in English: Cross-Lingual Evaluation of Large Language Models for Healthcare Queries},
-                author={Yiqiao Jin and Mohit Chandra and Gaurav Verma and Yibo Hu and Munmun De Choudhury and Srijan Kumar},
-                year={2023},
-                eprint={2310.13132},
-                archivePrefix={arXiv},
-                primaryClass={cs.CL}
-            }</code></pre>
+    <div class="implications-grid">
+
+      <div class="impl-card purple reveal">
+        <div class="impl-card-icon" aria-hidden="true">
+          <i class="fa-solid fa-scale-unbalanced"></i>
         </div>
-    </section>
+        <h3>Equity and Access</h3>
+        <p>
+          Healthcare information delivered by LLMs is not equally trustworthy across languages, putting
+          non-English speakers at systematically higher risk of receiving incorrect, inconsistent, or
+          unverifiable medical guidance — a direct equity and patient safety concern.
+        </p>
+      </div>
 
-
-    <footer class="footer">
-        <div class="container">
-            <div class="content has-text-centered">
-                <a class="icon-link" href="https://arxiv.org/abs/2310.13132">
-                    <i class="fas fa-file-pdf"></i>
-                </a>
-                <a class="icon-link" href="https://github.com/claws-lab" class="external-link" disabled>
-                    <i class="fab fa-github"></i>
-                </a>
-            </div>
-            <div class="columns is-centered">
-                <div class="column is-8">
-                    <div class="content">
-                        <p>
-                            This website is licensed under a <a rel="license"
-                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
-                                Commons Attribution-ShareAlike 4.0 International License</a>.
-                        </p>
-                        <p>
-                            This means you are free to borrow the <a
-                                href="https://github.com/nerfies/nerfies.github.io">source
-                                code</a> of this website,
-                            we just ask that you link back to this page in the footer.
-                            Please remember to remove the analytics code included in the header of the website which
-                            you do not want on your website.
-                        </p>
-                    </div>
-                </div>
-            </div>
+      <div class="impl-card teal reveal">
+        <div class="impl-card-icon" aria-hidden="true">
+          <i class="fa-solid fa-database"></i>
         </div>
-    </footer>
+        <h3>Likely Causes</h3>
+        <p>
+          The disparity tracks pretraining corpus composition: LLMs are disproportionately trained on
+          English text, with limited exposure to nuanced medical content in other languages. Addressing
+          the gap requires deliberate multilingual data curation and evaluation-driven fine-tuning.
+        </p>
+      </div>
+
+      <div class="impl-card rose reveal">
+        <div class="impl-card-icon" aria-hidden="true">
+          <i class="fa-solid fa-arrow-up-right-dots"></i>
+        </div>
+        <h3>Beyond Healthcare</h3>
+        <p>
+          The correctness / consistency / verifiability lens introduced by XLingEval applies directly to
+          other high-stakes multilingual dialogue domains — legal advice, financial guidance, and
+          educational tutoring — wherever language-based inequity can cause real-world harm.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     BIBTEX
+============================================================ -->
+<section class="section section-tint" id="bibtex">
+  <div class="container">
+    <div class="section-header text-center reveal">
+      <div class="eyebrow">Citation</div>
+      <h2 class="section-title">Cite This Work</h2>
+    </div>
+
+    <div class="bibtex-card reveal">
+      <div class="bibtex-bar">
+        <div class="bibtex-dots" aria-hidden="true">
+          <div class="bibtex-dot red"></div>
+          <div class="bibtex-dot yellow"></div>
+          <div class="bibtex-dot green"></div>
+        </div>
+        <span class="bibtex-filename">bibtex.bib</span>
+        <button class="bibtex-copy-btn" id="copy-bibtex" aria-label="Copy BibTeX to clipboard">
+          <i class="fa-regular fa-copy"></i> Copy
+        </button>
+      </div>
+      <div class="bibtex-body">
+        <pre><code id="bibtex-content">@inproceedings{jin2024better,
+  title={Better to ask in english: Cross-lingual evaluation of large language models for healthcare queries},
+  author={Jin, Yiqiao and Chandra, Mohit and Verma, Gaurav and Hu, Yibo and De Choudhury, Munmun and Kumar, Srijan},
+  booktitle={Proceedings of the ACM Web Conference 2024},
+  pages={2627--2638},
+  year={2024}
+}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="footer" role="contentinfo">
+  <p class="footer-copy">&copy; 2024 CLAWS Lab &middot; Georgia Institute of Technology</p>
+  <p class="footer-license">This page is licensed under CC BY-SA 4.0.</p>
+  <div class="footer-links">
+    <a class="footer-link" href="https://arxiv.org/abs/2310.13132" target="_blank" rel="noopener" aria-label="arXiv preprint">
+      <i class="ai ai-arxiv"></i> arXiv
+    </a>
+    <a class="footer-link" href="https://github.com/claws-lab/XLingEval" target="_blank" rel="noopener" aria-label="GitHub repository">
+      <i class="fa-brands fa-github"></i> GitHub
+    </a>
+    <a class="footer-link" href="https://huggingface.co/datasets/claws-lab/XLingHealth" target="_blank" rel="noopener" aria-label="HuggingFace dataset">
+      <span aria-hidden="true">🤗</span> HuggingFace
+    </a>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+  // ---- Mobile nav hamburger ----
+  (function () {
+    var btn = document.getElementById('hamburger-btn');
+    var menu = document.getElementById('mobile-menu');
+    var icon = document.getElementById('hamburger-icon');
+
+    btn.addEventListener('click', function () {
+      var open = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      icon.className = open ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+    });
+
+    // Close menu on link click
+    menu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        icon.className = 'fa-solid fa-bars';
+      });
+    });
+  }());
+
+  // ---- Reveal on scroll ----
+  (function () {
+    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+
+    var reveals = document.querySelectorAll('.reveal');
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    reveals.forEach(function (el) { observer.observe(el); });
+  }());
+
+  // ---- BibTeX copy button ----
+  (function () {
+    var btn = document.getElementById('copy-bibtex');
+    var code = document.getElementById('bibtex-content');
+
+    btn.addEventListener('click', function () {
+      var text = code.textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          showCopied();
+        }).catch(function () {
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
+    });
+
+    function showCopied() {
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
+        btn.classList.remove('copied');
+      }, 2200);
+    }
+
+    function fallbackCopy(text) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try { document.execCommand('copy'); showCopied(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+  }());
+
+  // ---- Stagger metric cards reveal ----
+  (function () {
+    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+
+    var cards = document.querySelectorAll('.metric-card');
+    cards.forEach(function (card, i) {
+      card.style.transitionDelay = (i * 0.1) + 's';
+    });
+  }());
+</script>
 
 </body>
-
 </html>

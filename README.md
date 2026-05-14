@@ -1,227 +1,249 @@
-# XLingEval (Cross-Lingual Evaluation of LLMs)
-
-### [[arXiv](https://arxiv.org/abs/2310.13132)] [[Webpage](https://claws-lab.github.io/XLingEval/)] [[Data](https://huggingface.co/datasets/claws-lab/XLingHealth)] [[Video](https://www.youtube.com/watch?v=pmEafw5ZOPg)]
-
-
 <div align="center">
-  <img src="static/img/Ask_Me_in_English_v2.png" width="400">
+
+# 🌐 XLingEval
+
+### *Better to Ask in English: Cross-Lingual Evaluation of Large Language Models for Healthcare Queries*
+
+[![Web Conference 2024](https://img.shields.io/badge/Web_Conference_2024-Oral-7B3FE4.svg)](https://doi.org/10.1145/3589334.3645643)
+[![arXiv](https://img.shields.io/badge/arXiv-2310.13132-b31b1b.svg)](https://arxiv.org/abs/2310.13132)
+[![Website](https://img.shields.io/badge/🌐_Project-Website-2EA44F.svg)](https://claws-lab.github.io/XLingEval/)
+[![HF Dataset](https://img.shields.io/badge/🤗_Hugging_Face-XLingHealth-FFD21E.svg)](https://huggingface.co/datasets/claws-lab/XLingHealth)
+[![Video](https://img.shields.io/badge/▶_YouTube-Talk-FF0000.svg)](https://www.youtube.com/watch?v=pmEafw5ZOPg)
+[![DOI](https://img.shields.io/badge/DOI-10.1145%2F3589334.3645643-1f6feb.svg)](https://doi.org/10.1145/3589334.3645643)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.9-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
+[![GitHub stars](https://img.shields.io/github/stars/claws-lab/XLingEval?style=social)](https://github.com/claws-lab/XLingEval/stargazers)
+
+[Yiqiao Jin](https://ahren09.github.io/)¹\*, [Mohit Chandra](https://mohit3011.github.io/)¹\*, [Gaurav Verma](https://gaurav22verma.github.io/)¹, [Yibo Hu](https://itm.iit.edu/hu/)¹, [Munmun De Choudhury](http://www.munmund.net/)¹, [Srijan Kumar](https://faculty.cc.gatech.edu/~srijan/)¹
+
+¹ Georgia Institute of Technology
+
+<sub>\* Equal contribution</sub>
+
+<img src="static/img/Ask_Me_in_English_v2.png" width="400">
+
 </div>
 
-This is the project file from the paper [**Better to Ask in English: Cross-Lingual Evaluation of Large Language 
-Models for Healthcare Queries** ](https://arxiv.org/abs/2310.13132)
+---
 
+## 📖 Abstract
 
+Large language models (LLMs) are transforming the ways the general public accesses and consumes information. Their influence is particularly pronounced in pivotal sectors like healthcare, where lay individuals are increasingly appropriating LLMs as conversational agents for everyday queries. While LLMs demonstrate impressive language understanding and generation proficiencies, concerns regarding their safety remain paramount in these high-stake domains. Moreover, the development of LLMs is disproportionately focused on English. It remains unclear how these LLMs perform in the context of non-English languages, a gap that is critical for ensuring equity in the real-world use of these systems. This paper provides a framework to investigate the effectiveness of LLMs as multi-lingual dialogue systems for healthcare queries. Our empirically-derived framework **XLingEval** focuses on three fundamental criteria for evaluating LLM responses to naturalistic human-authored health-related questions: **correctness, consistency, and verifiability**. Through extensive experiments on four major global languages — English, Spanish, Chinese, and Hindi — spanning three expert-annotated large health Q&A datasets, and through an amalgamation of algorithmic and human-evaluation strategies, we found a pronounced disparity in LLM responses across these languages, indicating a need for enhanced cross-lingual capabilities. We further propose **XLingHealth**, a cross-lingual benchmark for examining the multilingual capabilities of LLMs in the healthcare context.
 
+## ✨ Highlights
 
-```bibtex
-@inproceedings{jin2023better,
-	title        = {Better to Ask in English: Cross-Lingual Evaluation of Large Language Models for Healthcare Queries},
-	author       = {Jin, Yiqiao and Chandra, Mohit and Verma, Gaurav and Hu, Yibo and De Choudhury, Munmun and Kumar, Srijan},
-	year         = {2024},
-	booktitle    = {The Web Conference},
-}
-```
+- 🌐 **First cross-lingual healthcare benchmark** — XLingHealth covers **4 major world languages × 3 expert-annotated Q&A datasets** (HealthQA, LiveQA, MedicationQA).
+- 📉 **Pronounced English bias quantified** — GPT-3.5 produces **18.12% fewer** comprehensive answers and is **5.82× more likely** to give an incorrect response in non-English languages.
+- ⚖️ **Three-axis evaluation framework** — XLingEval unifies **correctness**, **consistency**, and **verifiability**, combining algorithmic metrics with expert human evaluation.
+- 🔬 **Multi-model coverage** — Validated across **GPT-3.5**, **GPT-4**, and the open-source **MedAlpaca** family (7B / 13B / 30B).
+- 🌍 **Steep degradation in under-represented languages** — Semantic consistency drops **9.1% (es) / 28.3% (zh) / 50.5% (hi)** vs English; verifiability Macro-F1 drops up to **23.4% (hi)**.
+- 🧰 **Generalizable beyond healthcare** — The same correctness / consistency / verifiability lens applies to legal, financial, and educational dialogue.
 
-[XLingHealth](https://claws-lab.github.io/XLingEval/) is a **Cross-Ling**ual **Health**care benchmark for clinical health inquiry that features the top four [most spoken languages in the world](https://en.wikipedia.org/wiki/List_of_languages_by_total_number_of_speakers): English, Spanish, Chinese, and Hindi. 
+## 🧭 The XLingEval Framework
 
-It is an evaluation toolkit designed to assess the performance of large language models like GPT-3.5/4 and MedAlpaca in the context of medical queries across multiple languages. The toolkit focuses on three core metrics: correctness, consistency, and verifiability.
+XLingEval evaluates LLM responses along three healthcare-critical axes. Each axis combines automated metrics with human evaluation by medical annotators across all four languages.
 
-## Introduction
+| Axis | What it measures | Key metrics |
+| :--- | :--- | :--- |
+| ✅ **Correctness** | Whether the LLM's answer matches expert ground-truth | LLM-judge comparative analysis (CoT prompting), human evaluation |
+| 🔁 **Consistency** | Whether the LLM gives stable answers under sampling | n-gram & length (surface), BERTScore & SBERT (semantic), LDA / HDP (topic) |
+| 🔎 **Verifiability** | Whether the LLM can authenticate medical claims | Macro-Precision, Macro-Recall, Macro-F1, Accuracy, AUC |
 
-Large language models (LLMs) are transforming the ways the general public accesses and consumes information. Their influence is particularly pronounced in pivotal sectors like healthcare, where lay individuals are increasingly appropriating LLMs as conversational agents for everyday queries. While LLMs demonstrate impressive language understanding and generation proficiencies, concerns regarding their safety remain paramount in these high-stake domains. Moreover, the development of LLMs is disproportionately focused on English. It remains unclear how these LLMs perform in the context of non-English languages, a gap that is critical for ensuring equity in the real-world use of these systems.This paper provides a framework to investigate the effectiveness of LLMs as multi-lingual dialogue systems for healthcare queries. Our empirically derived framework XlingEval focuses on three fundamental criteria for evaluating LLM responses to naturalistic human-authored health-related questions: correctness, consistency, and verifiability. Through extensive experiments on four major global languages, including English, Spanish, Chinese, and Hindi, spanning three expert-annotated large health Q&A datasets, and through an amalgamation of algorithmic and human-evaluation strategies, we found a pronounced disparity in LLM responses across these languages, indicating a need for enhanced cross-lingual capabilities. We further propose XlingHealth, a cross-lingual benchmark for examining the multilingual capabilities of LLMs in the healthcare context. Our findings underscore the pressing need to bolster the cross-lingual capacities of these models, and to provide an equitable information ecosystem accessible to all.
+## 🌍 Supported Languages
 
+| Language | Code | Role | Translation source |
+| :--- | :---: | :--- | :--- |
+| 🇬🇧 English | `en` | Baseline | Native |
+| 🇪🇸 Spanish | `es` | Cross-lingual eval | MT + human verification |
+| 🇨🇳 Simplified Chinese | `zh` | Cross-lingual eval | MT + human verification |
+| 🇮🇳 Hindi | `hi` | Cross-lingual eval | MT + human verification |
 
-## Installation
+## 🤖 Supported Models
 
-Create a new environment
+| Family | Variants | Access |
+| :--- | :--- | :--- |
+| **GPT** | `gpt-3.5-turbo`, `gpt-4` | OpenAI API |
+| **MedAlpaca** | `medalpaca-7b`, `medalpaca-13b`, `medalpaca-30b` | Open source (HF) |
 
+## 📊 XLingHealth Dataset
+
+The `XLingHealth_Dataset/` folder in the repository root contains the cross-lingual benchmark versions of `HealthQA`, `LiveQA`, and `MedicationQA` as Excel files, with separate tabs for each of the four languages (English, Spanish, Chinese, Hindi).
+
+> 🤗 The dataset is also published on Hugging Face: **[claws-lab/XLingHealth](https://huggingface.co/datasets/claws-lab/XLingHealth)**.
+
+| Dataset | #Examples | #Words (Q) | #Words (A) |
+| :--- | :---: | :---: | :---: |
+| **HealthQA** | 1,134 | 7.72 ± 2.41 | 242.85 ± 221.88 |
+| **LiveQA** | 246 | 41.76 ± 37.38 | 115.25 ± 112.75 |
+| **MedicationQA** | 690 | 6.86 ± 2.83 | 61.50 ± 69.44 |
+
+- `#Words (Q)` and `#Words (A)` are the average word counts in the questions and ground-truth answers respectively.
+- In **HealthQA**, each question is paired with **1 positive** and **9 negative** answers — total **11,340** examples.
+- **LiveQA** and **MedicationQA** do not provide negatives; we sample **4 negatives** per question, yielding totals of **1,230** and **3,450** examples respectively.
+
+## 🚀 Installation
+
+Create a new conda environment:
 
 ```bash
 conda create -n xlingeval python=3.9
 conda activate xlingeval
 ```
 
-Install all dependencies using `pip`:
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## XLingHeath Dataset
+## ⚡ Quick Start
 
-`XLingHealth_Dataset` folder inside the root repository contains the cross-lingual benchmarking versions for `HealthQA`, `LiveQA`, and `MedicationQA` datasets as Excel files under separate tabs for each of the four languages (English, Spanish, Chinese, and Hindi).
+### 1. Correctness Experiments
 
-Please refer to our [HuggingFace 🤗 dataset repository](https://huggingface.co/datasets/claws-lab/XLingHealth) for more details.
+#### 1.1 Evaluation using GPT-3.5
 
+Retrieve answers from GPT-3.5:
 
-Statistics of the datasets are shown below:
+```bash
+python correctness/correctness_get_gpt_answer.py \
+    --dataset_path <path to the dataset> \
+    --model gpt-3.5-turbo
+```
 
+Evaluate the quality between the ground-truth and the LLM answer:
 
-| Dataset      | \#Examples | \#Words (Q)       | \#Words (A)         |
-|--------------|------------|-------------------|---------------------|
-| HealthQA     | 1,134      | 7.72 ± 2.41   | 242.85 ± 221.88 |
-| LiveQA       | 246        | 41.76 ± 37.38 | 115.25 ± 112.75 |
-| MedicationQA | 690        | 6.86 ± 2.83   | 61.50 ± 69.44   |
-
-- `#Words (Q)` and `\#Words (A)` represent the average number of words in the questions and ground-truth answers of the datasets, respectively.
-- In the **HealthQA** dataset, each question is already associated with 1 correct answer (termed "positive example") and 9 incorrect/irrelevant answers (termed "negative examples"). Thus, the total number of examples in HealthQA is 11,340
-- **LiveQA** and **MedicationQA** do not provide negative question-answer pairs. Therefore, for each question in these datasets, we randomly sampled 4 responses from the entire set of answers to serve as negative examples. Thus, the total number of examples is 1230 and 3450 for **LiveQA** and **MedicationQA**, respectively.
-
-
-
-
-
-## Quick Start
-
-### 1. Running Correctness Experiments
-
-####  1.1 Evaluation using GPT-3.5
-
-- To retrieve answers for questions using GPT-3.5 execute the following command in the root directory:
-
-  ```bash
-  python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --model gpt-3.5-turbo
-  ```
-- To evaluate the quality between the ground-truth answer and the LLM answer, execute the following command in the root directory:
-
-  ```bash
-  python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset> --model gpt-3.5-turbo
-  ```
-  
+```bash
+python correctness/correctness_answer_evaluation.py \
+    --dataset_path <path to the dataset> \
+    --model gpt-3.5-turbo
+```
 
 #### 1.2 Evaluation using MedAlpaca
 
-- Retrieve answers from MedAlpaca using the following command in the root directory:
-  ```bash
-  python correctness/correctness/MedAlpaca/correctness_medalpaca_get_answers.py --dataset_path <path to the dataset> --model medalpaca-30b --batch_size 5
-  ```
-- Evaluate the quality between ground-truth answer and MedAlpaca LLM answer using GPT-3.5 execute the following command in the root directory:
+Retrieve answers from MedAlpaca:
+
+```bash
+python correctness/MedAlpaca/correctness_medalpaca_get_answers.py \
+    --dataset_path <path to the dataset> \
+    --model medalpaca-30b \
+    --batch_size 5
+```
+
+Evaluate the MedAlpaca answers using GPT-3.5 as a judge:
+
+```bash
+python correctness/correctness_answer_evaluation.py \
+    --dataset_path <path to the dataset with MedAlpaca llm answers> \
+    --model gpt-3.5-turbo
+```
+
+### 2. Consistency Experiments
+
+Run all commands from the repository root `XLingEval/`.
+
+* Generate answers with multiple samplings:
 
   ```bash
-  python correctness/correctness_get_gpt_answer.py --dataset_path <path to the dataset with MedAlpaca llm answers> --model gpt-3.5-turbo
+  python consistency/consistency_get_gpt_answer.py \
+      --dataset <DATASET> --model <MODEL> --num_answers <NUM_ANSWERS>
   ```
-    
-### 2. Running Consistency Experiments
 
-Run the following commands from the repository root directory `XLingEval/`. 
+  - `dataset`: `healthqa` · `liveqa` · `medicationqa`
+  - `model`: `gpt35` · `gpt4` · `medalpaca-7b` · `medalpaca-13b` · `medalpaca-30b`
+  - `num_answers`: number of samples per question
 
-* Generate answers using GPT-3.5
+  Example:
 
   ```bash
-  python consistency/consistency_get_gpt_answer.py --dataset <DATASET> --model <MODEL> --num_answers <NUM_ANSWERS>
+  python consistency/consistency_get_gpt_answer.py \
+      --dataset liveqa --model gpt35 --num_answers 10
   ```
-  - `dataset`: select from `healthqa`, `liveqa`, `medicationqa`;
-  - `model`: select from `gpt35`, `gpt4`, `medalpaca-7b`, `medalpaca-13b`, `medalpaca-30b`.  
-  - `num_answers`: number of answers to generate for each question.
 
-  For example
+* Translate the sampled answers back into English:
 
   ```bash
-  python consistency/consistency_get_gpt_answer.py --dataset liveqa --model gpt35 --num_answers 10
+  python consistency/translate.py \
+      --dataset <DATASET> --model <MODEL> --num_answers <NUM_ANSWERS>
   ```
-  
-* Translate the answers into English
-  ```bash
-  python consistency/translate.py --dataset <DATASET> --model <MODEL> --num_answers <NUM_ANSWERS>
-  ```
-  
-* Evaluate the consistency metrics
-* ```bash
-  python consistency/consistency_answer_evaluation.py --dataset <DATASET> --model <MODEL> --num_answers <NUM_ANSWERS>
-  ```
-  
-  For example
-  
-  ```bash
-  python consistency/consistency_answer_evaluation.py --dataset liveqa --model gpt35
-  ```
-  
-  The results will be saved in `outputs/consistency/`.
 
-
-
-### 3. Running Verifiability Experiments
-
-Run the following command from the repository root directory `XLingEval/`. Both GPT-3.5/4 and MedAlpaca models share the same code.
-
-* Prompt the LLMs to generate answers
+* Evaluate consistency metrics:
 
   ```bash
-  python verifiability/verifiability_get_answer.py --dataset <DATASET> --model <MODEL>
+  python consistency/consistency_answer_evaluation.py \
+      --dataset <DATASET> --model <MODEL> --num_answers <NUM_ANSWERS>
   ```
 
-  - `dataset`: select from `healthqa`, `liveqa`, `medicationqa`;
-  - `model`: select from `gpt35`, `gpt4`, `medalpaca-7b`, `medalpaca-13b`, `medalpaca-30b`.
+  Results are written to `outputs/consistency/`.
 
-  For example, if you run experiments on LiveQA using the GPT-3.5 model:
+### 3. Verifiability Experiments
+
+Both GPT-3.5/4 and MedAlpaca share the same code path.
+
+* Prompt the LLM to verify each (question, answer) pair:
 
   ```bash
-  python verifiability/verifiability_get_answer.py --dataset liveqa --model gpt35
+  python verifiability/verifiability_get_answer.py \
+      --dataset <DATASET> --model <MODEL>
   ```
 
-  By default, we run the experiments on all languages, including `English`, `Spanish`, `Chinese`, and `Hindi`. 
+  By default, all four languages (`en`, `es`, `zh`, `hi`) are evaluated.
 
-* Summarize the verifiability metrics
+* Summarize verifiability metrics:
 
   ```bash
-  python verifiability/verifiability_answer_evaluation.py --dataset <DATASET> --model <MODEL>
+  python verifiability/verifiability_answer_evaluation.py \
+      --dataset <DATASET> --model <MODEL>
   ```
 
-  For example, if you run experiments on LiveQA using the GPT-3.5 model:
-
-  ```bash
-  python verifiability/verifiability_answer_evaluation.py --dataset liveqa --model gpt35
-  ```
-
-  The results will be saved in `outputs/verifiability/`.
+  Results are written to `outputs/verifiability/`.
 
 <div align="center">
   <img src="static/img/alpaca_doctor2.png" width="400">
 </div>
 
+## 🗂️ Repository Structure
 
-## Repository Structure
+```
+XLingEval/
+├── correctness/        # Correctness pipeline (GPT-3.5/4 & MedAlpaca)
+├── consistency/        # Consistency pipeline (sampling, translation, scoring)
+├── verifiability/      # Verifiability pipeline (claim authentication)
+├── translate/          # Translation utilities (ChatGPT-based)
+├── dataloader/         # Dataset loading & preprocessing
+├── utils/              # Metrics, data utilities, miscellaneous helpers
+├── visual/             # Plots: line, heatmap, boxplot
+├── XLingHealth_Dataset/  # Cross-lingual benchmark Excel files
+├── outputs/            # Experiment outputs (correctness, consistency, verifiability)
+├── static/, media/     # Project page assets
+└── index.html          # Project website (open in browser)
+```
 
-### Correctness
-- `const.py`: Constants used in the experiments.
-- `correctness_get_gpt_answer.py`: Script to retrieve GPT-3.5-based answers for evaluation.
-- `correctness_answer_evaluation.py`: Script to evaluate the correctness of llm-generated answers with the ground-truth using GPT-3.5.
-- `setup.py`: Installation script.
-- `utils_chatgpt.py`: Utilities for working with GPT-3.5 turbo using OpenAI API.
-- `MedAlpaca/correctness_medalpaca_get_answers`: Script to retrieve answers from MedAlpaca model.
+### Module highlights
 
-### Consistency
-- `consistency_gpt.py` & `consistency_medalpaca.py`: Evaluate the consistency of answers from GPT and MedAlpaca models.
-- `data_consistency.py`: Data handling for consistency evaluation.
-- `prompts.py`: Pre-defined prompts for the experiments.
-- `statistical_test.py`: Perform statistical tests on consistency metrics.
-- `eval_consistency.py` & `eval_language_consistency.py`: Summarization scripts for consistency metrics.
-- `language_consistency.py`: Evaluate language-specific consistency.
+- **`correctness/`** — `correctness_get_gpt_answer.py`, `correctness_answer_evaluation.py`, `MedAlpaca/correctness_medalpaca_get_answers.py`
+- **`consistency/`** — `consistency_get_gpt_answer.py`, `translate.py`, `consistency_answer_evaluation.py`, `statistical_test.py`
+- **`verifiability/`** — `verifiability_get_answer.py`, `verifiability_answer_evaluation.py`, `prompts.py`
+- **`utils/`** — `metrics.py`, `utils_data.py`, `utils_misc.py`
+- **`visual/`** — line plots, heatmaps, and boxplots used in the paper
 
-### Verifiability
-- `prompts.py`: Pre-defined prompts for verifiability tests.
-- `verifiability.py`: Main script for verifiability evaluation.
-- `summarize_verifiability.py`: Summarize verifiability metrics.
+## 📝 Citation
 
-### Data
-- Houses datasets like `HealthQA`, `LiveQA`, and `MedicationQA` in Excel format.
+If you find XLingEval or XLingHealth useful in your research, please cite:
 
-### DataLoader
-- `load_data.py`: Load and preprocess datasets for evaluation.
+```bibtex
+@inproceedings{jin2024better,
+  title={Better to ask in english: Cross-lingual evaluation of large language models for healthcare queries},
+  author={Jin, Yiqiao and Chandra, Mohit and Verma, Gaurav and Hu, Yibo and De Choudhury, Munmun and Kumar, Srijan},
+  booktitle={Proceedings of the ACM Web Conference 2024},
+  pages={2627--2638},
+  year={2024}
+}
+```
 
-### Translate
-- `translate_chatgpt.py`: Script to translate content using ChatGPT.
+## 🙏 Acknowledgements
 
-### Utils
-- `metrics.py`: Evaluation metrics and utility functions.
-- `utils_data.py`: Data handling utilities.
-- `utils_misc.py`: Miscellaneous utility functions.
+This work was supported in part by NSF (CNS-2154118, ITE-2137724, ITE-2230692, CNS-2239879), DARPA (HR00112290102, subcontract PO70745), CDC, and Microsoft. We thank our medical annotators for the cross-lingual evaluation effort.
 
-### Visual
-- Scripts for visualizing data including line plots, heatmaps, and boxplots.
+## ⚖️ License
 
-
-## License
-
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
-
+This project is released under the [Apache License 2.0](LICENSE).
